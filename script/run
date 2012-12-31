@@ -1,0 +1,12 @@
+#!/bin/sh
+
+set -e
+
+rsync -a --exclude .git --delete ~/apps/phpbb/phpBB/ /var/www/func/
+chmod -R o+w /var/www/func
+
+echo 'drop database if exists morpheus' |mysql -u root
+echo 'create database morpheus' |mysql -u root
+
+export PYTHONPATH=../owebunit:../ocookie
+python test/install.py

@@ -12,6 +12,12 @@ class InstallTestCase(owebunit.WebTestCase):
         self.follow_redirect()
         self.assert_status(200)
         
+        # clicking on install link
+        self.get('/install/index.php?mode=install&language=en')
+        self.assert_status(200)
+        
+        assert 'Welcome to Installation' in self.response.body
+        
         self.get('/install/index.php?mode=install&sub=requirements&language=en')
         self.assert_status(200)
         

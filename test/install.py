@@ -5,7 +5,7 @@ class InstallTestCase(owebunit.WebTestCase):
         super(InstallTestCase, self).__init__(*args, **kwargs)
         self.config.host = 'http://func'
     
-    def test_simple(self):
+    def test_install(self):
         self.get('/')
         self.assert_redirected_to_uri('/install/index.php')
         

@@ -34,25 +34,26 @@ class InstallTestCase(owebunit.WebTestCase):
         
         assert 'MySQL with MySQLi Extension' in self.response.body
         
-        params = {
+        db_params = {
             'dbms': 'mysqli',
             'host': 'localhost',
             'dbport': '',
             'dbname': 'morpheus',
             'dbuser': 'root',
             'dbpasswd': '',
+            'table_prefix': 'phpbb_',
         }
         
-        db_params = owebunit.urlencode_utf8(params) + '&'
-        params = db_params + 'mode=install&sub=database&language=en&table_prefix=phpbb_&testdb=true'
-        self.post('/install/index.php', body=params)
+        form = self.response.forms[0]
+        params = owebunit.extend_params(form.params_list, db_params)
+        self.post(form.computed_action, body=params)
         self.assert_status(200)
         
         assert 'Could not connect to the database' not in self.response.body
         assert 'Successful connection' in self.response.body
         
-        params = db_params + 'language=en&table_prefix=phpbb_'
-        self.post('/install/index.php?mode=install&sub=administrator', body=params)
+        form = self.response.forms[0]
+        self.post(form.computed_action, body=form.params_list)
         self.assert_status(200)
         
         assert 'Administrator configuration' in self.response.body
@@ -64,10 +65,9 @@ class InstallTestCase(owebunit.WebTestCase):
             'board_email': 'morpheus@localhost.test',
         }
         
-        admin_params = owebunit.urlencode_utf8(admin_params) + '&'
-        params = db_params + admin_params + 'mode=install&sub=administrator&check=true&default_lang=en&language=en&table_prefix=phpbb_'
-        url = '/install/index.php'
-        self.post(url, body=params)
+        form = self.response.forms[0]
+        params = owebunit.extend_params(form.params_list, admin_params)
+        self.post(form.computed_action, body=params)
         self.assert_status(200)
         
         assert 'Tests passed' in self.response.body

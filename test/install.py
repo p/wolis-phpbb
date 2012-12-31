@@ -1,4 +1,5 @@
 import owebunit
+import utils
 
 class InstallTestCase(owebunit.WebTestCase):
     def __init__(self, *args, **kwargs):
@@ -106,6 +107,17 @@ class InstallTestCase(owebunit.WebTestCase):
         self.assert_status(200)
         
         assert 'Send statistical information' in self.response.body
+        
+        self._enable_debug()
+    
+    def _enable_debug(self):
+        config_path = '/var/www/func/config.php'
+        utils.sudo_chmod(config_path, 0664)
+        with open(config_path) as f:
+            config = f.read()
+        config += "\n@define('DEBUG', true);\n@define('DEBUG_EXTRA', true);\n"
+        with open(config_path, 'w') as f:
+            f.write(config)
 
 if __name__ == '__main__':
     import unittest

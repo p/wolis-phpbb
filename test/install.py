@@ -18,13 +18,18 @@ class InstallTestCase(owebunit.WebTestCase):
         
         assert 'Welcome to Installation' in self.response.body
         
-        self.get('/install/index.php?mode=install&sub=requirements&language=en')
+        # first form is language selector
+        assert len(self.response.forms) == 2
+        
+        form = self.response.forms[1]
+        self.post(form.computed_action, body=form.params_list)
         self.assert_status(200)
         
         assert 'Test again' not in self.response.body
         assert 'Start install' in self.response.body
         
-        self.get('/install/index.php?mode=install&sub=database&language=en&')
+        form = self.response.forms[0]
+        self.post(form.computed_action, body=form.params_list)
         self.assert_status(200)
         
         assert 'MySQL with MySQLi Extension' in self.response.body

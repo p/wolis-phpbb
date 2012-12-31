@@ -1,5 +1,4 @@
 import owebunit
-import urlparse
 
 class InstallTestCase(owebunit.WebTestCase):
     def __init__(self, *args, **kwargs):
@@ -63,8 +62,7 @@ class InstallTestCase(owebunit.WebTestCase):
         assert 'Tests passed' in self.response.body
         
         form = self.response.forms[0]
-        url = urlparse.urljoin(url, form.computed_action)
-        self.post(url, body=form.params_list)
+        self.post(form.computed_action, body=form.params_list)
         self.assert_status(200)
         
         assert 'The configuration file has been written' in self.response.body
@@ -72,23 +70,20 @@ class InstallTestCase(owebunit.WebTestCase):
         assert len(self.response.forms) == 1
         form = self.response.forms[0]
         
-        url = urlparse.urljoin(url, form.computed_action)
-        self.post(url, body=form.params_list)
+        self.post(form.computed_action, body=form.params_list)
         self.assert_status(200)
         
         assert 'The settings on this page are only necessary' in self.response.body
         
         # it's a giant form that we don't care for, just submit it
         form = self.response.forms[0]
-        url = urlparse.urljoin(url, form.computed_action)
-        self.post(url, body=form.params_list)
+        self.post(form.computed_action, body=form.params_list)
         self.assert_status(200)
         
         assert 'Proceed to the next screen to finish installing' in self.response.body
         
         form = self.response.forms[0]
-        url = urlparse.urljoin(url, form.computed_action)
-        self.post(url, body=form.params_list)
+        self.post(form.computed_action, body=form.params_list)
         self.assert_status(200)
         
         assert 'You have successfully installed' in self.response.body
@@ -96,8 +91,7 @@ class InstallTestCase(owebunit.WebTestCase):
         # have to submit this form also
         
         form = self.response.forms[0]
-        url = urlparse.urljoin(url, form.computed_action)
-        self.post(url, body=form.params_list)
+        self.post(form.computed_action, body=form.params_list)
         self.assert_status(200)
         
         assert 'Send statistical information' in self.response.body

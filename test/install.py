@@ -9,7 +9,7 @@ class InstallTestCase(owebunit.WebTestCase):
         self.get('/')
         self.assert_redirected_to_uri('/install/index.php')
         
-        self.get('/install/index.php?mode=install&language=en')
+        self.follow_redirect()
         self.assert_status(200)
         
         self.get('/install/index.php?mode=install&sub=requirements&language=en')

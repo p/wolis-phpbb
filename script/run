@@ -56,5 +56,6 @@ run_test() {
 try test/install.py
 try test/login_without_cookies.py
 try test/login.py
+#try test/register.py
 
 :>$passed

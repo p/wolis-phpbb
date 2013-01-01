@@ -1,6 +1,7 @@
 #!/bin/sh
 
-passed=.passed
+testroot=/var/www/func
+passed=$testroot/.passed
 
 set -e
 
@@ -24,8 +25,8 @@ args=
 if ! $continue; then
 	args="$args --delete"
 fi
-rsync -a --exclude .git $args ~/apps/phpbb/phpBB/ /var/www/func/
-chmod -R o+w /var/www/func || true
+rsync -a --exclude .git $args ~/apps/phpbb/phpBB/ $testroot/
+chmod -R o+w $testroot || true
 
 if ! $continue; then
 	echo 'drop database if exists morpheus' |mysql -u root
@@ -59,4 +60,4 @@ try test/login.py
 try test/acp_login.py
 #try test/register.py
 
-:>$passed
+rm $passed

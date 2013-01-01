@@ -35,6 +35,9 @@ class RegisterTestCase(WolisTestCase):
             'confirm_code': '',
         }
         
+        if self.flavor == 'olympus':
+            params['email_confirm'] = params['email']
+        
         self.check_form_key_delay()
         
         params = owebunit.extend_params(dict(form.params.submit('submit').list), params)

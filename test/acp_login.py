@@ -3,7 +3,7 @@ import urlparse
 from wolis_test_case import WolisTestCase
 
 class AcpLoginTestCase(WolisTestCase):
-    def test_login(self):
+    def test_acp_login(self):
         self.login('morpheus', 'morpheus')
         
         self.get('/')
@@ -41,6 +41,15 @@ class AcpLoginTestCase(WolisTestCase):
         acp_link = urlparse.urljoin(form.computed_action, acp_link)
         
         self.get(acp_link)
+        self.assert_status(200)
+        
+        assert 'Board statistics' in self.response.body
+    
+    def test_acp_login_via_helper(self):
+        self.login('morpheus', 'morpheus')
+        self.acp_login('morpheus', 'morpheus')
+        
+        self.get_with_sid('/adm/index.php')
         self.assert_status(200)
         
         assert 'Board statistics' in self.response.body

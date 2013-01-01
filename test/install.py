@@ -36,7 +36,7 @@ class InstallTestCase(WolisTestCase):
             'dbms': 'mysqli',
             'host': 'localhost',
             'dbport': '',
-            'dbname': 'morpheus',
+            'dbname': 'wolis',
             'dbuser': 'root',
             'dbpasswd': '',
             'table_prefix': 'phpbb_',

@@ -29,8 +29,8 @@ rsync -a --exclude .git $args ~/apps/phpbb/phpBB/ $testroot/
 chmod -R o+w $testroot || true
 
 if ! $continue; then
-	echo 'drop database if exists morpheus' |mysql -u root
-	echo 'create database morpheus' |mysql -u root
+	echo 'drop database if exists wolis' |mysql -u root
+	echo 'create database wolis' |mysql -u root
 fi
 
 export PYTHONPATH=../owebunit:../ocookie

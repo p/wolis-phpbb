@@ -5,7 +5,7 @@ from wolis_test_case import WolisTestCase
 class LoginWithoutCookiesTestCase(WolisTestCase):
     def test_login(self):
         self.get('/')
-        self.assert_status(200)
+        self.assert_successish()
         
         assert 'Log out' not in self.response.body
         
@@ -16,7 +16,7 @@ class LoginWithoutCookiesTestCase(WolisTestCase):
         }
         
         self.post('/ucp.php?mode=login', body=params)
-        self.assert_status(200)
+        self.assert_successish()
         
         assert 'You have been successfully logged in.' in self.response.body
         
@@ -26,7 +26,7 @@ class LoginWithoutCookiesTestCase(WolisTestCase):
         #print continue_link
         
         self.get(continue_link)
-        self.assert_status(200)
+        self.assert_successish()
         
         assert 'Logout' in self.response.body
 

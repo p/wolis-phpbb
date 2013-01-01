@@ -4,7 +4,7 @@ from wolis_test_case import WolisTestCase
 class RegisterTestCase(WolisTestCase):
     def test_register(self):
         self.get('/ucp.php?mode=register')
-        self.assert_status(200)
+        self.assert_successish()
         
         assert 'Registration' in self.response.body
         
@@ -14,7 +14,7 @@ class RegisterTestCase(WolisTestCase):
         
         params = form.params.submit('agreed').list
         self.post(form.computed_action, body=params)
-        self.assert_status(200)
+        self.assert_successish()
         
         assert 'Username:' in self.response.body
         
@@ -42,7 +42,7 @@ class RegisterTestCase(WolisTestCase):
         
         params = owebunit.extend_params(dict(form.params.submit('submit').list), params)
         self.post(form.computed_action, body=params)
-        self.assert_status(200)
+        self.assert_successish()
         
         assert 'Registration' not in self.response.body
         assert 'Thank you for registering' in self.response.body

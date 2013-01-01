@@ -7,14 +7,14 @@ class AcpLoginTestCase(WolisTestCase):
         self.login('morpheus', 'morpheus')
         
         self.get('/')
-        self.assert_status(200)
+        self.assert_successish()
         
         doc = self.response.lxml_etree
         acp_link = self.xpath_first(doc, '//div[@class="copyright"]//a[text() = "Administration Control Panel"]').attrib['href']
         acp_link = urlparse.urljoin('/', acp_link)
         
         self.get(acp_link)
-        self.assert_status(200)
+        self.assert_successish()
         
         assert 'To administer the board you must re-authenticate yourself.' in self.response.body
         
@@ -31,7 +31,7 @@ class AcpLoginTestCase(WolisTestCase):
         
         params = owebunit.extend_params(form.params.list, params)
         self.post(form.computed_action, body=params)
-        self.assert_status(200)
+        self.assert_successish()
         
         assert 'You have successfully authenticated' in self.response.body
         
@@ -41,7 +41,7 @@ class AcpLoginTestCase(WolisTestCase):
         acp_link = urlparse.urljoin(form.computed_action, acp_link)
         
         self.get(acp_link)
-        self.assert_status(200)
+        self.assert_successish()
         
         assert 'Board statistics' in self.response.body
     
@@ -50,7 +50,7 @@ class AcpLoginTestCase(WolisTestCase):
         self.acp_login('morpheus', 'morpheus')
         
         self.get_with_sid('/adm/index.php')
-        self.assert_status(200)
+        self.assert_successish()
         
         assert 'Board statistics' in self.response.body
 

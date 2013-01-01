@@ -4,7 +4,7 @@ from wolis_test_case import WolisTestCase
 class LoginTestCase(WolisTestCase):
     def test_login(self):
         self.get('/')
-        self.assert_status(200)
+        self.assert_successish()
         
         assert 'Log out' not in self.response.body
         
@@ -15,7 +15,7 @@ class LoginTestCase(WolisTestCase):
         }
         
         self.post('/ucp.php?mode=login', body=params)
-        self.assert_status(200)
+        self.assert_successish()
         
         assert 'You have been successfully logged in.' in self.response.body
         
@@ -29,7 +29,7 @@ class LoginTestCase(WolisTestCase):
     def check(self):
         self.get('/')
         #self.get('/viewforum.php?f=1')
-        self.assert_status(200)
+        self.assert_successish()
         
         assert 'Logout' in self.response.body
 

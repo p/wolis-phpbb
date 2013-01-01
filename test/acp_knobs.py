@@ -28,7 +28,7 @@ class AcpKnobsTestCase(WolisTestCase):
     def change_acp_knob(self, link_text, check_page_text, name, value):
         start_url = '/adm/index.php'
         self.get_with_sid(start_url)
-        self.assert_status(200)
+        self.assert_successish()
         
         assert 'Board statistics' in self.response.body
         
@@ -36,7 +36,7 @@ class AcpKnobsTestCase(WolisTestCase):
         
         # already has sid
         self.get(urlparse.urljoin(start_url, url))
-        self.assert_status(200)
+        self.assert_successish()
         
         assert check_page_text in self.response.body
         
@@ -50,7 +50,7 @@ class AcpKnobsTestCase(WolisTestCase):
         }
         params = owebunit.extend_params(form.params.list, params)
         self.post(form.computed_action, body=params)
-        self.assert_status(200)
+        self.assert_successish()
         
         assert 'Configuration updated successfully' in self.response.body
 

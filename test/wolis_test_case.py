@@ -20,7 +20,7 @@ class WolisTestCase(owebunit.WebTestCase):
         }
         
         self.post('/ucp.php?mode=login', body=params)
-        self.assert_status(200)
+        self.assert_successish()
         
         assert 'You have been successfully logged in.' in self.response.body
         
@@ -28,7 +28,7 @@ class WolisTestCase(owebunit.WebTestCase):
     
     def acp_login(self, username, password):
         self.get_with_sid('/adm/index.php')
-        self.assert_status(200)
+        self.assert_successish()
         
         assert 'To administer the board you must re-authenticate yourself.' in self.response.body
         
@@ -45,7 +45,7 @@ class WolisTestCase(owebunit.WebTestCase):
         
         params = owebunit.extend_params(form.params.list, params)
         self.post(form.computed_action, body=params)
-        self.assert_status(200)
+        self.assert_successish()
         
         assert 'You have successfully authenticated' in self.response.body
         
@@ -99,3 +99,13 @@ class WolisTestCase(owebunit.WebTestCase):
     
     def random_suffix(self):
         return '-%d' % random.randint(1000, 9999)
+    
+    def assert_successish(self):
+        self.assert_status(200)
+        self.assert_no_php_spam()
+    
+    def assert_no_php_spam(self):
+        assert 'Fatal error:' not in self.response.body
+        assert 'phpBB Debug' not in self.response.body
+        assert 'PHP Warning' not in self.response.body
+        assert 'PHP Notice' not in self.response.body

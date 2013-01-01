@@ -1,11 +1,8 @@
 import owebunit
 import utils
+from wolis_test_case import WolisTestCase
 
-class InstallTestCase(owebunit.WebTestCase):
-    def __init__(self, *args, **kwargs):
-        super(InstallTestCase, self).__init__(*args, **kwargs)
-        self.config.host = 'http://func'
-    
+class InstallTestCase(WolisTestCase):
     def test_install(self):
         self.get('/')
         self.assert_redirected_to_uri('/install/index.php')

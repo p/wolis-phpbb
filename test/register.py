@@ -1,10 +1,7 @@
 import owebunit
+from wolis_test_case import WolisTestCase
 
-class RegisterTestCase(owebunit.WebTestCase):
-    def __init__(self, *args, **kwargs):
-        super(RegisterTestCase, self).__init__(*args, **kwargs)
-        self.config.host = 'http://func'
-    
+class RegisterTestCase(WolisTestCase):
     def test_register(self):
         self.get('/ucp.php?mode=register')
         self.assert_status(200)

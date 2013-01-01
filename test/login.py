@@ -1,10 +1,7 @@
 import owebunit
+from wolis_test_case import WolisTestCase
 
-class LoginTestCase(owebunit.WebTestCase):
-    def __init__(self, *args, **kwargs):
-        super(LoginTestCase, self).__init__(*args, **kwargs)
-        self.config.host = 'http://func'
-    
+class LoginTestCase(WolisTestCase):
     def test_login(self):
         self.get('/')
         self.assert_status(200)

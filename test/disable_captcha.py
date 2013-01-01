@@ -7,25 +7,33 @@ class AcpLoginTestCase(WolisTestCase):
         self.login('morpheus', 'morpheus')
         self.acp_login('morpheus', 'morpheus')
         
+        self.change_acp_knob(
+            link_text='Spambot countermeasures',
+            check_page_text='Enable spambot countermeasures',
+            name='enable_confirm',
+            value='0',
+        )
+    
+    def change_acp_knob(self, link_text, check_page_text, name, value):
         start_url = '/adm/index.php'
         self.get_with_sid(start_url)
         self.assert_status(200)
         
         assert 'Board statistics' in self.response.body
         
-        url = self.link_href_by_text('Spambot countermeasures')
+        url = self.link_href_by_text(link_text)
         
         # already has sid
         self.get(urlparse.urljoin(start_url, url))
         self.assert_status(200)
         
-        assert 'Enable spambot countermeasures' in self.response.body
+        assert check_page_text in self.response.body
         
         assert len(self.response.forms) == 1
         form = self.response.forms[0]
         
         params = {
-            'enable_confirm': '0',
+            name: value,
         }
         params = owebunit.extend_params(form.params.list, params)
         self.post(form.computed_action, body=params)

@@ -63,6 +63,10 @@ class InstallTestCase(WolisTestCase):
             'board_email': 'morpheus@localhost.test',
         }
         
+        if self.flavor == 'olympus':
+            admin_params['board_email1'] = admin_params['board_email']
+            admin_params['board_email2'] = admin_params['board_email']
+        
         form = self.response.forms[0]
         params = owebunit.extend_params(form.params.list, admin_params)
         self.post(form.computed_action, body=params)

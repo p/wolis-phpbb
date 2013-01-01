@@ -1,12 +1,58 @@
 #!/bin/sh
 
+passed=.passed
+
 set -e
 
-rsync -a --exclude .git --delete ~/apps/phpbb/phpBB/ /var/www/func/
-chmod -R o+w /var/www/func
+continue=false
+while getopts :c option; do
+	case $option in
+		c)
+			continue=true;;
+		*)
+			echo "Usage: `basename $0` [-c]" 1>&2
+			exit 10
+			;;
+	esac
+done
 
-echo 'drop database if exists morpheus' |mysql -u root
-echo 'create database morpheus' |mysql -u root
+if $continue && ! test -e $passed; then
+	continue=false
+fi
+
+args=
+if ! $continue; then
+	args="$args --delete"
+fi
+rsync -a --exclude .git $args ~/apps/phpbb/phpBB/ /var/www/func/
+chmod -R o+w /var/www/func || true
+
+if ! $continue; then
+	echo 'drop database if exists morpheus' |mysql -u root
+	echo 'create database morpheus' |mysql -u root
+fi
 
 export PYTHONPATH=../owebunit:../ocookie
-python test/install.py
+
+if ! $continue; then
+	:>$passed
+fi
+
+try() {
+	if $continue; then
+		if fgrep -x "$1" $passed; then
+			return
+		fi
+	fi
+	run_test "$@"
+	echo "$1" >>$passed
+}
+
+run_test() {
+	#py.test "$@"
+	python "$@"
+}
+
+try test/install.py
+
+:>$passed

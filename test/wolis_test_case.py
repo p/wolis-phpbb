@@ -1,5 +1,6 @@
 import owebunit
 import os
+import random
 import xml.sax.saxutils
 
 class WolisTestCase(owebunit.WebTestCase):
@@ -95,3 +96,6 @@ class WolisTestCase(owebunit.WebTestCase):
         now = _time.time()
         wait = math.ceil(now) - now
         _time.sleep(wait)
+    
+    def random_suffix(self):
+        return '-%d' % random.randint(1000, 9999)

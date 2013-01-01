@@ -23,14 +23,14 @@ class InstallTestCase(owebunit.WebTestCase):
         assert len(self.response.forms) == 2
         
         form = self.response.forms[1]
-        self.post(form.computed_action, body=form.params_list)
+        self.post(form.computed_action, body=form.params.list)
         self.assert_status(200)
         
         assert 'Test again' not in self.response.body
         assert 'Start install' in self.response.body
         
         form = self.response.forms[0]
-        self.post(form.computed_action, body=form.params_list)
+        self.post(form.computed_action, body=form.params.list)
         self.assert_status(200)
         
         assert 'MySQL with MySQLi Extension' in self.response.body
@@ -46,7 +46,7 @@ class InstallTestCase(owebunit.WebTestCase):
         }
         
         form = self.response.forms[0]
-        params = owebunit.extend_params(form.params_list, db_params)
+        params = owebunit.extend_params(form.params.list, db_params)
         self.post(form.computed_action, body=params)
         self.assert_status(200)
         
@@ -54,7 +54,7 @@ class InstallTestCase(owebunit.WebTestCase):
         assert 'Successful connection' in self.response.body
         
         form = self.response.forms[0]
-        self.post(form.computed_action, body=form.params_list)
+        self.post(form.computed_action, body=form.params.list)
         self.assert_status(200)
         
         assert 'Administrator configuration' in self.response.body
@@ -67,14 +67,14 @@ class InstallTestCase(owebunit.WebTestCase):
         }
         
         form = self.response.forms[0]
-        params = owebunit.extend_params(form.params_list, admin_params)
+        params = owebunit.extend_params(form.params.list, admin_params)
         self.post(form.computed_action, body=params)
         self.assert_status(200)
         
         assert 'Tests passed' in self.response.body
         
         form = self.response.forms[0]
-        self.post(form.computed_action, body=form.params_list)
+        self.post(form.computed_action, body=form.params.list)
         self.assert_status(200)
         
         assert 'The configuration file has been written' in self.response.body
@@ -82,20 +82,20 @@ class InstallTestCase(owebunit.WebTestCase):
         assert len(self.response.forms) == 1
         form = self.response.forms[0]
         
-        self.post(form.computed_action, body=form.params_list)
+        self.post(form.computed_action, body=form.params.list)
         self.assert_status(200)
         
         assert 'The settings on this page are only necessary' in self.response.body
         
         # it's a giant form that we don't care for, just submit it
         form = self.response.forms[0]
-        self.post(form.computed_action, body=form.params_list)
+        self.post(form.computed_action, body=form.params.list)
         self.assert_status(200)
         
         assert 'Proceed to the next screen to finish installing' in self.response.body
         
         form = self.response.forms[0]
-        self.post(form.computed_action, body=form.params_list)
+        self.post(form.computed_action, body=form.params.list)
         self.assert_status(200)
         
         assert 'You have successfully installed' in self.response.body
@@ -103,7 +103,7 @@ class InstallTestCase(owebunit.WebTestCase):
         # have to submit this form also
         
         form = self.response.forms[0]
-        self.post(form.computed_action, body=form.params_list)
+        self.post(form.computed_action, body=form.params.list)
         self.assert_status(200)
         
         assert 'Send statistical information' in self.response.body

@@ -1,5 +1,6 @@
 import owebunit
 import os
+import xml.sax.saxutils
 
 class WolisTestCase(owebunit.WebTestCase):
     def __init__(self, *args, **kwargs):
@@ -75,3 +76,10 @@ class WolisTestCase(owebunit.WebTestCase):
     
     def post_with_sid(self, url, **kwargs):
         return self.post(self.apply_sid(url), **kwargs)
+    
+    def link_href_by_text(self, text):
+        doc = self.response.lxml_etree
+        quoted_text = xml.sax.saxutils.quoteattr(text)
+        # http://stackoverflow.com/questions/1999761/xpath-is-there-a-way-to-get-all-the-childrens-text-in-xpath
+        link = self.xpath_first(doc, '//a[descendant-or-self::*/text()=%s]' % quoted_text)
+        return link.attrib['href']

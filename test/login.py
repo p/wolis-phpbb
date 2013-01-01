@@ -19,6 +19,14 @@ class LoginTestCase(WolisTestCase):
         
         assert 'You have been successfully logged in.' in self.response.body
         
+        self.check()
+    
+    def test_login_via_helper(self):
+        self.login('morpheus', 'morpheus')
+        
+        self.check()
+    
+    def check(self):
         self.get('/')
         #self.get('/viewforum.php?f=1')
         self.assert_status(200)

@@ -37,7 +37,10 @@ export PYTHONPATH=../owebunit:../ocookie
 
 if ! $continue; then
 	:>$passed
+	rm -rf $testroot/responses
 fi
+
+mkdir -p $testroot/responses
 
 try() {
 	if $continue; then

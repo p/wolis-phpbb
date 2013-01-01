@@ -5,6 +5,8 @@ class WolisTestCase(owebunit.WebTestCase):
     def __init__(self, *args, **kwargs):
         super(WolisTestCase, self).__init__(*args, **kwargs)
         self.config.host = 'http://func'
+        self.config.save_responses = True
+        self.config.save_dir = '/var/www/func/responses'
         self.flavor = os.environ['FLAVOR']
     
     def login(self, username, password):

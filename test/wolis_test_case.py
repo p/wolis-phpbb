@@ -83,3 +83,15 @@ class WolisTestCase(owebunit.WebTestCase):
         # http://stackoverflow.com/questions/1999761/xpath-is-there-a-way-to-get-all-the-childrens-text-in-xpath
         link = self.xpath_first(doc, '//a[descendant-or-self::*/text()=%s]' % quoted_text)
         return link.attrib['href']
+    
+    def check_form_key_delay(self):
+        '''Workaround for http://tracker.phpbb.com/browse/PHPBB3-11304.
+        '''
+        
+        import time as _time
+        import math
+        
+        # we don't need to wait a full second
+        now = _time.time()
+        wait = math.ceil(now) - now
+        _time.sleep(wait)

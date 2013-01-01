@@ -54,6 +54,14 @@ run_test() {
 	python "$@"
 }
 
+if test -f $testroot/includes/extension/manager.php; then
+	FLAVOR=ascraeus
+else
+	FLAVOR=olympus
+fi
+echo "$FLAVOR detected"
+export FLAVOR
+
 try test/install.py
 try test/login_without_cookies.py
 try test/login.py

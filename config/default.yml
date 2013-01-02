@@ -10,6 +10,11 @@ db:
   driver: mysqli
   table_prefix: phpbb_
 
+mysql:
+  host: localhost
+  user: root
+  dbname: wolis
+
 mysqli:
   host: localhost
   user: root

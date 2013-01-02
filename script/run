@@ -71,5 +71,6 @@ try test/login.py
 try test/acp_login.py
 try test/acp_knobs.py
 try test/register.py
+try test/update.py
 
 rm $passed

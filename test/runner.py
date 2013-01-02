@@ -20,6 +20,8 @@ class Runner(object):
         parser = optparse.OptionParser()
         parser.add_option('-c', '--continue', help='continue previous run',
             action='store_true', dest='resume')
+        parser.add_option('-d', '--db', help='Use specified database driver',
+            action='store', dest='db')
         options, args = parser.parse_args()
         if options.resume:
             self.resume = True

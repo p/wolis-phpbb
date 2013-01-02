@@ -2,6 +2,7 @@ import optparse
 import os
 import os.path
 import subprocess
+import sys
 import unittest
 import utils
 import db
@@ -9,12 +10,21 @@ import config
 
 class Runner(object):
     def __init__(self):
+        # command line options
         self.resume = False
+        self.dbms = None
+        
         self.conf = config.Config()
-        driver = self.conf.db['driver']
+    
+    def instantiate_db(self):
+        driver = self.requested_dbms
         class_name = driver[0].upper() + driver[1:] + 'Db'
         cls = getattr(db, class_name)
         self.db = cls()
+    
+    @property
+    def requested_dbms(self):
+        return self.dbms or self.conf.db['driver']
     
     def parse_options(self):
         parser = optparse.OptionParser()
@@ -25,12 +35,16 @@ class Runner(object):
         options, args = parser.parse_args()
         if options.resume:
             self.resume = True
+        self.dbms = options.db
         if len(args) > 0:
             parser.print_help()
             exit(4)
+        # clear argv, as otherwise unittest tries to process it
+        sys.argv[1:] = []
     
     def run(self):
         self.parse_options()
+        self.instantiate_db()
         self.copy_tree_under_test(not self.resume)
         
         if not self.resume:
@@ -40,6 +54,8 @@ class Runner(object):
         flavor = self.detect_flavor()
         print('%s detected' % flavor)
         os.environ['FLAVOR'] = flavor
+        
+        os.environ['DBMS'] = self.requested_dbms
         
         tests = [
             'install',

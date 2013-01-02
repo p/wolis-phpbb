@@ -1,3 +1,4 @@
+import os
 import owebunit
 import utils
 from wolis_test_case import WolisTestCase
@@ -32,13 +33,14 @@ class InstallTestCase(WolisTestCase):
         
         assert 'MySQL with MySQLi Extension' in self.response.body
         
+        dbms = os.environ.get('DBMS') or self.conf.db['driver']
         db_params = {
-            'dbms': self.conf.db['driver'],
+            'dbms': dbms,
             'table_prefix': self.conf.db['table_prefix'],
         }
         attr_map = dict(host='host', port='dbport', dbname='dbname',
             user='dbuser', password='dbpasswd')
-        attrs = getattr(self.conf, self.conf.db['driver'])
+        attrs = getattr(self.conf, dbms)
         for fk in attr_map:
             lk = attr_map[fk]
             if fk in attrs:

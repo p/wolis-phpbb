@@ -1,4 +1,9 @@
 import subprocess
 
+def sudo(cmd):
+    run = ['sudo', '-u', 'php']
+    run.extend(cmd)
+    subprocess.check_call(run)
+
 def sudo_chmod(path, mode):
-    subprocess.check_call(['sudo', '-u', 'php', 'chmod', oct(mode), str(path)])
+    sudo(['chmod', oct(mode), str(path)])

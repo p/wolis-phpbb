@@ -2,6 +2,7 @@ import optparse
 import os
 import os.path
 import subprocess
+import utils
 
 testroot = '/var/www/func'
 src = '/home/pie/apps/phpbb'
@@ -25,11 +26,7 @@ class Runner(object):
     def run(self):
         self.parse_options()
         
-        cmd = ['rsync', '-a', '--exclude', '.git']
-        if not self.resume:
-            cmd.append('--delete')
-        cmd.extend([os.path.join(src, 'phpBB/'), testroot])
-        subprocess.check_call(cmd)
+        utils.rsync(os.path.join(src, 'phpBB/'), testroot, not self.resume)
             
         subprocess.call(['chmod', '-R', 'o+w', testroot])
         

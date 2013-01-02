@@ -7,3 +7,10 @@ def sudo(cmd):
 
 def sudo_chmod(path, mode):
     sudo(['chmod', oct(mode), str(path)])
+
+def rsync(src, dest, delete=False):
+    cmd = ['rsync', '-a', '--exclude', '.git']
+    if delete:
+        cmd.append('--delete')
+    cmd.extend([src, dest])
+    subprocess.check_call(cmd)

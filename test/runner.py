@@ -3,6 +3,7 @@ import os
 import os.path
 import subprocess
 import utils
+import db
 
 testroot = '/var/www/func'
 src = '/home/pie/apps/phpbb'
@@ -11,6 +12,7 @@ state_file_path = os.path.join(testroot, '.state')
 class Runner(object):
     def __init__(self):
         self.resume = False
+        self.db = db.MysqlDb()
     
     def parse_options(self):
         parser = optparse.OptionParser()
@@ -87,10 +89,10 @@ class Runner(object):
         return False
     
     def drop_database(self):
-        subprocess.check_call('echo drop database if exists wolis |mysql -u root', shell=True)
+        self.db.drop_database('wolis')
     
     def create_database(self):
-        subprocess.check_call('echo create database wolis |mysql -u root', shell=True)
+        self.db.create_database('wolis')
     
     def detect_flavor(self):
         if os.path.exists(os.path.join(testroot, 'includes/extension/manager.php')):

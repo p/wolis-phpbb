@@ -1,0 +1,20 @@
+test_root: /var/www/func
+src: /home/pie/apps/phpbb
+state_file_path: /var/www/func/.state
+baseline_repo_path: /var/www/func/repo
+test_root_phpbb: /var/www/func/phpbb
+responses_dir: /var/www/func/responses
+test_url: http://func
+
+db:
+  table_prefix: phpbb_
+
+mysqli:
+  host: localhost
+  user: root
+  dbname: wolis
+
+postgres:
+  host: localhost
+  user: wolis
+  dbname: wolis

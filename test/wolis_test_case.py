@@ -4,13 +4,17 @@ import os.path
 import re
 import random
 import xml.sax.saxutils
+import config
 
 class WolisTestCase(owebunit.WebTestCase):
     def __init__(self, *args, **kwargs):
         super(WolisTestCase, self).__init__(*args, **kwargs)
-        self.config.host = 'http://func/'
+        
+        conf = config.Config()
+        
+        self.config.host = conf.test_url
         self.config.save_responses = True
-        self.config.save_dir = '/var/www/func/phpbb/responses'
+        self.config.save_dir = conf.responses_dir
         self.flavor = os.environ['FLAVOR']
         self._sid = None
     

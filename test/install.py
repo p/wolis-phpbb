@@ -113,7 +113,7 @@ class InstallTestCase(WolisTestCase):
     
     def _enable_debug(self):
         config_path = '/var/www/func/config.php'
-        utils.sudo_chmod(config_path, 0664)
+        utils.sudo_chmod(config_path, 0o664)
         with open(config_path) as f:
             config = f.read()
         config += "\n@define('DEBUG', true);\n@define('DEBUG_EXTRA', true);\n"

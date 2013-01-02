@@ -10,11 +10,11 @@ class WolisTestCase(owebunit.WebTestCase):
     def __init__(self, *args, **kwargs):
         super(WolisTestCase, self).__init__(*args, **kwargs)
         
-        conf = config.Config()
+        self.conf = config.Config()
         
-        self.config.host = conf.test_url
+        self.config.host = self.conf.test_url
         self.config.save_responses = True
-        self.config.save_dir = conf.responses_dir
+        self.config.save_dir = self.conf.responses_dir
         self.flavor = os.environ['FLAVOR']
         self._sid = None
     

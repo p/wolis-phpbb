@@ -16,3 +16,5 @@ class MysqlDb(Db):
     def create_database(self, name):
         quoted_name = pipes.quote(name)
         subprocess.check_call('echo create database %s |mysql -u root' % quoted_name, shell=True)
+
+MysqliDb = MysqlDb

@@ -7,6 +7,7 @@ responses_dir: /var/www/func/responses
 test_url: http://func
 
 db:
+  driver: mysqli
   table_prefix: phpbb_
 
 mysqli:

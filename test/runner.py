@@ -11,7 +11,10 @@ class Runner(object):
     def __init__(self):
         self.resume = False
         self.conf = config.Config()
-        self.db = db.MysqlDb()
+        driver = self.conf.db['driver']
+        class_name = driver[0].upper() + driver[1:] + 'Db'
+        cls = getattr(db, class_name)
+        self.db = cls()
     
     def parse_options(self):
         parser = optparse.OptionParser()

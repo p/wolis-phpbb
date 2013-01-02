@@ -33,14 +33,16 @@ class InstallTestCase(WolisTestCase):
         assert 'MySQL with MySQLi Extension' in self.response.body
         
         db_params = {
-            'dbms': 'mysqli',
-            'host': 'localhost',
-            'dbport': '',
-            'dbname': 'wolis',
-            'dbuser': 'root',
-            'dbpasswd': '',
-            'table_prefix': 'phpbb_',
+            'dbms': self.conf.db['driver'],
+            'table_prefix': self.conf.db['table_prefix'],
         }
+        attr_map = dict(host='host', port='dbport', dbname='dbname',
+            user='dbuser', password='dbpasswd')
+        attrs = getattr(self.conf, self.conf.db['driver'])
+        for fk in attr_map:
+            lk = attr_map[fk]
+            if fk in attrs:
+                db_params[lk] = attrs.get(fk)
         
         form = self.response.forms[0]
         params = owebunit.extend_params(form.params.list, db_params)

@@ -1,15 +1,16 @@
 import owebunit
 import os
 import os.path
+import re
 import random
 import xml.sax.saxutils
 
 class WolisTestCase(owebunit.WebTestCase):
     def __init__(self, *args, **kwargs):
         super(WolisTestCase, self).__init__(*args, **kwargs)
-        self.config.host = 'http://func'
+        self.config.host = 'http://func/'
         self.config.save_responses = True
-        self.config.save_dir = '/var/www/func/responses'
+        self.config.save_dir = '/var/www/func/phpbb/responses'
         self.flavor = os.environ['FLAVOR']
         self._sid = None
     
@@ -121,3 +122,5 @@ class WolisTestCase(owebunit.WebTestCase):
         assert 'phpBB Debug' not in self.response.body
         assert 'PHP Warning' not in self.response.body
         assert 'PHP Notice' not in self.response.body
+        # xdebug php warning
+        assert not re.search(r'Warning: .* in .* on line ', self.response.body)

@@ -5,9 +5,9 @@ import subprocess
 import utils
 import db
 
-testroot = '/var/www/func'
+test_root = '/var/www/func'
 src = '/home/pie/apps/phpbb'
-state_file_path = os.path.join(testroot, '.state')
+state_file_path = os.path.join(test_root, '.state')
 
 class Runner(object):
     def __init__(self):
@@ -28,15 +28,15 @@ class Runner(object):
     def run(self):
         self.parse_options()
         
-        utils.rsync(os.path.join(src, 'phpBB/'), testroot, not self.resume)
+        utils.rsync(os.path.join(src, 'phpBB/'), test_root, not self.resume)
             
-        subprocess.call(['chmod', '-R', 'o+w', testroot])
+        subprocess.call(['chmod', '-R', 'o+w', test_root])
         
         if not self.resume:
             self.drop_database()
             self.create_database()
         
-        responses_dir = os.path.join(testroot, 'responses')
+        responses_dir = os.path.join(test_root, 'responses')
         if not os.path.exists(responses_dir):
             os.mkdir(responses_dir)
         
@@ -95,7 +95,7 @@ class Runner(object):
         self.db.create_database('wolis')
     
     def detect_flavor(self):
-        if os.path.exists(os.path.join(testroot, 'includes/extension/manager.php')):
+        if os.path.exists(os.path.join(test_root, 'includes/extension/manager.php')):
             flavor = 'ascraeus'
         else:
             flavor = 'olympus'

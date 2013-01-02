@@ -1,5 +1,6 @@
 import owebunit
 import os
+import os.path
 import random
 import xml.sax.saxutils
 
@@ -84,6 +85,17 @@ class WolisTestCase(owebunit.WebTestCase):
         # http://stackoverflow.com/questions/1999761/xpath-is-there-a-way-to-get-all-the-childrens-text-in-xpath
         link = self.xpath_first(doc, '//a[descendant-or-self::*/text()=%s]' % quoted_text)
         return link.attrib['href']
+    
+    def clear_cache(self):
+        import shutil
+        cache_path = '/var/www/func/cache'
+        for entry in os.listdir(cache_path):
+            if not entry[0] == '.':
+                path = os.path.join(cache_path, entry)
+                if os.path.isdir(path):
+                    shutil.rmtree(path)
+                else:
+                    os.unlink(path)
     
     def check_form_key_delay(self):
         '''Workaround for http://tracker.phpbb.com/browse/PHPBB3-11304.

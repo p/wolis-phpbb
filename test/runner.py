@@ -64,6 +64,7 @@ class Runner(object):
             'acp_login',
             'acp_knobs',
             'register',
+            'install_subsilver',
             'update',
         ]
         for test in tests:

@@ -12,8 +12,9 @@ class RegisterTestCase(WolisTestCase):
         assert len(self.response.forms) == 2
         form = self.response.forms[1]
         
-        params = form.params.submit('agreed').list
-        self.post(form.computed_action, body=params)
+        elements = form.elements.mutable
+        elements.submit('agreed')
+        self.post(form.computed_action, body=elements.params.list)
         self.assert_successish()
         
         assert 'Username:' in self.response.body
@@ -40,7 +41,9 @@ class RegisterTestCase(WolisTestCase):
         
         self.check_form_key_delay()
         
-        params = owebunit.extend_params(dict(form.params.submit('submit').list), params)
+        elements = form.elements.mutable
+        elements.submit('submit')
+        params = owebunit.extend_params(elements.params.dict, params)
         self.post(form.computed_action, body=params)
         self.assert_successish()
         

@@ -10,7 +10,7 @@ casper.start 'http://func/ucp.php?mode=register', ->
   @click 'input[value="I agree to these terms"]'
 
 casper.then ->
-  this.test.assertHttpStatus 200
-  this.test.assertDoesntExist 'input[value="I agree to these terms"]'
+  @test.assertHttpStatus 200
+  @test.assertDoesntExist 'input[value="I agree to these terms"]'
 
 casper.run()

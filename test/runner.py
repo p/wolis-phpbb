@@ -63,6 +63,7 @@ class Runner(object):
             'login',
             'acp_login',
             'acp_knobs',
+            'view_index',
             'register',
             'install_subsilver',
             'update',

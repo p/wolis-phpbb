@@ -91,6 +91,12 @@ class WolisTestCase(owebunit.WebTestCase):
         link = self.xpath_first(doc, '//a[descendant-or-self::*/text()=%s]' % quoted_text)
         return link.attrib['href']
     
+    def link_href_by_title(self, text):
+        doc = self.response.lxml_etree
+        quoted_text = xml.sax.saxutils.quoteattr(text)
+        link = self.xpath_first(doc, '//a[@title=%s]' % quoted_text)
+        return link.attrib['href']
+    
     def clear_cache(self):
         import shutil
         cache_path = '/var/www/func/cache'

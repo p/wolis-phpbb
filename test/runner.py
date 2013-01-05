@@ -65,6 +65,7 @@ class Runner(object):
             'acp_knobs',
             'view_index',
             'register',
+            'report_post',
             'install_subsilver',
             'update',
         ]

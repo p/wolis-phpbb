@@ -19,4 +19,7 @@ casper.then ->
   # Should match system time zone
   @test.assertMatch tz_value, /^GMT-05:00/
 
-casper.run()
+casper.run ->
+  @test.done()
+  ok = @test.getFailures().length == 0
+  @test.renderResults(true, if ok then 0 else 5)

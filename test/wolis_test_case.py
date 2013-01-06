@@ -123,14 +123,20 @@ class WolisTestCase(owebunit.WebTestCase):
     def random_suffix(self):
         return '-%d' % random.randint(1000, 9999)
     
-    def assert_successish(self):
-        self.assert_status(200)
-        self.assert_no_php_spam()
+    def assert_successish(self, session=None):
+        if session is None:
+            session = self
+        
+        session.assert_status(200)
+        self.assert_no_php_spam(session)
     
-    def assert_no_php_spam(self):
-        assert 'Fatal error:' not in self.response.body
-        assert 'phpBB Debug' not in self.response.body
-        assert 'PHP Warning' not in self.response.body
-        assert 'PHP Notice' not in self.response.body
+    def assert_no_php_spam(self, session=None):
+        if session is None:
+            session = self
+        
+        assert 'Fatal error:' not in session.response.body
+        assert 'phpBB Debug' not in session.response.body
+        assert 'PHP Warning' not in session.response.body
+        assert 'PHP Notice' not in session.response.body
         # xdebug php warning
-        assert not re.search(r'Warning: .* in .* on line ', self.response.body)
+        assert not re.search(r'Warning: .* in .* on line ', session.response.body)

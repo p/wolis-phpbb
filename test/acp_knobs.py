@@ -1,5 +1,6 @@
 import owebunit
 import urlparse
+import re
 from wolis_test_case import WolisTestCase
 
 class AcpKnobsTestCase(WolisTestCase):
@@ -24,6 +25,23 @@ class AcpKnobsTestCase(WolisTestCase):
             name='config[email_check_mx]',
             value='0',
         )
+    
+    def test_set_timezone(self):
+        self.login('morpheus', 'morpheus')
+        self.acp_login('morpheus', 'morpheus')
+        
+        self.change_acp_knob(
+            link_text='Board settings',
+            check_page_text='Here you can determine the basic operation of your board',
+            name='config[board_timezone]',
+            value='Antarctica/Macquarie',
+        )
+        
+        with self.session() as s:
+            s.get('/')
+            self.assert_successish(s)
+            
+            assert re.search(r'All times are.*GMT\+11:00', s.response.body)
     
     def change_acp_knob(self, link_text, check_page_text, name, value):
         start_url = '/adm/index.php'

@@ -85,18 +85,26 @@ class WolisTestCase(utu.adjust_test_base(owebunit.WebTestCase)):
     def post_with_sid(self, url, **kwargs):
         return self.post(self.apply_sid(url), **kwargs)
     
-    def link_href_by_text(self, text):
+    def link_href_by_xpath(self, xpath):
         doc = self.response.lxml_etree
-        quoted_text = xml.sax.saxutils.quoteattr(text)
-        # http://stackoverflow.com/questions/1999761/xpath-is-there-a-way-to-get-all-the-childrens-text-in-xpath
-        link = self.xpath_first(doc, '//a[descendant-or-self::*/text()=%s]' % quoted_text)
+        link = self.xpath_first(doc, xpath)
         return link.attrib['href']
     
-    def link_href_by_title(self, text):
-        doc = self.response.lxml_etree
+    def link_href_by_text(self, text):
         quoted_text = xml.sax.saxutils.quoteattr(text)
-        link = self.xpath_first(doc, '//a[@title=%s]' % quoted_text)
-        return link.attrib['href']
+        # http://stackoverflow.com/questions/1999761/xpath-is-there-a-way-to-get-all-the-childrens-text-in-xpath
+        xpath = '//a[descendant-or-self::*/text()=%s]' % quoted_text
+        return self.link_href_by_xpath(xpath)
+    
+    def link_href_by_title(self, text):
+        quoted_text = xml.sax.saxutils.quoteattr(text)
+        xpath = '//a[@title=%s]' % quoted_text
+        return self.link_href_by_xpath(xpath)
+    
+    def link_href_by_acp_tab_title(self, text):
+        quoted_text = xml.sax.saxutils.quoteattr(text)
+        xpath = '//div[@id="tabs"]//a[descendant-or-self::*/text()=%s]' % quoted_text
+        return self.link_href_by_xpath(xpath)
     
     def clear_cache(self):
         import shutil

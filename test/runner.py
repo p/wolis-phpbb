@@ -69,6 +69,7 @@ class Runner(object):
             'register',
             'report_post',
             'install_subsilver',
+            'uninstall_subsilver',
             'update',
         ]
         for test in tests:

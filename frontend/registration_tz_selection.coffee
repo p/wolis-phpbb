@@ -12,5 +12,11 @@ casper.start 'http://func/ucp.php?mode=register', ->
 casper.then ->
   @test.assertHttpStatus 200
   @test.assertDoesntExist 'input[value="I agree to these terms"]'
+  
+  @test.assertExists '#tz_date'
+  tz_value = @evaluate ->
+    document.querySelector('#tz_date').value
+  # Should match system time zone
+  @test.assertMatch tz_value, /^GMT-05:00/
 
 casper.run()

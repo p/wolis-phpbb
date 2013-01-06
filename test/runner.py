@@ -64,6 +64,8 @@ class Runner(object):
             'acp_login',
             'acp_knobs',
             'view_index',
+            'casper.view_index',
+            'casper.registration_tz_selection',
             'register',
             'report_post',
             'install_subsilver',
@@ -111,14 +113,28 @@ class Runner(object):
             return
         
         print('Testing %s.%s' % (prefix, name))
+        
+        if '.' in name:
+            method, name = name.split('.')
+            if method == 'casper':
+                self.run_casper_test(name)
+            else:
+                raise ValueError, 'Unsppported method: %s' % method
+        else:
+            self.run_python_test(name)
+        
+        self.checkpoint(checkpoint_name)
+    
+    def run_python_test(self, name):
         parent = __import__('test.' + name)
         module = getattr(parent, name)
         # NB: exit=False is 2.7+
         result = unittest.main(module, exit=False).result
         if not result.wasSuccessful():
             exit(4)
-        
-        self.checkpoint(checkpoint_name)
+    
+    def run_casper_test(self, name):
+        utils.casper(os.path.join(os.path.dirname(__file__), '../frontend', name + '.coffee'))
     
     def clear_state(self):
         if os.path.exists(self.conf.state_file_path):

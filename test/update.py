@@ -3,8 +3,8 @@ import utils
 from wolis_test_case import WolisTestCase
 
 class UpdateTestCase(WolisTestCase):
-    def setUp(self):
-        super(UpdateTestCase, self).setUp()
+    def setup(self):
+        super(UpdateTestCase, self).setup()
         
         #self.clear_cache()
     

@@ -1,4 +1,5 @@
 import owebunit
+import utu
 import os
 import os.path
 import re
@@ -6,7 +7,7 @@ import random
 import xml.sax.saxutils
 import config
 
-class WolisTestCase(owebunit.WebTestCase):
+class WolisTestCase(utu.adjust_test_base(owebunit.WebTestCase)):
     def __init__(self, *args, **kwargs):
         super(WolisTestCase, self).__init__(*args, **kwargs)
         

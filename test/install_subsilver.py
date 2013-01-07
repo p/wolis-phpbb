@@ -13,10 +13,9 @@ class InstallSubsilverTestCase(WolisTestCase):
         
         assert 'Customise' in self.response.body
         
-        doc = self.response.lxml_etree
-        link = self.xpath_first(doc, '//div[@id="tabs"]//a[descendant-or-self::*/text()="Customise"]')
+        href = self.link_href_by_acp_tab_title('Customise')
         
-        styles_url = url = urlparse.urljoin(url, link.attrib['href'])
+        styles_url = url = urlparse.urljoin(url, href)
         self.get(url)
         self.assert_successish()
         

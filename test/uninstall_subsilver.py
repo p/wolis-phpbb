@@ -2,7 +2,7 @@ import owebunit
 import urlparse
 from wolis_test_case import WolisTestCase
 
-class AcpKnobsTestCase(WolisTestCase):
+class UninstallSubsilverTestCase(WolisTestCase):
     def test_uninstall_subsilver(self):
         self.login('morpheus', 'morpheus')
         self.acp_login('morpheus', 'morpheus')

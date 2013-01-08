@@ -129,7 +129,7 @@ class Runner(object):
         self.checkpoint(checkpoint_name)
     
     def run_python_test(self, name):
-        parent = __import__('test.' + name)
+        parent = __import__('tests.' + name)
         module = getattr(parent, name)
         # NB: exit=False is 2.7+
         result = unittest.main(module, exit=False).result

@@ -4,6 +4,14 @@ import subprocess
 def sudo(user, cmd, **kwargs):
     run = ['sudo', '-u', user]
     run.extend(cmd)
+    if 'stdout_io' in kwargs:
+        # XXX unfinished
+        stdout_io = kwargs['stdout_io']
+        del kwargs['stdout_io']
+        kwargs['stdout'] = subprocess.PIPE
+        no_check = kwargs.get('no_check')
+        p = Popen(cmd, **kwargs)
+        out, err = p.communicate()
     if 'no_check' in kwargs:
         fn = subprocess.call
         del kwargs['no_check']

@@ -1,6 +1,6 @@
 import owebunit
 import urlparse
-from wolis.wolis_test_case import WolisTestCase
+from wolis.test_case import WolisTestCase
 
 class ReportPostTestCase(WolisTestCase):
     def test_report_post(self):

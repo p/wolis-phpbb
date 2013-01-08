@@ -1,7 +1,7 @@
 import owebunit
 import urlparse
 import re
-from wolis.wolis_test_case import WolisTestCase
+from wolis.test_case import WolisTestCase
 
 class AcpKnobsTestCase(WolisTestCase):
     def test_disable_captcha(self):

@@ -1,6 +1,6 @@
 import owebunit
 from wolis import utils
-from wolis.wolis_test_case import WolisTestCase
+from wolis.test_case import WolisTestCase
 
 class UpdateTestCase(WolisTestCase):
     def setup(self):

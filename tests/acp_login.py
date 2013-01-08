@@ -1,6 +1,6 @@
 import owebunit
 import urlparse
-from wolis.wolis_test_case import WolisTestCase
+from wolis.test_case import WolisTestCase
 
 class AcpLoginTestCase(WolisTestCase):
     def test_acp_login(self):

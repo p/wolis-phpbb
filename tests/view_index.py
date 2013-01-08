@@ -1,5 +1,5 @@
 import owebunit
-from wolis.wolis_test_case import WolisTestCase
+from wolis.test_case import WolisTestCase
 
 class ViewIndexTestCase(WolisTestCase):
     def test_view_index(self):

@@ -1,5 +1,5 @@
 import owebunit
-from wolis.wolis_test_case import WolisTestCase
+from wolis.test_case import WolisTestCase
 
 @owebunit.no_session
 class LoginWithoutCookiesTestCase(WolisTestCase):

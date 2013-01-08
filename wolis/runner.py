@@ -66,6 +66,7 @@ class Runner(object):
             'acp_knobs',
             'view_index',
             'casper.view_index',
+            'casper.registration_agreement',
             'casper.registration_tz_selection',
             'register',
             'report_post',

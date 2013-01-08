@@ -4,7 +4,12 @@ import subprocess
 def sudo(user, cmd, **kwargs):
     run = ['sudo', '-u', user]
     run.extend(cmd)
-    subprocess.check_call(run, **kwargs)
+    if 'no_check' in kwargs:
+        fn = subprocess.call
+        del kwargs['no_check']
+    else:
+        fn = subprocess.check_call
+    fn(run, **kwargs)
 
 def sudo_php(cmd):
     sudo('php', cmd)

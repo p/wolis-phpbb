@@ -69,6 +69,8 @@ class Runner(object):
             'register',
             'report_post',
             'install_subsilver',
+            # Cannot uninstall default style
+            #'set_subsilver_default',
             'uninstall_subsilver',
             'update',
         ]

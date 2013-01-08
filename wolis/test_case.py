@@ -1,4 +1,5 @@
 import owebunit
+import owebunit.utils
 import utu
 import os
 import os.path
@@ -43,7 +44,7 @@ class WolisTestCase(utu.adjust_test_base(owebunit.WebTestCase)):
         form = self.response.forms[1]
         
         doc = self.response.lxml_etree
-        password_name = self.xpath_first(doc, '//input[@type="password"]').attrib['name']
+        password_name = owebunit.utils.xpath_first_check(doc, '//input[@type="password"]').attrib['name']
         
         params = {
             'username': username,
@@ -87,7 +88,7 @@ class WolisTestCase(utu.adjust_test_base(owebunit.WebTestCase)):
     
     def link_href_by_xpath(self, xpath):
         doc = self.response.lxml_etree
-        link = self.xpath_first(doc, xpath)
+        link = owebunit.utils.xpath_first_check(doc, xpath)
         return link.attrib['href']
     
     def link_href_by_text(self, text):

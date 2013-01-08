@@ -1,4 +1,5 @@
 import owebunit
+import owebunit.utils
 import urlparse
 from wolis.test_case import WolisTestCase
 
@@ -28,8 +29,8 @@ class SetSubsilverDefaultTestCase(WolisTestCase):
         assert 'subsilver2' in self.response.body
         
         doc = self.response.lxml_etree
-        subsilver = self.xpath_first(doc, '//*[text()="subsilver2"]/ancestor::tr')
-        details = self.xpath_first(subsilver, './/a[descendant-or-self::*/text()="Details"]')
+        subsilver = owebunit.utils.xpath_first_check(doc, '//*[text()="subsilver2"]/ancestor::tr')
+        details = owebunit.utils.xpath_first_check(subsilver, './/a[descendant-or-self::*/text()="Details"]')
         
         url = urlparse.urljoin(styles_url, details.attrib['href'])
         self.get(url)

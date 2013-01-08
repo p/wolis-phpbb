@@ -1,4 +1,5 @@
 import owebunit
+import owebunit.utils
 from wolis.test_case import WolisTestCase
 
 @owebunit.no_session
@@ -22,7 +23,7 @@ class LoginWithoutCookiesTestCase(WolisTestCase):
         
         assert 'Return to the index page' in self.response.body
         doc = self.response.lxml_etree
-        continue_link = self.xpath_first(doc, '//div[@id="message"]//p/a').attrib['href']
+        continue_link = owebunit.utils.xpath_first_check(doc, '//div[@id="message"]//p/a').attrib['href']
         #print continue_link
         
         self.get(continue_link)

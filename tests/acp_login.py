@@ -1,4 +1,5 @@
 import owebunit
+import owebunit.utils
 import urlparse
 from wolis.test_case import WolisTestCase
 
@@ -10,7 +11,7 @@ class AcpLoginTestCase(WolisTestCase):
         self.assert_successish()
         
         doc = self.response.lxml_etree
-        acp_link = self.xpath_first(doc, '//div[@class="copyright"]//a[text() = "Administration Control Panel"]').attrib['href']
+        acp_link = owebunit.utils.xpath_first_check(doc, '//div[@class="copyright"]//a[text() = "Administration Control Panel"]').attrib['href']
         acp_link = urlparse.urljoin('/', acp_link)
         
         self.get(acp_link)
@@ -22,7 +23,7 @@ class AcpLoginTestCase(WolisTestCase):
         form = self.response.forms[1]
         
         doc = self.response.lxml_etree
-        password_name = self.xpath_first(doc, '//input[@type="password"]').attrib['name']
+        password_name = owebunit.utils.xpath_first_check(doc, '//input[@type="password"]').attrib['name']
         
         params = {
             'username': 'morpheus',
@@ -36,7 +37,7 @@ class AcpLoginTestCase(WolisTestCase):
         assert 'You have successfully authenticated' in self.response.body
         
         doc = self.response.lxml_etree
-        acp_link = self.xpath_first(doc, '//div[@class="copyright"]//a[text() = "Administration Control Panel"]').attrib['href']
+        acp_link = owebunit.utils.xpath_first_check(doc, '//div[@class="copyright"]//a[text() = "Administration Control Panel"]').attrib['href']
         # note: uses previous page's form's computed action
         acp_link = urlparse.urljoin(form.computed_action, acp_link)
         

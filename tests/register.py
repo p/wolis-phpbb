@@ -63,7 +63,7 @@ class RegisterTestCase(WolisTestCase):
         assert form.params.dict['tz_date'].startswith('GMT+11:00')
         
         #doc = self.response.lxml_etree
-        #timezone_select = self.xpath_first(doc, 'select[@id="timezone"]')
+        #timezone_select = owebunit.utils.xpath_first_check(doc, 'select[@id="timezone"]')
 
 if __name__ == '__main__':
     import unittest

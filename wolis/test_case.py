@@ -139,6 +139,7 @@ class WolisTestCase(utu.adjust_test_base(owebunit.WebTestCase)):
         
         session.assert_status(200)
         self.assert_no_php_spam(session)
+        self.assert_no_phpbb_error(session)
     
     def assert_no_php_spam(self, session=None):
         if session is None:
@@ -150,3 +151,21 @@ class WolisTestCase(utu.adjust_test_base(owebunit.WebTestCase)):
         assert 'PHP Notice' not in session.response.body
         # xdebug php warning
         assert not re.search(r'Warning: .* in .* on line ', session.response.body)
+    
+    def assert_no_phpbb_error(self, session=None):
+        '''Checks if the document appears to have a phpBB error in it.
+        
+        The check is somewhat fuzzy.
+        '''
+        
+        if session is None:
+            session = self
+        
+        doc = self.response.lxml_etree
+        errorbox = owebunit.utils.xpath_first(doc, '//div[@class="errorbox"]')
+        if errorbox is not None:
+            severity = owebunit.utils.xpath_first_check(errorbox, './h3').text.strip()
+            if severity != 'Warning':
+                message_element = owebunit.utils.xpath_first_check(errorbox, './p')
+                msg = 'Error message found in document: %s' % message_element.text
+                self.fail(msg)

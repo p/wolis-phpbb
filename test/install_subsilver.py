@@ -1,6 +1,6 @@
 import owebunit
 import urlparse
-from wolis_test_case import WolisTestCase
+from wolis.wolis_test_case import WolisTestCase
 
 class InstallSubsilverTestCase(WolisTestCase):
     def test_install_subsilver(self):

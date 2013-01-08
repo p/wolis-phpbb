@@ -5,7 +5,7 @@ import os.path
 import re
 import random
 import xml.sax.saxutils
-import config
+from . import config
 
 class WolisTestCase(utu.adjust_test_base(owebunit.WebTestCase)):
     def __init__(self, *args, **kwargs):

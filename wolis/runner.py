@@ -4,9 +4,9 @@ import os.path
 import subprocess
 import sys
 import unittest
-import utils
-import db
-import config
+from . import utils
+from . import db
+from . import config
 
 class Runner(object):
     def __init__(self):

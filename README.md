@@ -73,8 +73,12 @@ phpBB dependencies via composer as officially supported.
 - [ocookie](https://github.com/p/ocookie) (owebunit dependency)
 - [owebunit](https://github.com/p/owebunit)
 - [lxml](http://lxml.de/)
+- [yaml](http://pyyaml.org/)
 - [PhantomJS](http://phantomjs.org/)
 - [CasperJS](http://casperjs.org/)
+- [Node.js](http://nodejs.org/)
+- [uglify-js](https://github.com/mishoo/UglifyJS) npm package
+- [jshint](http://www.jshint.com/) npm package
 - Git
 - A web server configured to serve PHP
 - Write access to a directory under web server's document root

@@ -58,6 +58,7 @@ class Runner(object):
         os.environ['DBMS'] = self.requested_dbms
         
         tests = [
+            'lint_js',
             'install',
             'login_without_cookies',
             'login',

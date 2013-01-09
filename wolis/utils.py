@@ -50,7 +50,7 @@ def casper(path):
     with open('/dev/null', 'wb') as f:
         sudo_rvm(['coffee', '-cp', path], stdout=f)
     casperjs_wrapper = os.path.join(os.path.dirname(__file__), '../script/casperjs-wrapper')
-    sudo_rvm([casperjs_wrapper, path])
+    sudo_rvm([casperjs_wrapper, 'test', path])
 
 def git_in_dir(dir, *args):
     cmd = ['git',

@@ -1,0 +1,22 @@
+#!/bin/sh
+
+# Require paths in casperjs are whatever phantomjs provides,
+# casperjs' own directory and the current directory.
+# Because we execute casperjs scripts via sudo and with an absolute path,
+# we have to change directory into our project to be able to require
+# our modules.
+
+if false; then
+	# probably the wrong way to do it
+	root=`dirname $0`
+	if ! echo "$root" grep -q /; then
+		echo "This script must be invoked with a path" 1>&2
+	fi
+	root="$root/../frontend"
+else
+	# chdir to the directory of the script that we are asked to execute
+	root=`dirname $1`
+fi
+
+cd $root
+exec casperjs "$@"

@@ -4,8 +4,9 @@ import utu
 import lxml.etree
 import os
 import os.path
-import re
 import random
+import re
+import urlparse
 import xml.sax.saxutils
 from . import config
 from . import utils
@@ -63,6 +64,38 @@ class WolisTestCase(utu.adjust_test_base(owebunit.WebTestCase)):
         assert 'You have successfully authenticated' in self.response.body
         
         self.find_sid()
+    
+    def change_acp_knob(self, link_text, check_page_text, name, value):
+        '''Note: requires an estableshed acp session.
+        '''
+        
+        start_url = '/adm/index.php'
+        self.get_with_sid(start_url)
+        self.assert_successish()
+        
+        assert 'Board statistics' in self.response.body
+        
+        url = self.link_href_by_text(link_text)
+        
+        # already has sid
+        self.get(urlparse.urljoin(start_url, url))
+        self.assert_successish()
+        
+        assert check_page_text in self.response.body
+        
+        assert len(self.response.forms) == 1
+        form = self.response.forms[0]
+        
+        self.check_form_key_delay()
+        
+        params = {
+            name: value,
+        }
+        params = owebunit.extend_params(form.params.list, params)
+        self.post(form.computed_action, body=params)
+        self.assert_successish()
+        
+        assert 'Configuration updated successfully' in self.response.body
     
     def find_sid(self):
         cookie_names = self._session._cookie_jar.keys()

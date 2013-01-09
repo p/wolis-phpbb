@@ -1,5 +1,4 @@
 import owebunit
-import urlparse
 import re
 from wolis.test_case import WolisTestCase
 
@@ -42,35 +41,6 @@ class AcpKnobsTestCase(WolisTestCase):
             self.assert_successish(s)
             
             assert re.search(r'All times are.*GMT\+11:00', s.response.body)
-    
-    def change_acp_knob(self, link_text, check_page_text, name, value):
-        start_url = '/adm/index.php'
-        self.get_with_sid(start_url)
-        self.assert_successish()
-        
-        assert 'Board statistics' in self.response.body
-        
-        url = self.link_href_by_text(link_text)
-        
-        # already has sid
-        self.get(urlparse.urljoin(start_url, url))
-        self.assert_successish()
-        
-        assert check_page_text in self.response.body
-        
-        assert len(self.response.forms) == 1
-        form = self.response.forms[0]
-        
-        self.check_form_key_delay()
-        
-        params = {
-            name: value,
-        }
-        params = owebunit.extend_params(form.params.list, params)
-        self.post(form.computed_action, body=params)
-        self.assert_successish()
-        
-        assert 'Configuration updated successfully' in self.response.body
 
 if __name__ == '__main__':
     import unittest

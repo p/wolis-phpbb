@@ -109,7 +109,8 @@ class WolisTestCase(utu.adjust_test_base(owebunit.WebTestCase)):
     
     def clear_cache(self):
         import shutil
-        cache_path = '/var/www/func/cache'
+        
+        cache_path = os.path.join(self.conf.test_root_phpbb, 'cache')
         for entry in os.listdir(cache_path):
             if not entry[0] == '.':
                 path = os.path.join(cache_path, entry)

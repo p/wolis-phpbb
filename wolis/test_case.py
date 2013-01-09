@@ -1,12 +1,16 @@
 import owebunit
 import owebunit.utils
 import utu
+import lxml.etree
 import os
 import os.path
 import re
 import random
 import xml.sax.saxutils
 from . import config
+
+xpath_first = owebunit.utils.xpath_first
+xpath_first_check = owebunit.utils.xpath_first_check
 
 class WolisTestCase(utu.adjust_test_base(owebunit.WebTestCase)):
     def __init__(self, *args, **kwargs):
@@ -44,7 +48,7 @@ class WolisTestCase(utu.adjust_test_base(owebunit.WebTestCase)):
         form = self.response.forms[1]
         
         doc = self.response.lxml_etree
-        password_name = owebunit.utils.xpath_first_check(doc, '//input[@type="password"]').attrib['name']
+        password_name = xpath_first_check(doc, '//input[@type="password"]').attrib['name']
         
         params = {
             'username': username,
@@ -88,7 +92,7 @@ class WolisTestCase(utu.adjust_test_base(owebunit.WebTestCase)):
     
     def link_href_by_xpath(self, xpath):
         doc = self.response.lxml_etree
-        link = owebunit.utils.xpath_first_check(doc, xpath)
+        link = xpath_first_check(doc, xpath)
         return link.attrib['href']
     
     def link_href_by_text(self, text):
@@ -138,6 +142,17 @@ class WolisTestCase(utu.adjust_test_base(owebunit.WebTestCase)):
         if session is None:
             session = self
         
+        if session.response.code == 503:
+            msg = 'Expected response to be successful, but was 503'
+            if session.response.header_dict['content-type'].startswith('text/html'):
+                doc = session.response.lxml_etree
+                if xpath_first(doc, '//title[text()="General Error"]') is not None:
+                    message = xpath_first_check(doc, '//h1[text()="General Error"]/..')
+                    xml = lxml.etree.tostring(message)
+                    from . import html2text
+                    text = html2text.html2text(xml)
+                    msg += "\n" + text
+            self.fail(msg)
         session.assert_status(200)
         self.assert_no_php_spam(session)
         self.assert_no_phpbb_error(session)
@@ -165,8 +180,8 @@ class WolisTestCase(utu.adjust_test_base(owebunit.WebTestCase)):
         doc = self.response.lxml_etree
         errorbox = owebunit.utils.xpath_first(doc, '//div[@class="errorbox"]')
         if errorbox is not None:
-            severity = owebunit.utils.xpath_first_check(errorbox, './h3').text.strip()
+            severity = xpath_first_check(errorbox, './h3').text.strip()
             if severity != 'Warning':
-                message_element = owebunit.utils.xpath_first_check(errorbox, './p')
+                message_element = xpath_first_check(errorbox, './p')
                 msg = 'Error message found in document: %s' % message_element.text
                 self.fail(msg)

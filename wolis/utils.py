@@ -58,3 +58,27 @@ def git_in_dir(dir, *args):
         '--work-tree', dir]
     cmd.extend(args)
     subprocess.check_call(cmd)
+
+def yaml_to_json(input_text=None, input_file=None, output_file=None):
+    import yaml
+    import json
+    
+    if input_text is not None:
+        data = yaml.load(input_text)
+    elif input_file is not None:
+        if isinstance(input_file, basestring):
+            with open(input_file, 'rb') as f:
+                data = yaml.load(f)
+        else:
+            data = yaml.load(input_file)
+    else:
+        raise ArgumentError('Neither input_text nor input_file given')
+    
+    if output_file is not None:
+        if isinstance(output_file, basestring):
+            with open(output_file, 'wb') as f:
+                json.dump(data, f)
+        else:
+            json.dump(data, output_file)
+    else:
+        return json.dumps(data)

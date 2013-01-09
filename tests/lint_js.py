@@ -1,7 +1,5 @@
 import os
 import tempfile
-import yaml
-import json
 from wolis import utils
 from wolis.test_case import WolisTestCase
 
@@ -10,9 +8,8 @@ class LintJsTestCase(WolisTestCase):
         prefix = self.conf.test_root_phpbb
         jshint_config_path = os.path.join(os.path.dirname(__file__), '../config/jshint.syntax.yaml')
         with tempfile.NamedTemporaryFile() as jshint_config_f:
-            with open(jshint_config_path, 'rb') as f:
-                jshint_config = yaml.load(f)
-            json.dump(jshint_config, jshint_config_f)
+            utils.yaml_to_json(input_file=jshint_config_path,
+                output_file=jshint_config_f)
             jshint_config_f.flush()
             # since we run jshint under a different user account,
             # adjust permissions to be more open

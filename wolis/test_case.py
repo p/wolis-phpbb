@@ -178,7 +178,7 @@ class WolisTestCase(utu.adjust_test_base(owebunit.WebTestCase)):
         
         if session.response.code == 503:
             msg = 'Expected response to be successful, but was 503'
-            if session.response.header_dict['content-type'].startswith('text/html'):
+            if session.response.header_dict['content-type'].lower().startswith('text/html'):
                 doc = session.response.lxml_etree
                 if xpath_first(doc, '//title[text()="General Error"]') is not None:
                     message = xpath_first_check(doc, '//h1[text()="General Error"]/..')

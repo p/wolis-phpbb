@@ -1,4 +1,5 @@
 import os.path
+import re
 
 def sudo(user, cmd, **kwargs):
     import subprocess
@@ -90,3 +91,7 @@ def yaml_to_json(input_text=None, input_file=None, output_file=None):
             json.dump(data, output_file)
     else:
         return json.dumps(data)
+
+def naive_strip_html(text):
+    # http://stackoverflow.com/questions/753052/strip-html-from-strings-in-python
+    return re.sub('<[^<]+?>', '', text)

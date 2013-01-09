@@ -8,6 +8,7 @@ import re
 import random
 import xml.sax.saxutils
 from . import config
+from . import utils
 
 xpath_first = owebunit.utils.xpath_first
 xpath_first_check = owebunit.utils.xpath_first_check
@@ -161,10 +162,27 @@ class WolisTestCase(utu.adjust_test_base(owebunit.WebTestCase)):
         if session is None:
             session = self
         
-        assert 'Fatal error:' not in session.response.body
-        assert 'phpBB Debug' not in session.response.body
-        assert 'PHP Warning' not in session.response.body
-        assert 'PHP Notice' not in session.response.body
+        spams = [
+            'Fatal error:',
+            'phpBB Debug',
+            'PHP Warning',
+            'PHP Notice',
+        ]
+        for spam in spams:
+            if spam in session.response.body:
+                lines = session.response.body.split("\n")
+                spam_lines = []
+                for line in lines:
+                    if spam in line:
+                        if len(spam_lines) >= 5:
+                            # more than 5 lines were found
+                            spam_lines.append('(and more)')
+                            break
+                        # account for possible carriage returns
+                        spam_lines.append(utils.naive_strip_html(line.strip()))
+                msg = "PHP spam found in response body:\n%s" % "\n".join(spam_lines)
+                self.fail(msg)
+        
         # xdebug php warning
         assert not re.search(r'Warning: .* in .* on line ', session.response.body)
     

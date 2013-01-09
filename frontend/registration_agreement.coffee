@@ -1,7 +1,9 @@
 d = ->
   console.log arguments...
 
-casper.start 'http://func/ucp.php?mode=register', ->
+base = global.wolisconfig.test_url
+
+casper.start base + '/ucp.php?mode=register', ->
   @test.assertHttpStatus 200
   @test.assertExists 'input[value="I agree to these terms"]'
   

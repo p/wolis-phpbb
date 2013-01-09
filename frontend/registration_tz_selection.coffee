@@ -1,7 +1,9 @@
 d = ->
   console.log arguments...
 
-casper.start 'http://func/ucp.php?mode=register&agreed=1', ->
+base = global.wolisconfig.test_url
+
+casper.start base + '/ucp.php?mode=register&agreed=1', ->
   @test.assertExists '#tz_date'
   tz_value = @evaluate ->
     document.querySelector('#tz_date').value

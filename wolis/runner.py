@@ -45,6 +45,7 @@ class Runner(object):
     def run(self):
         self.parse_options()
         self.instantiate_db()
+        self.create_casper_config_file()
         self.copy_tree_under_test(not self.resume)
         
         if not self.resume:
@@ -139,7 +140,9 @@ class Runner(object):
             exit(4)
     
     def run_casper_test(self, name):
-        utils.casper(os.path.join(os.path.dirname(__file__), '../frontend', name + '.coffee'))
+        test_path = os.path.join(os.path.dirname(__file__), '../frontend', name + '.coffee')
+        casper_config_path = os.path.join(self.conf.test_root, 'gen', 'default.js')
+        utils.casper(test_path, pre=casper_config_path)
     
     def clear_state(self):
         if os.path.exists(self.conf.state_file_path):
@@ -187,3 +190,17 @@ class Runner(object):
         else:
             flavor = 'olympus'
         return flavor
+    
+    def create_casper_config_file(self):
+        config_path = os.path.join(os.path.dirname(__file__), '../config/default.yml')
+        json = utils.yaml_to_json(input_file=config_path)
+        json = '''
+            global.wolisconfig = %s;
+            casper.test.done();
+        ''' % json
+        output_dir = os.path.join(self.conf.test_root, 'gen')
+        if not os.path.exists(output_dir):
+            os.mkdir(output_dir)
+        output_path = os.path.join(output_dir, 'default.js')
+        with open(output_path, 'wb') as f:
+            f.write(json)

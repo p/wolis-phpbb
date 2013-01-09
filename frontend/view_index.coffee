@@ -1,7 +1,9 @@
 d = ->
   console.log arguments...
 
-casper.start 'http://func', ->
+base = global.wolisconfig.test_url
+
+casper.start base, ->
   this.test.assertHttpStatus 200
 
 casper.run ->

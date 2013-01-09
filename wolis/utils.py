@@ -46,14 +46,17 @@ def rsync(src, dest, delete=False, exclude=None):
     cmd.extend([src, dest])
     subprocess.check_call(cmd)
 
-def casper(path):
+def casper(path, pre=None):
     path = os.path.realpath(path)
     # workaround for https://github.com/n1k0/casperjs/issues/343 -
     # pass through coffeescript first
     with open('/dev/null', 'wb') as f:
         sudo_rvm(['coffee', '-cp', path], stdout=f)
     casperjs_wrapper = os.path.join(os.path.dirname(__file__), '../script/casperjs-wrapper')
-    sudo_rvm([casperjs_wrapper, 'test', path])
+    cmd = [casperjs_wrapper, 'test', path]
+    if pre is not None:
+        cmd.append('--pre=%s' % pre)
+    sudo_rvm(cmd)
 
 def git_in_dir(dir, *args):
     import subprocess

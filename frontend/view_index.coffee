@@ -4,7 +4,10 @@ d = ->
 base = global.wolisconfig.test_url
 
 casper.start base, ->
-  this.test.assertHttpStatus 200
+  @test.assertHttpStatus 200
+  
+  # check that the index page has expected text
+  @test.assertTextExists 'Your first forum'
 
 casper.run ->
   @test.done()

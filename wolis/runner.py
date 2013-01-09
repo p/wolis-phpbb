@@ -69,6 +69,7 @@ class Runner(object):
             'casper.view_index',
             'casper.registration_agreement',
             'casper.registration_tz_selection',
+            'casper.login',
             'register',
             'report_post',
             'install_subsilver',

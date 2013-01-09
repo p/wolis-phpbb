@@ -14,8 +14,9 @@ if false; then
 	fi
 	root="$root/../frontend"
 else
-	# chdir to the directory of the script that we are asked to execute
-	root=`dirname $1`
+	# chdir to the directory of the script that we are asked to execute.
+	# now that we use casper test, the script is the second argument
+	root=`dirname $2`
 fi
 
 cd $root

@@ -228,6 +228,9 @@ class WolisTestCase(utu.adjust_test_base(owebunit.WebTestCase)):
         if session is None:
             session = self
         
+        if not session.response.header_dict['content-type'].lower().startswith('text/html'):
+            return
+        
         doc = self.response.lxml_etree
         errorbox = owebunit.utils.xpath_first(doc, '//div[@class="errorbox"]')
         if errorbox is not None:

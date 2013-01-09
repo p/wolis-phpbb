@@ -1,7 +1,8 @@
 import os.path
-import subprocess
 
 def sudo(user, cmd, **kwargs):
+    import subprocess
+    
     run = ['sudo', '-u', user]
     run.extend(cmd)
     if 'stdout_io' in kwargs:
@@ -31,6 +32,8 @@ def sudo_chmod(path, mode):
     sudo_php(['chmod', oct(mode), str(path)])
 
 def rsync(src, dest, delete=False, exclude=None):
+    import subprocess
+    
     cmd = ['rsync', '-a', '--exclude', '.git']
     if delete:
         cmd.append('--delete')
@@ -53,6 +56,8 @@ def casper(path):
     sudo_rvm([casperjs_wrapper, 'test', path])
 
 def git_in_dir(dir, *args):
+    import subprocess
+    
     cmd = ['git',
         '--git-dir', os.path.join(dir, '.git'),
         '--work-tree', dir]

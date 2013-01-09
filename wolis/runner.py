@@ -197,7 +197,8 @@ class Runner(object):
         config_path = os.path.join(os.path.dirname(__file__), '../config/default.yml')
         json = utils.yaml_to_json(input_file=config_path)
         json = '''
-            global.wolisconfig = %s;
+            global.wolis = {};
+            global.wolis.config = %s;
             casper.test.done();
         ''' % json
         output_dir = os.path.join(self.conf.test_root, 'gen')

@@ -1,7 +1,7 @@
 d = ->
   console.log arguments...
 
-base = global.wolisconfig.test_url
+base = global.wolis.config.test_url
 
 casper.start base, ->
   @test.assertHttpStatus 200

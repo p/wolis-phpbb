@@ -74,6 +74,7 @@ phpBB dependencies via composer as officially supported.
 - [owebunit](https://github.com/p/owebunit)
 - [lxml](http://lxml.de/)
 - [yaml](http://pyyaml.org/)
+- [Python Imaging Library](http://www.pythonware.com/products/pil/)
 - [PhantomJS](http://phantomjs.org/)
 - [CasperJS](http://casperjs.org/)
 - [Node.js](http://nodejs.org/)

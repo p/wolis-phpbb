@@ -75,6 +75,8 @@ class Runner(object):
             # Cannot uninstall default style
             #'set_subsilver_default',
             'uninstall_subsilver',
+            'enable_captcha',
+            'captcha_nogd',
             'update',
         ]
         for test in tests:

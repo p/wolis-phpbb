@@ -226,7 +226,7 @@ class Runner(object):
         self.db.create_database('wolis')
     
     def create_casper_config_file(self):
-        config_path = os.path.join(os.path.dirname(__file__), '../config/default.yml')
+        config_path = os.path.join(os.path.dirname(__file__), '../config/default.yaml')
         json = utils.yaml_to_json(input_file=config_path)
         json = '''
             global.wolis = {};

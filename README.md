@@ -133,3 +133,7 @@ To use an alternate configuration file:
 	./script/run -c config/special.yaml
 
 Note that `-r` requires all other options to still be passed.
+
+## License
+
+MIT.

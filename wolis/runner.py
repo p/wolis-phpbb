@@ -1,3 +1,4 @@
+import re
 import optparse
 import os
 import os.path
@@ -153,6 +154,31 @@ class Runner(object):
     
     def run_casper_test(self, name):
         test_path = os.path.join(os.path.dirname(__file__), '../frontend', name + '.coffee')
+        
+        with open(test_path, 'r') as f:
+            code = f.read()
+            regexp = re.compile(r'^(?:(?:|\s+|\s*#[^\n]*)\n)*?(# (?:dependencies|after|phpbb_version):\n(?:#[^\n]*\n)*)\n', re.S)
+            match = regexp.match(code)
+            if not match:
+                print("Test %s does not have meta information")
+            else:
+                meta = match.group(1)
+                lines = meta.split("\n")
+                from . import test_spec
+                parser = test_spec.Parser()
+                for line in lines:
+                    if len(line) > 0:
+                        assert line[0] == '#'
+                    if len(line) > 1:
+                        assert line[1] == ' '
+                    line = line[2:]
+                    parser.feed(line)
+                if parser.phpbb_version:
+                    for version in parser.phpbb_version:
+                        if not utils.current.phpbb_version.matches(version):
+                            print('Skipping test due to phpBB version constraint (%s)' % version)
+                            return
+        
         casper_config_path = os.path.join(self.conf.test_root, 'gen', 'default.js')
         utils.casper(test_path, pre=casper_config_path)
     

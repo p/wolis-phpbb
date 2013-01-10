@@ -104,10 +104,15 @@ class PhpbbVersion(object):
             self.version = (3, 0, 0)
     
     def __cmp__(self, other):
-        return cmp(self.version, other)
+        return cmp(self.version, tuple(other))
     
     def __str__(self):
         return 'phpBB version %d.%d.%d' % self.version
+    
+    def matches(self, spec):
+        assert spec.startswith('>=')
+        target_version = spec[2:].split('.')
+        return self >= target_version
 
 class Current(object):
     phpbb_version = None

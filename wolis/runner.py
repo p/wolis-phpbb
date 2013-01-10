@@ -47,6 +47,7 @@ class Runner(object):
         self.instantiate_db()
         self.create_casper_config_file()
         self.copy_tree_under_test(not self.resume)
+        self.delete_old_responses()
         
         if not self.resume:
             self.drop_database()
@@ -111,6 +112,14 @@ class Runner(object):
             delete=delete, exclude=exclude)
         
         self.post_copy_tree()
+    
+    def delete_old_responses(self):
+        dir = self.conf.responses_dir
+        for file in os.listdir(dir):
+            if file[0] == '.':
+                continue
+            
+            os.unlink(os.path.join(dir, file))
     
     def post_copy_tree(self):
         subprocess.call(['chmod', '-R', 'o+w', self.conf.test_root_phpbb])

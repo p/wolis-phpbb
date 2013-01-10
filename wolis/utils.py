@@ -118,3 +118,16 @@ class Current(object):
     phpbb_version = None
 
 current = Current()
+
+def restrict_phpbb_version(spec):
+    def decorator(fn):
+        def decorated(self, *args, **kwargs):
+            actual_version = current.phpbb_version or PhpbbVersion(self.config)
+            if not actual_version.matches(spec):
+                print('Skipping test due to phpBB version constraint (%s)' % spec)
+            else:
+                return fn(self, *args, **kwargs)
+        
+        return decorated
+    
+    return decorator

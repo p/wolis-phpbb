@@ -1,15 +1,12 @@
 import owebunit
 import owebunit.utils
 import urlparse
+from wolis import utils
 from wolis.test_case import WolisTestCase
 
 class UninstallSubsilverTestCase(WolisTestCase):
+    @utils.restrict_phpbb_version('>=3.1.0')
     def test_uninstall_subsilver(self):
-        if self.phpbb_version < (3, 1, 0):
-            # XXX implement correct skipping
-            print('Skipping test')
-            return
-        
         self.login('morpheus', 'morpheus')
         self.acp_login('morpheus', 'morpheus')
         

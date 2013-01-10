@@ -1,4 +1,5 @@
 import owebunit
+from wolis import utils
 from wolis.test_case import WolisTestCase
 
 class RegisterTestCase(WolisTestCase):
@@ -52,12 +53,8 @@ class RegisterTestCase(WolisTestCase):
         # check that there are no further actions needed
         assert 'You may now login with your username' in self.response.body
     
+    @utils.restrict_phpbb_version('>=3.1.0')
     def test_initial_timezone_ascreus(self):
-        if self.phpbb_version < (3, 1, 0):
-            # XXX implement correct skipping
-            print('Skipping test')
-            return
-        
         self.get('/ucp.php?mode=register&agreed=yes')
         #self.post('/ucp.php?mode=register', body=dict(agreed='yes'))
         self.assert_successish()

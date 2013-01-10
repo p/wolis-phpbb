@@ -23,13 +23,13 @@ casper.then ->
 casper.then ->
   @open base
 
-casper.then ->
+utils.thensaveresponse ->
   @test.assertHttpStatus 200
   
   @test.assertTextExists 'Your first forum'
   @click utils.xpath('//a[text()="Your first forum"]')
 
-casper.then ->
+utils.thensaveresponse ->
   # on viewforum
   @test.assert(/viewforum/.test(@getCurrentUrl()))
   
@@ -38,7 +38,7 @@ casper.then ->
   
   @click utils.xpath('//a[text()="Welcome to phpBB3"]')
 
-casper.then ->
+utils.thensaveresponse ->
   # on viewtopic
   @test.assert(/viewtopic/.test(@getCurrentUrl()))
   

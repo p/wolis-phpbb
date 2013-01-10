@@ -68,3 +68,8 @@ exports.fixsubmit = fixsubmit = (selector)->
         hidden.className = 'phantomjs-form-submit-workaround'
         form.appendChild hidden
         break
+
+exports.thensaveresponse = (done)->
+  casper.then ->
+    savehtml @getHTML()
+    done.call(this, arguments)

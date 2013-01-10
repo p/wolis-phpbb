@@ -19,7 +19,39 @@ exports.savehtml = savehtml = (html)->
   f.write html
   f.close()
 
-#exports.login = login = (username, password, done)->
+exports.login = login = (username, password)->
+  base = global.wolis.config.test_url
+  
+  casper.open base + '/index.php?x'
+  
+  casper.then ->
+    @test.assertHttpStatus 200
+    
+    @test.assertTextExists 'Your first forum'
+    @test.assertTextNotExists 'User Control Panel'
+    
+    # yuck at the selector
+    @evaluate fixsubmit, 'form.headerspace'
+    @fill 'form.headerspace', {
+      username: username
+      password: password
+    }, true
+  
+  casper.then ->
+    @test.assertUrlMatch /ucp\.php.*mode=login/
+    @test.assertHttpStatus 200
+    
+    errors = @evaluate ->
+      errors = document.querySelector 'div[class=error]'
+      if errors
+        errors.innerHTML
+      else
+        ''
+    if errors
+      d "Possible errors: #{errors}"
+    
+    @test.assertTextExists 'You have been successfully logged in.'
+    @test.assertTextExists 'User Control Panel'
 
 exports.fixsubmit = fixsubmit = (selector)->
   form = document.querySelector selector

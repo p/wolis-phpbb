@@ -89,3 +89,47 @@ phpBB dependencies via composer as officially supported.
 - Your favorite database engine(s) plus client libraries
 
 Wolis should in principle be deployable to a typical Linux VPS.
+
+## Installation
+
+1. Install git if you do not already have it.
+2. Install Python using your operating system's package manager.
+3. Install virtualenv and pip. If your operating system does not provide
+a package for them, follow instructions
+[here](http://www.pip-installer.org/en/latest/installing.html).
+4. Activate the new environment.
+5. Install Python packages: `pip install -r requirements.txt`.
+6. [Install PhantomJS.](http://phantomjs.org/download.html)
+7. [Install CasperJS.](http://casperjs.org/installation.html)
+8. Install node.js. It might be provided by your operating system's package
+manager, or follow instructions [here](http://nodejs.org/download/).
+9. Install npm. If it did not come with your node.js package, obtain it
+from [here](https://github.com/isaacs/npm).
+10. Install npm packages: `npm install -g jshint uglify-js`.
+11. Edit `config/default.yaml`.
+12. Configure your web server to serve PHP scripts in `test_root_phpbb`.
+13. Configure your web server to serve directory listings in `responses_dir`.
+14. Setup sudo access from your user account to the one running PHP scripts,
+or arrange for umask/group membership to otherwise give you write access to
+files that PHP creates.
+15. Choose your database engine and create a database for wolis.
+
+## Usage
+
+To run all tests:
+
+	./script/run
+
+To resume a run that failed partway:
+
+	./script/run -r
+
+To run with a different database driver:
+
+	./script/run -d postgres
+
+To use an alternate configuration file:
+
+	./script/run -c config/special.yaml
+
+Note that `-r` requires all other options to still be passed.

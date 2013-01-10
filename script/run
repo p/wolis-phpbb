@@ -1,5 +1,12 @@
 #!/usr/bin/env python
 
-from wolis import runner
+try:
+    from wolis import runner
+except ImportError:
+    import os.path
+    import sys
+    
+    sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
+    from wolis import runner
 
 runner.Runner().run()

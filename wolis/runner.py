@@ -14,6 +14,7 @@ class Runner(object):
         # command line options
         self.resume = False
         self.dbms = None
+        self.requested_tests = None
         
         self.conf = config.Config()
     
@@ -37,9 +38,8 @@ class Runner(object):
         if options.resume:
             self.resume = True
         self.dbms = options.db
-        if len(args) > 0:
-            parser.print_help()
-            exit(4)
+        if args:
+            self.requested_tests = args
         # clear argv, as otherwise unittest tries to process it
         sys.argv[1:] = []
     
@@ -130,6 +130,9 @@ class Runner(object):
         checkpoint_name = '%s.%s' % (prefix, name)
         if self.resume and self.passed_checkpoint(checkpoint_name):
             return
+        if self.requested_tests is not None:
+            if checkpoint_name not in self.requested_tests:
+                return
         
         print('Testing %s.%s' % (prefix, name))
         

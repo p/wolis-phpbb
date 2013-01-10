@@ -1,3 +1,6 @@
+# dependencies:
+# python.install
+
 d = ->
   console.log arguments...
 

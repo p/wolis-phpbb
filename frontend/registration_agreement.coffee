@@ -1,3 +1,7 @@
+# dependencies:
+# python.install
+# prosilver?
+
 d = ->
   console.log arguments...
 

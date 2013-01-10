@@ -1,3 +1,9 @@
+# dependencies:
+# python.install
+#
+# after:
+# python.login
+
 utils = require './utils'
 
 d = ->

@@ -1,3 +1,10 @@
+# dependencies:
+# python.install
+# prosilver?
+#
+# after:
+# casper.registration_agreement
+
 d = ->
   console.log arguments...
 

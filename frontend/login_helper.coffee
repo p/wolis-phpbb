@@ -1,3 +1,9 @@
+# dependencies:
+# python.install
+#
+# after:
+# casper.login
+
 utils = require './utils'
 
 d = ->

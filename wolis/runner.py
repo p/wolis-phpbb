@@ -15,8 +15,8 @@ class Runner(object):
         self.resume = False
         self.dbms = None
         self.requested_tests = None
-        
-        self.conf = config.Config()
+        self.config_file_path = None
+        self.conf = None
     
     def instantiate_db(self):
         driver = self.requested_dbms
@@ -32,9 +32,17 @@ class Runner(object):
         parser = optparse.OptionParser()
         parser.add_option('-r', '--resume', help='resume previous run',
             action='store_true', dest='resume')
+        parser.add_option('-c', '--config', help='Path to configuration file',
+            action='store', dest='config')
         parser.add_option('-d', '--db', help='Use specified database driver',
             action='store', dest='db')
         options, args = parser.parse_args()
+        if options.config:
+            print('Using %s' % options.config)
+            self.config_file_path = options.config
+        else:
+            self.config_file_path = os.path.join(os.path.dirname(__file__), '../config/default.yaml')
+        self.conf = config.Config(self.config_file_path)
         if options.resume:
             self.resume = True
         self.dbms = options.db

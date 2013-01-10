@@ -22,7 +22,7 @@ exports.savehtml = savehtml = (html)->
 exports.login = login = (username, password)->
   base = global.wolis.config.test_url
   
-  casper.open base + '/index.php?x'
+  casper.open base
   
   casper.then ->
     @test.assertHttpStatus 200

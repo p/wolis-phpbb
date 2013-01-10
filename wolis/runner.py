@@ -55,7 +55,7 @@ class Runner(object):
     def run(self):
         self.parse_options()
         self.instantiate_db()
-        self.create_casper_config_file()
+        self.casper_config_path = self.create_casper_config_file()
         self.copy_tree_under_test(not self.resume)
         self.delete_old_responses()
         
@@ -203,8 +203,7 @@ class Runner(object):
                             print('Skipping test due to phpBB version constraint (%s)' % version)
                             return
         
-        casper_config_path = os.path.join(self.conf.test_root, 'gen', 'default.js')
-        utils.casper(self.conf, test_path, pre=casper_config_path)
+        utils.casper(self.conf, test_path, pre=self.casper_config_path)
     
     def clear_state(self):
         if os.path.exists(self.conf.state_file_path):
@@ -247,8 +246,8 @@ class Runner(object):
         self.db.create_database('wolis')
     
     def create_casper_config_file(self):
-        config_path = os.path.join(os.path.dirname(__file__), '../config/default.yaml')
-        json = utils.yaml_to_json(input_file=config_path)
+        config_file_name = os.path.basename(self.config_file_path)
+        json = utils.yaml_to_json(input_file=self.config_file_path)
         json = '''
             global.wolis = {};
             global.wolis.config = %s;
@@ -257,6 +256,7 @@ class Runner(object):
         output_dir = os.path.join(self.conf.test_root, 'gen')
         if not os.path.exists(output_dir):
             os.mkdir(output_dir)
-        output_path = os.path.join(output_dir, 'default.js')
+        output_path = os.path.join(output_dir, config_file_name.replace('.yaml', '.js'))
         with open(output_path, 'wb') as f:
             f.write(json)
+        return output_path

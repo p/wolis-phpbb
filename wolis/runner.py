@@ -199,7 +199,7 @@ class Runner(object):
         self.db.create_database('wolis')
     
     def detect_flavor(self):
-        if os.path.exists(os.path.join(self.conf.test_root, 'includes/extension/manager.php')):
+        if os.path.exists(os.path.join(self.conf.test_root_phpbb, 'includes/extension/manager.php')):
             flavor = 'ascraeus'
         else:
             flavor = 'olympus'

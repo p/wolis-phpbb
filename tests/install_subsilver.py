@@ -4,6 +4,11 @@ from wolis.test_case import WolisTestCase
 
 class InstallSubsilverTestCase(WolisTestCase):
     def test_install_subsilver(self):
+        if self.phpbb_version < (3, 1, 0):
+            # XXX implement correct skipping
+            print('Skipping test')
+            return
+        
         self.login('morpheus', 'morpheus')
         self.acp_login('morpheus', 'morpheus')
         

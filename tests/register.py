@@ -53,7 +53,13 @@ class RegisterTestCase(WolisTestCase):
         assert 'You may now login with your username' in self.response.body
     
     def test_initial_timezone_ascreus(self):
+        if self.phpbb_version < (3, 1, 0):
+            # XXX implement correct skipping
+            print('Skipping test')
+            return
+        
         self.get('/ucp.php?mode=register&agreed=yes')
+        #self.post('/ucp.php?mode=register', body=dict(agreed='yes'))
         self.assert_successish()
         
         assert 'Username:' in self.response.body

@@ -1,11 +1,12 @@
 import os.path
 import re
 
-def sudo(user, cmd, **kwargs):
+class RunError(StandardError):
+    pass
+
+def run(cmd, **kwargs):
     import subprocess
     
-    run = ['sudo', '-u', user]
-    run.extend(cmd)
     if 'stdout_io' in kwargs:
         # XXX unfinished
         stdout_io = kwargs['stdout_io']
@@ -19,18 +20,10 @@ def sudo(user, cmd, **kwargs):
         del kwargs['no_check']
     else:
         fn = subprocess.check_call
-    fn(run, **kwargs)
-
-def sudo_php(cmd):
-    sudo('php', cmd)
-
-def sudo_rvm(cmd, **kwargs):
-    run = ['-iH']
-    run.extend(cmd)
-    sudo('rvm', run, **kwargs)
-
-def sudo_chmod(path, mode):
-    sudo_php(['chmod', oct(mode), str(path)])
+    try:
+        fn(cmd, **kwargs)
+    except (OSError, subprocess.CalledProcessError) as exc:
+        raise RunError, str(exc) + "\nCommand: %s" % repr(cmd)
 
 def rsync(src, dest, delete=False, exclude=None):
     import subprocess
@@ -47,17 +40,19 @@ def rsync(src, dest, delete=False, exclude=None):
     cmd.extend([src, dest])
     subprocess.check_call(cmd)
 
-def casper(path, pre=None):
+# XXX do something about the config parameter
+def casper(conf, path, pre=None):
     path = os.path.realpath(path)
+    cmd_prefix = conf.node_cmd_prefix or []
     # workaround for https://github.com/n1k0/casperjs/issues/343 -
     # pass through coffeescript first
     with open('/dev/null', 'wb') as f:
-        sudo_rvm(['coffee', '-cp', path], stdout=f)
+        run(cmd_prefix + ['coffee', '-cp', path], stdout=f)
     casperjs_wrapper = os.path.join(os.path.dirname(__file__), '../script/casperjs-wrapper')
     cmd = [casperjs_wrapper, 'test', path]
     if pre is not None:
         cmd.append('--pre=%s' % pre)
-    sudo_rvm(cmd)
+    run(cmd_prefix + cmd)
 
 def git_in_dir(dir, *args):
     import subprocess

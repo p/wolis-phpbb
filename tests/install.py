@@ -117,10 +117,19 @@ class InstallTestCase(WolisTestCase):
     
     def _enable_debug(self):
         config_path = os.path.join(self.conf.test_root_phpbb, 'config.php')
-        utils.sudo_chmod(config_path, 0o664)
+        if self.conf.php_cmd_prefix:
+            utils.run(self.conf.php_cmd_prefix + ['chmod', '0644', config_path])
+        else:
+            os.chmod(config_path, 0o644)
         with open(config_path) as f:
             config = f.read()
         config += "\n@define('DEBUG', true);\n@define('DEBUG_EXTRA', true);\n"
+        # if config file was created by php, it will have php as the owner
+        # and therefore we won't be able to write to it with 644 mode.
+        # but we can unlink it because we own the directory it is in.
+        # note that there is an obvious race here, but it should not matter.
+        if os.path.exists(config_path):
+            os.unlink(config_path)
         with open(config_path, 'w') as f:
             f.write(config)
 

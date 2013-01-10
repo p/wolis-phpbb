@@ -191,7 +191,7 @@ class Runner(object):
                             return
         
         casper_config_path = os.path.join(self.conf.test_root, 'gen', 'default.js')
-        utils.casper(test_path, pre=casper_config_path)
+        utils.casper(self.conf, test_path, pre=casper_config_path)
     
     def clear_state(self):
         if os.path.exists(self.conf.state_file_path):

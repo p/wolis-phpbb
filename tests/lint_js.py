@@ -7,6 +7,7 @@ class LintJsTestCase(WolisTestCase):
     def test_lint_js(self):
         prefix = self.conf.test_root_phpbb
         jshint_config_path = os.path.join(os.path.dirname(__file__), '../config/jshint.syntax.yaml')
+        cmd_prefix = self.conf.node_cmd_prefix or []
         with tempfile.NamedTemporaryFile() as jshint_config_f:
             utils.yaml_to_json(input_file=jshint_config_path,
                 output_file=jshint_config_f)
@@ -24,11 +25,13 @@ class LintJsTestCase(WolisTestCase):
                         # test_root should be absolute
                         path = os.path.join(root, file)
                         print 'Linting %s' % path
-                        utils.sudo_rvm(['uglifyjs', '-o', '/dev/null', path])
+                        cmd = cmd_prefix + ['uglifyjs', '-o', '/dev/null', path]
+                        utils.run(cmd)
                         
                         # use a temporary file in case there is a lot of output
                         with tempfile.TemporaryFile() as f:
-                            utils.sudo_rvm(['jshint', '--config', jshint_config_f.name, path], no_check=True, stdout=f)
+                            cmd = cmd_prefix + ['jshint', '--config', jshint_config_f.name, path]
+                            utils.run(cmd, no_check=True, stdout=f)
                             f.seek(0)
                             for line in f.readlines():
                                 if 'Extra comma.' in line:

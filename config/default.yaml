@@ -5,6 +5,8 @@ baseline_repo_path: /var/www/func/repo
 test_root_phpbb: /var/www/func/phpbb
 responses_dir: /var/www/func/responses
 test_url: http://func
+node_cmd_prefix: ['sudo', '-iHu', 'rvm']
+php_cmd_prefix: ['sudo', '-u', 'php']
 
 db:
   driver: mysqli

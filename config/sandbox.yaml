@@ -1,0 +1,27 @@
+test_root: /tmp/sandboxfunc
+src: /home/pie/apps/phpbb
+state_file_path: /tmp/sandboxfunc/.state
+baseline_repo_path: /tmp/sandboxfunc/repo
+test_root_phpbb: /tmp/sandboxfunc/phpbb
+responses_dir: /tmp/sandboxfunc/responses
+test_url: http://sbfunc
+php_cmd_prefix: ['sudo', '-u', 'php']
+
+db:
+  driver: mysqli
+  table_prefix: phpbb_
+
+mysql:
+  host: localhost
+  user: root
+  dbname: wolis
+
+mysqli:
+  host: localhost
+  user: root
+  dbname: wolis
+
+postgres:
+  host: localhost
+  user: wolis
+  dbname: wolis

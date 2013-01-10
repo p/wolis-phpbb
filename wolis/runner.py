@@ -53,7 +53,6 @@ class Runner(object):
             self.drop_database()
             self.create_database()
         
-        utils.current.phpbb_version = utils.PhpbbVersion(self.conf)
         print('%s detected' % utils.current.phpbb_version)
         
         os.environ['DBMS'] = self.requested_dbms
@@ -95,12 +94,10 @@ class Runner(object):
             self.create_database()
             self.checkpoint(checkpoint_name)
         
-        utils.current.phpbb_version = utils.PhpbbVersion(self.conf)
         self.run_test('pass2', 'install')
         
         self.copy_tree_under_test(True, exclude='/config.php')
         
-        utils.current.phpbb_version = utils.PhpbbVersion(self.conf)
         self.run_test('pass2', 'update')
         
         if os.path.exists(self.conf.state_file_path):
@@ -125,6 +122,8 @@ class Runner(object):
         
         if not os.path.exists(self.conf.responses_dir):
             os.mkdir(self.conf.responses_dir)
+        
+        utils.current.phpbb_version = utils.PhpbbVersion(self.conf)
     
     def run_test(self, prefix, name):
         checkpoint_name = '%s.%s' % (prefix, name)

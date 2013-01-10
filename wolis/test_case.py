@@ -19,7 +19,11 @@ class WolisTestCase(utu.adjust_test_base(owebunit.WebTestCase)):
         super(WolisTestCase, self).__init__(*args, **kwargs)
         
         self.conf = config.Config()
-        
+    
+    def setup(self):
+        # another hack.
+        # because self.conf is overwritten after an instance is created,
+        # delay self.config writes until tests are actually run
         self.config.host = self.conf.test_url
         self.config.save_responses = True
         self.config.save_dir = self.conf.responses_dir

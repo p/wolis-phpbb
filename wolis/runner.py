@@ -8,6 +8,7 @@ import unittest
 from . import utils
 from . import db
 from . import config
+from . import test_case
 
 class Runner(object):
     def __init__(self):
@@ -158,13 +159,20 @@ class Runner(object):
     def run_python_test(self, name):
         parent = __import__('tests.' + name)
         module = getattr(parent, name)
-        test = unittest.loader.defaultTestLoader.loadTestsFromModule(module)
+        tests = unittest.loader.defaultTestLoader.loadTestsFromModule(module)
+        # and the big hack
+        for more_tests in tests:
+            assert isinstance(more_tests, unittest.TestSuite)
+            for test in more_tests:
+                assert isinstance(test, test_case.WolisTestCase)
+                assert hasattr(test, 'conf')
+                test.conf = self.conf
         try:
             runner = unittest.runner.TextTestRunner(verbosity=1)
         except TypeError:
             # per unittest.main code
             runner = unittest.runner.TextTestRunner()
-        result = runner.run(test)
+        result = runner.run(tests)
         if not result.wasSuccessful():
             exit(4)
     

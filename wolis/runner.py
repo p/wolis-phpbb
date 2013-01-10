@@ -164,8 +164,8 @@ class Runner(object):
             else:
                 meta = match.group(1)
                 lines = meta.split("\n")
-                from . import test_spec
-                parser = test_spec.Parser()
+                from . import test_meta
+                parser = test_meta.Parser()
                 for line in lines:
                     if len(line) > 0:
                         assert line[0] == '#'

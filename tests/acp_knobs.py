@@ -29,18 +29,28 @@ class AcpKnobsTestCase(WolisTestCase):
         self.login('morpheus', 'morpheus')
         self.acp_login('morpheus', 'morpheus')
         
+        if self.flavor == 'olympus':
+            # utc offset
+            value = '11'
+        else:
+            # timezone name
+            value = 'Antarctica/Macquarie'
         self.change_acp_knob(
             link_text='Board settings',
             check_page_text='Here you can determine the basic operation of your board',
             name='config[board_timezone]',
-            value='Antarctica/Macquarie',
+            value=value,
         )
         
         with self.session() as s:
             s.get('/')
             self.assert_successish(s)
             
-            assert re.search(r'All times are.*GMT\+11:00', s.response.body)
+            if self.flavor == 'olympus':
+                search = r'All times are UTC \+ 11 hours'
+            else:
+                search = r'All times are.*GMT\+11:00'
+            assert re.search(search, s.response.body)
 
 if __name__ == '__main__':
     import unittest

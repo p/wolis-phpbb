@@ -26,7 +26,7 @@ class Runner(object):
     
     @property
     def requested_dbms(self):
-        return self.dbms or self.conf.db['driver']
+        return self.dbms or self.conf.db.driver
     
     def parse_options(self):
         parser = optparse.OptionParser()

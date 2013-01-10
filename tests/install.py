@@ -33,10 +33,10 @@ class InstallTestCase(WolisTestCase):
         
         assert 'MySQL with MySQLi Extension' in self.response.body
         
-        dbms = os.environ.get('DBMS') or self.conf.db['driver']
+        dbms = os.environ.get('DBMS') or self.conf.db.driver
         db_params = {
             'dbms': dbms,
-            'table_prefix': self.conf.db['table_prefix'],
+            'table_prefix': self.conf.db.table_prefix,
         }
         attr_map = dict(host='host', port='dbport', dbname='dbname',
             user='dbuser', password='dbpasswd')

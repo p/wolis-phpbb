@@ -1,0 +1,6 @@
+lxml
+pil
+pyyaml
+git+git://github.com/p/ocookie.git@master#egg=ocookie
+git+git://github.com/p/owebunit.git@master#egg=owebunit
+git+git://github.com/p/utu.git@master#egg=utu

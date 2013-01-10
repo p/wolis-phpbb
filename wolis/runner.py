@@ -53,9 +53,8 @@ class Runner(object):
             self.drop_database()
             self.create_database()
         
-        flavor = self.detect_flavor()
-        print('%s detected' % flavor)
-        os.environ['FLAVOR'] = flavor
+        utils.current.phpbb_version = utils.PhpbbVersion(self.conf)
+        print('%s detected' % utils.current.phpbb_version)
         
         os.environ['DBMS'] = self.requested_dbms
         
@@ -96,12 +95,12 @@ class Runner(object):
             self.create_database()
             self.checkpoint(checkpoint_name)
         
-        os.environ['FLAVOR'] = 'olympus'
+        utils.current.phpbb_version = utils.PhpbbVersion(self.conf)
         self.run_test('pass2', 'install')
         
         self.copy_tree_under_test(True, exclude='/config.php')
         
-        os.environ['FLAVOR'] = flavor
+        utils.current.phpbb_version = utils.PhpbbVersion(self.conf)
         self.run_test('pass2', 'update')
         
         if os.path.exists(self.conf.state_file_path):
@@ -197,13 +196,6 @@ class Runner(object):
     
     def create_database(self):
         self.db.create_database('wolis')
-    
-    def detect_flavor(self):
-        if os.path.exists(os.path.join(self.conf.test_root_phpbb, 'includes/extension/manager.php')):
-            flavor = 'ascraeus'
-        else:
-            flavor = 'olympus'
-        return flavor
     
     def create_casper_config_file(self):
         config_path = os.path.join(os.path.dirname(__file__), '../config/default.yml')

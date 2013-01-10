@@ -29,7 +29,7 @@ class AcpKnobsTestCase(WolisTestCase):
         self.login('morpheus', 'morpheus')
         self.acp_login('morpheus', 'morpheus')
         
-        if self.flavor == 'olympus':
+        if self.phpbb_version < (3, 1, 0):
             # utc offset
             value = '11'
         else:
@@ -46,7 +46,7 @@ class AcpKnobsTestCase(WolisTestCase):
             s.get('/')
             self.assert_successish(s)
             
-            if self.flavor == 'olympus':
+            if self.phpbb_version < (3, 1, 0):
                 search = r'All times are UTC \+ 11 hours'
             else:
                 search = r'All times are.*GMT\+11:00'

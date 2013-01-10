@@ -95,3 +95,21 @@ def yaml_to_json(input_text=None, input_file=None, output_file=None):
 def naive_strip_html(text):
     # http://stackoverflow.com/questions/753052/strip-html-from-strings-in-python
     return re.sub('<[^<]+?>', '', text)
+
+class PhpbbVersion(object):
+    def __init__(self, conf):
+        if os.path.exists(os.path.join(conf.test_root_phpbb, 'includes/extension/manager.php')):
+            self.version = (3, 1, 0)
+        else:
+            self.version = (3, 0, 0)
+    
+    def __cmp__(self, other):
+        return cmp(self.version, other)
+    
+    def __str__(self):
+        return 'phpBB version %d.%d.%d' % self.version
+
+class Current(object):
+    phpbb_version = None
+
+current = Current()

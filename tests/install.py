@@ -67,7 +67,7 @@ class InstallTestCase(WolisTestCase):
             'board_email': 'morpheus@localhost.test',
         }
         
-        if self.flavor == 'olympus':
+        if self.phpbb_version < (3, 1, 0):
             admin_params['board_email1'] = admin_params['board_email']
             admin_params['board_email2'] = admin_params['board_email']
         

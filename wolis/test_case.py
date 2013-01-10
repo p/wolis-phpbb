@@ -23,8 +23,11 @@ class WolisTestCase(utu.adjust_test_base(owebunit.WebTestCase)):
         self.config.host = self.conf.test_url
         self.config.save_responses = True
         self.config.save_dir = self.conf.responses_dir
-        self.flavor = os.environ['FLAVOR']
         self._sid = None
+    
+    @property
+    def phpbb_version(self):
+        return utils.current.phpbb_version or utils.PhpbbVersion(self.conf)
     
     def login(self, username, password):
         params = {

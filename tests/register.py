@@ -36,7 +36,7 @@ class RegisterTestCase(WolisTestCase):
             'confirm_code': '',
         }
         
-        if self.flavor == 'olympus':
+        if self.phpbb_version < (3, 1, 0):
             params['email_confirm'] = params['email']
         
         self.check_form_key_delay()

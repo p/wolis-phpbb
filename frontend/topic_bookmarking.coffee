@@ -54,5 +54,15 @@ casper.then ->
   @test.assertTextExists 'Remove from bookmarks'
   @test.assertTextDoesntExist 'Bookmark topic'
 
+# unbookmark
+casper.then ->
+  @click utils.xpath('//a[text()="Remove from bookmarks"]')
+  
+  @waitForResource /viewtopic\.php.*bookmark=1/
+
+casper.then ->
+  @test.assertTextNotExists 'Remove from bookmarks'
+  @test.assertTextExists 'Bookmark topic'
+
 casper.run ->
   @test.done()

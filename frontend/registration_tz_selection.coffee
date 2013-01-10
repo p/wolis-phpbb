@@ -4,6 +4,9 @@
 #
 # after:
 # casper.registration_agreement
+#
+# phpbb_version:
+# >=3.1.0
 
 d = ->
   console.log arguments...

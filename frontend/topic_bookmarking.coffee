@@ -4,6 +4,9 @@
 #
 # after:
 # casper.login_helper
+#
+# phpbb_version:
+# >=3.1.0
 
 utils = require './utils'
 

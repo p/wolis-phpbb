@@ -158,8 +158,13 @@ class Runner(object):
     def run_python_test(self, name):
         parent = __import__('tests.' + name)
         module = getattr(parent, name)
-        # NB: exit=False is 2.7+
-        result = unittest.main(module, exit=False).result
+        test = unittest.loader.defaultTestLoader.loadTestsFromModule(module)
+        try:
+            runner = unittest.runner.TextTestRunner(verbosity=1)
+        except TypeError:
+            # per unittest.main code
+            runner = unittest.runner.TextTestRunner()
+        result = runner.run(test)
         if not result.wasSuccessful():
             exit(4)
     

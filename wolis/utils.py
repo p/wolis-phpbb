@@ -46,8 +46,8 @@ def casper(conf, path, pre=None):
     cmd_prefix = conf.node_cmd_prefix or []
     # workaround for https://github.com/n1k0/casperjs/issues/343 -
     # pass through coffeescript first
-    with open('/dev/null', 'wb') as f:
-        run(cmd_prefix + ['coffee', '-cp', path], stdout=f)
+    #with open('/dev/null', 'wb') as f:
+        #run(cmd_prefix + ['coffee', '-cp', path], stdout=f)
     casperjs_wrapper = os.path.join(os.path.dirname(__file__), '../script/casperjs-wrapper')
     cmd = [casperjs_wrapper, 'test', path]
     if pre is not None:

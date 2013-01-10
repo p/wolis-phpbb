@@ -14,7 +14,7 @@ class State(object):
 
 class InitialState(State):
     def advance(self, line):
-        if line == 'dependencies:':
+        if line == 'depends:':
             return DependsState(self.parser)
         elif line == 'after:':
             return AfterState(self.parser)

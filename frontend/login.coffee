@@ -1,4 +1,4 @@
-# dependencies:
+# depends:
 # python.install
 #
 # after:

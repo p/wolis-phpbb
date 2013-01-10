@@ -157,7 +157,7 @@ class Runner(object):
         
         with open(test_path, 'r') as f:
             code = f.read()
-            regexp = re.compile(r'^(?:(?:|\s+|\s*#[^\n]*)\n)*?(# (?:dependencies|after|phpbb_version):\n(?:#[^\n]*\n)*)\n', re.S)
+            regexp = re.compile(r'^(?:(?:|\s+|\s*#[^\n]*)\n)*?(# (?:depends|after|phpbb_version):\n(?:#[^\n]*\n)*)\n', re.S)
             match = regexp.match(code)
             if not match:
                 print("Test %s does not have meta information")

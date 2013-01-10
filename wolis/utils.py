@@ -111,7 +111,7 @@ class PhpbbVersion(object):
     
     def matches(self, spec):
         assert spec.startswith('>=')
-        target_version = spec[2:].split('.')
+        target_version = map(int, spec[2:].split('.'))
         return self >= target_version
 
 class Current(object):

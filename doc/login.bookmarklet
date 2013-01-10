@@ -1,0 +1,27 @@
+javascript: (function() {
+  var form = document.createElement('form');
+  form.action = 'ucp.php?mode=login';
+  form.method = 'post';
+  var input = document.createElement('input');
+  input.type = 'hidden';
+  input.name = 'username';
+  input.value = 'morpheus';
+  form.appendChild(input);
+  input = document.createElement('input');
+  input.type = 'hidden';
+  input.name = 'password';
+  input.value = 'morpheus';
+  form.appendChild(input);
+  input = document.createElement('input');
+  input.type = 'hidden';
+  input.name = 'login';
+  input.value = '1';
+  form.appendChild(input);
+  input = document.createElement('input');
+  input.type = 'hidden';
+  input.name = 'redirect';
+  input.value = location.href;
+  form.appendChild(input);
+  document.querySelector('body').appendChild(form);
+  form.submit();
+})()

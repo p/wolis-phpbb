@@ -6,50 +6,99 @@ Wolis is a test suite plus a test runner for phpBB
 with a focus on quick test development and low frustration.
 You can think of it as phpBB functional tests on steroids.
 
-The scope of Wolis is functional tests and up. Wolis can do everything
-phpBB fucntional tests can do, such as:
+### Standalone
 
-- Installing a board
-- Viewing topics and posts
-- Creating posts
+A key principle of Wolis is it is completely standalone. Unlike phpBB
+functional tests which are normally executed within your phpBB repository,
+Wolis is designed to be separate from phpBB repository, the tree being tested
+and the tree that the web server is using during the actual testing process.
+This allows for some interesting operations:
 
-However, being an external tool it is not restricted to operating within
-a single phpBB source tree. Thus it can also perform operations involving
-multiple trees, both of different versions and of different products:
+1. Check out a 3.0.11 source tree, copy it to the web root and install a
+board. Then copy the tree being tested, which may have uncommitted changes,
+over the installed board and run database updater.
+2. Install a test board and remove the install directory before running
+the remaining tests.
+3. Check if the tree being tested cleanly merges into develop or develop-olympus,
+even if there are uncommitted changes in the tree. For a branch based on
+develop-olympus, check merge first into develop-olympus and then into develop.
+4. Merge the tree being tested into develop-olympus, then into develop and
+run the test suite.
+5. Install an actual extension, which may not be well-behaved, into the
+board and run tests.
 
-- Installing a 3.0.11 board and updating it to 3.1 via database updater
-- Installing real extensions into the actual board tree
-- Deleting the install directory
+These operations are not possible in phpBB functional tests because
+they cannot modify the tree being tested.
 
-Being external to phpBB gives Wolis a choice of programming languages
-to perform its tasks. Most of the tests are written in Python using
-[owebunit](https://github.com/p/owebunit) test framework,
-which is specifically being developed to ease
-testing of full application stacks. This makes Wolis tests an order of
-magnitude or more faster to write than equivalent phpBB functional tests.
-Writing tests in Python rather than PHP accounts for additional significant
-increase in productivity.
+### Rapid development
 
-Wolis also includes frontend tests written
-in CoffeeScript which are run via [CasperJS](http://casperjs.org/)
-and [PhantomJS](http://phantomjs.org/) in an embedded
-WebKit browser. This permits Wolis to check phpBB JavaScript functionality.
+Despite functional tests existing in phpBB for quite some time, they are
+few in quantity and cover rather small amount of functionality. Part of the
+reason for this is they take an inordinate amount of time to write.
+PHP, having been designed and still very much maintaining a focus on
+being an HTML page generator for people with little programming ability,
+remains poorly suited for general purpose work like running test suites.
+When writing phpBB functional tests, more time is spent fighting the
+environment than actually writing test cases. No more.
 
-Besides tests themselves, Wolis includes a test runner. This is necessary
-because the tests need to be executed in a certain order, as there is
-no support for fixtures. Any data used by tests must have been created by
-previously executed tests.
+Wolis is mostly written in Python, a language much better suited to the task.
+Furthermore it uses a test framework ([owebunit](https://github.com/p/owebunit))
+specifically designed for
+testing full application stacks. All in all developing test cases in
+Wolis easily takes an order of magnitude less time and effort than the
+corresponding phpBB functional tests would have taken, if they could even
+have been written.
 
-Having an own test runner however brings with it some additional benefits:
+### JavaScript testing
 
-- Test naming can be anything. Wolis chooses to not derive sequencing
-information from test names but store it explicitly and separately.
-- Test suite can be meaningfully resumed after a failure.
-- Dissimilar test styles (Python-owebunit backend/CoffeeScript-CasperJS
-frontend) can be seamlessly integrated without needless boilerplate.
+Last but not least, Wolis makes use of [CasperJS](http://casperjs.org/)
+and [PhantomJS](http://phantomjs.org/) to test the JavaScript code in phpBB.
+Currently phpBB's own test suite has no comparable functionality.
+
+### Complete test coverage
+
+With JavaScript testing already implemented, there is nothing impossible for
+Wolis as long as it runs on the host machine. In particular tests for all
+implemented search backends are planned.
+
+### Test sequencing
+
+Wolis does not deal with fixtures. Tests are run in a known sequence
+and data needed by a particular test is created by a previously executed test.
+
+phpBB functional tests are rather confused in this regard: they install
+the board once per test run, be that the entire suite or a single test.
+As a result, depending on whether a phpBB functional test is run individually
+or as part of the full suite it would see different data.
+
+Wolis implements crude resume support for test runs aborted part way.
+A comprehensive resume implementation is pending.
+
+### Use of third-party tools
+
+Wolis does not shy from using other tools to achieve its goals. Besides
+using CasperJS for JavaScript testing, Wolis already uses
+[jshint](http://www.jshint.com/) for JavaScript code checks.
+
+### Black box testing
+
+For the most part Wolis treats phpBB as a black box, that is, it does not
+rely on knowledge of phpBB internals (code or database) beyond the HTML
+that it generates.
+
+In practical terms, this means unit tests should still go into phpBB's
+test suite.
+
+The one exception where Wolis needs to peek into phpBB's database is
+solving captchas. This is intended to be accomplished via a separate
+library providing database access in a way that is convenient for test code.
+
+### Multiple database support
 
 Wolis already supports testing phpBB with mysql, mysqli and postgres database
 drivers. Support for firebird is planned.
+
+### Multiple phpBB version support
 
 Wolis supports testing both phpBB 3.0 Olympus and phpBB 3.1 Ascraeus from
 the same Wolis source tree. Wolis detects automatically which phpBB version
@@ -57,14 +106,13 @@ is being tested and adjusts tests accordingly.
 
 ## Status
 
-Wolis is already very much functional. It probably covers about half of
-what phpBB functional tests cover, with the rest being straightforward
-to implement. Wolis already has unique tests, such as database updater test
-and JavaScript tests.
+The framework part of Wolis is still under active development. With that,
+the tests themselves are reasonably stable and I expect Wolis to already offer
+better test coverage than phpBB's own functional tests.
 
-There are still a number of environmental dependencies in Wolis such as
-hardcoded paths, user accounts for sudo invocations and inability to install
-phpBB dependencies via composer as officially supported.
+Installation is laborious but the code should work in a generic environment.
+
+Dependency installation via composer is not implemented yet.
 
 ## Requirements
 

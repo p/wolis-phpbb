@@ -1,20 +1,70 @@
-test_root: /var/www/func
+# Location of the phpBB tree being tested. Point this to your Git checkout.
+# Wolis only needs read access.
 src: /home/pie/apps/phpbb
+
+# The root directory that Wolis writes to. It should be owned by the user
+# that Wolis runs as.
+test_root: /var/www/func
+
+# Subdirectoies of the root directory. These can be configured to be located
+# elsewhere, but the easiest thing to do probably is to keep them under
+# test_root.
+
+# State file is used for tracking which tests succeeded for resume
+# functionality.
 state_file_path: /var/www/func/.state
+
+# phpBB repository will be cloned here. This repository will then be used
+# to obtain pristine trees at known points, for example the most recent
+# released 3.0.x version for database updater tests.
 baseline_repo_path: /var/www/func/repo
+
+# phpBB subdirectory of phpBB repository will be rsync'ed here.
+# This is what your web server should have as its document root,
+# however you can also use test_root as document root if you prefer.
 test_root_phpbb: /var/www/func/phpbb
+
+# Wolis saves responses for each request here. You may want to expose
+# this directory via your web server as well, though this is not necessary.
 responses_dir: /var/www/func/responses
+
+# Where phpBB can be found in a web browser. This must be pointed to
+# test_root_phpbb (not test_root).
 test_url: http://func
+
+# Prefix to prepend to node.js commands. Here I run node.js as a different user
+# and have sudo configured to allow passwordless transitions from my user
+# account to node.js user account (rvm).
+# Comment out to run node.js as your user.
 node_cmd_prefix: ['sudo', '-iHu', 'rvm']
+
+# Wolis needs to alter files under phpBB tree under the document root.
+# There are generally two ways of making this work. One involves configuring
+# the user account that php code runs as, if different from your user account,
+# to have an open umask (e.g. 002) and appropriate group membership in
+# order for you to be able to alter and remove files created by phpBB.
+# The other way is setting up sudo to allow your user account to execute
+# commands as the php user account, which is what php_cmd_prefix option
+# elects.
+# Comment out to operate on phpBB tree entirely from your own user account.
 php_cmd_prefix: ['sudo', '-u', 'php']
 
 db:
+  # Database driver to use. This must be one of the drivers recognized
+  # by phpBB. Currently mysql, mysqli and postgres are supported.
   driver: mysqli
+  
+  # Table prefix - required.
   table_prefix: phpbb_
 
+# Each supported database driver can have an entry here.
+# The driver that is specified in db section above must have an entry.
+# You can select the driver for each test run on command line via -d option.
 mysql:
+  # These are the only supported options currently.
   host: localhost
   user: root
+  # Wolis will not create the database, it needs to exist already.
   dbname: wolis
 
 mysqli:

@@ -76,7 +76,7 @@ A comprehensive resume implementation is pending.
 
 ### Use of third-party tools
 
-Wolis does not shy from using other tools to achieve its goals. Besides
+Wolis does not shy away from using other tools to achieve its goals. Besides
 using CasperJS for JavaScript testing, Wolis already uses
 [jshint](http://www.jshint.com/) for JavaScript code checks.
 

@@ -15,7 +15,6 @@ exports.savehtml = savehtml = (html)->
   filename = 'response_' + timestamp
   path = wolis.config.responses_dir + '/' + filename
   f = fs.open path, 'w'
-  d path, f
   f.write html
   f.close()
 

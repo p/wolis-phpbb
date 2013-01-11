@@ -57,6 +57,8 @@ class Runner(object):
         self.casper_config_path = self.create_casper_config_file()
         self.copy_tree_under_test(not self.resume)
         self.delete_old_responses()
+        # set to world write as casper writes there
+        os.chmod(self.conf.responses_dir, 0o777)
         
         if not self.resume:
             self.drop_database()

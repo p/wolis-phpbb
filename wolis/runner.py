@@ -49,6 +49,7 @@ class Runner(object):
         self.dbms = options.db
         if args:
             self.requested_tests = args
+        utils.current.config = self.conf
     
     def run(self):
         self.parse_options()
@@ -158,13 +159,6 @@ class Runner(object):
         parent = __import__('tests.' + name)
         module = getattr(parent, name)
         tests = unittest.loader.defaultTestLoader.loadTestsFromModule(module)
-        # and the big hack
-        for more_tests in tests:
-            assert isinstance(more_tests, unittest.TestSuite)
-            for test in more_tests:
-                assert isinstance(test, test_case.WolisTestCase)
-                assert hasattr(test, 'conf')
-                test.conf = self.conf
         try:
             runner = unittest.runner.TextTestRunner(verbosity=1)
         except TypeError:

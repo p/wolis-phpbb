@@ -5,6 +5,11 @@ set -e
 src="$1"
 workdir="$2"
 
+test -n "$1" && test -n "$2" || {
+	echo "Usage: `basename $0` src workdir" >&2
+	exit 9
+fi
+
 cd "$workdir"
 rsync -rlD --delete "$src"/ .
 

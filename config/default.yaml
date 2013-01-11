@@ -64,7 +64,7 @@ mysql:
   # These are the only supported options currently.
   host: localhost
   user: root
-  # Wolis will not create the database, it needs to exist already.
+  # Wolis will create and drop this database as needed.
   dbname: wolis
 
 mysqli:

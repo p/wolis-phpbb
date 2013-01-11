@@ -40,6 +40,13 @@ def rsync(src, dest, delete=False, exclude=None):
     cmd.extend([src, dest])
     subprocess.check_call(cmd)
 
+def our_script_path(file):
+    '''Returns an absolute path to the specified file in our script
+    directory.
+    '''
+    
+    return os.path.join(os.path.dirname(__file__), '../script', file)
+
 # XXX do something about the config parameter
 def casper(conf, path, pre=None):
     path = os.path.realpath(path)
@@ -48,7 +55,7 @@ def casper(conf, path, pre=None):
     # pass through coffeescript first
     #with open('/dev/null', 'wb') as f:
         #run(cmd_prefix + ['coffee', '-cp', path], stdout=f)
-    casperjs_wrapper = os.path.join(os.path.dirname(__file__), '../script/casperjs-wrapper')
+    casperjs_wrapper = our_script_path('casperjs-wrapper')
     cmd = [casperjs_wrapper, 'test', path]
     if pre is not None:
         cmd.append('--pre=%s' % pre)

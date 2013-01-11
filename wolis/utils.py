@@ -112,9 +112,14 @@ class PhpbbVersion(object):
         return 'phpBB version %d.%d.%d' % self.version
     
     def matches(self, spec):
-        assert spec.startswith('>=')
-        target_version = map(int, spec[2:].split('.'))
-        return self >= target_version
+        if spec.startswith('>='):
+            target_version = map(int, spec[2:].split('.'))
+            return self >= target_version
+        elif spec.startswith('<'):
+            target_version = map(int, spec[1:].split('.'))
+            return self < target_version
+        else:
+            raise NotImplementedError("Unsupported version specification: %s" % spec)
 
 class Current(object):
     phpbb_version = None

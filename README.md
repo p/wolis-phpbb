@@ -38,8 +38,8 @@ reason for this is they take an inordinate amount of time to write.
 PHP, having been designed and still very much maintaining a focus on
 being an HTML page generator for people with little programming ability,
 remains poorly suited for general purpose work like running test suites.
-When writing phpBB functional tests, more time is spent fighting the
-environment than actually writing test cases. No more.
+When writing phpBB functional tests, time spent fighting the
+environment exceeds time spent actually writing test cases. No more.
 
 Wolis is mostly written in Python, a language much better suited to the task.
 Furthermore it uses a test framework ([owebunit](https://github.com/p/owebunit))

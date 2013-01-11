@@ -51,7 +51,7 @@ have been written.
 
 ### JavaScript testing
 
-Last but not least, Wolis makes use of [CasperJS](http://casperjs.org/)
+Wolis makes use of [CasperJS](http://casperjs.org/)
 and [PhantomJS](http://phantomjs.org/) to test the JavaScript code in phpBB.
 Currently phpBB's own test suite has no comparable functionality.
 
@@ -61,7 +61,7 @@ With JavaScript testing already implemented, there is nothing impossible for
 Wolis as long as it runs on the host machine. In particular tests for all
 implemented search backends are planned.
 
-### Test sequencing
+### No fixtures
 
 Wolis does not deal with fixtures. Tests are run in a known sequence
 and data needed by a particular test is created by a previously executed test.
@@ -84,7 +84,7 @@ using CasperJS for JavaScript testing, Wolis already uses
 
 For the most part Wolis treats phpBB as a black box, that is, it does not
 rely on knowledge of phpBB internals (code or database) beyond the HTML
-that it generates.
+that phpBB generates.
 
 In practical terms, this means unit tests should still go into phpBB's
 test suite.

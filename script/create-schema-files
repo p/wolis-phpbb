@@ -1,0 +1,32 @@
+#!/bin/sh
+
+set -e
+
+src="$1"
+workdir="$2"
+
+cd "$workdir"
+rsync -rlD --delete "$src"/ .
+
+if git status |grep -q 'Changes not staged' || git status |grep -q 'Changes to be committed'; then
+	git commit -am 'Temporary commit'
+fi
+
+if git status |grep -q 'Changes not staged' || git status |grep -q 'Changes to be committed'; then
+	echo "Something went wrong" 1>&2
+	exit 10
+fi
+
+cd phpBB/develop
+php create_schema_files.php >output
+
+if ! grep -q done output; then
+	echo "Possibly failed?" 1>&2
+	cat output 1>&2
+	exit 11
+fi
+
+if git status |grep -q 'Changes not staged' || git status |grep -q 'Changes to be committed'; then
+	echo "There were changes after creating schema files" >&2
+	exit 12
+fi

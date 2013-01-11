@@ -70,6 +70,7 @@ class Runner(object):
         
         tests = [
             'lint_js',
+            'create_schema_files',
             'install',
             'login_without_cookies',
             'login',

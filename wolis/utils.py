@@ -111,6 +111,7 @@ class PhpbbVersion(object):
 
 class Current(object):
     phpbb_version = None
+    config = None
 
 current = Current()
 

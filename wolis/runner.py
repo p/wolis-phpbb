@@ -49,8 +49,6 @@ class Runner(object):
         self.dbms = options.db
         if args:
             self.requested_tests = args
-        # clear argv, as otherwise unittest tries to process it
-        sys.argv[1:] = []
     
     def run(self):
         self.parse_options()

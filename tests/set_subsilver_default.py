@@ -36,8 +36,7 @@ class SetSubsilverDefaultTestCase(WolisTestCase):
         self.get(url)
         self.assert_successish()
         
-        assert len(self.response.forms) == 1
-        form = self.response.forms[0]
+        form = self.response.form()
         elements = form.elements.mutable
         elements.set_value('style_default', '1')
         self.post(form.computed_action, body=elements.params.list)

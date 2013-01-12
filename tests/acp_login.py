@@ -19,9 +19,7 @@ class AcpLoginTestCase(WolisTestCase):
         
         assert 'To administer the board you must re-authenticate yourself.' in self.response.body
         
-        assert len(self.response.forms) == 2
-        form = self.response.forms[1]
-        
+        form = self.response.form(id='login')
         doc = self.response.lxml_etree
         password_name = owebunit.utils.xpath_first_check(doc, '//input[@type="password"]').attrib['name']
         

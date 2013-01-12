@@ -26,8 +26,7 @@ class Helpers(object):
         
         assert 'To administer the board you must re-authenticate yourself.' in self.response.body
         
-        assert len(self.response.forms) == 2
-        form = self.response.forms[1]
+        form = self.response.form(id='login')
         
         doc = self.response.lxml_etree
         password_name = xpath_first_check(doc, '//input[@type="password"]').attrib['name']
@@ -63,8 +62,7 @@ class Helpers(object):
         
         assert check_page_text in self.response.body
         
-        assert len(self.response.forms) == 1
-        form = self.response.forms[0]
+        form = self.response.form()
         
         self.check_form_key_delay()
         

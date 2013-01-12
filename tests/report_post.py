@@ -31,8 +31,7 @@ class ReportPostTestCase(WolisTestCase):
         # when running repeatedly
         assert 'This post has already been reported.' not in self.response.body
         
-        assert len(self.response.forms) == 2
-        form = self.response.forms[1]
+        form = self.response.form(id='report')
         
         # submit with default fields
         self.post(form.computed_action, body=form.params.list)

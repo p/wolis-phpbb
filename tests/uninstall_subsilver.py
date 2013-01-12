@@ -33,8 +33,7 @@ class UninstallSubsilverTestCase(WolisTestCase):
         self.get(url)
         self.assert_successish()
         
-        assert len(self.response.forms) == 1
-        form = self.response.forms[0]
+        form = self.response.form()
         self.post(form.computed_action, body=form.params.list)
         self.assert_successish()
         

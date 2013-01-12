@@ -17,17 +17,14 @@ class InstallTestCase(WolisTestCase):
         
         assert 'Welcome to Installation' in self.response.body
         
-        # first form is language selector
-        assert len(self.response.forms) == 2
-        
-        form = self.response.forms[1]
+        form = self.response.form(id='install_install')
         self.post(form.computed_action, body=form.params.list)
         self.assert_successish()
         
         assert 'Test again' not in self.response.body
         assert 'Start install' in self.response.body
         
-        form = self.response.forms[0]
+        form = self.response.form()
         self.post(form.computed_action, body=form.params.list)
         self.assert_successish()
         
@@ -46,7 +43,7 @@ class InstallTestCase(WolisTestCase):
             if fk in attrs:
                 db_params[lk] = attrs.get(fk)
         
-        form = self.response.forms[0]
+        form = self.response.form()
         params = owebunit.extend_params(form.params.list, db_params)
         self.post(form.computed_action, body=params)
         self.assert_successish()
@@ -54,7 +51,7 @@ class InstallTestCase(WolisTestCase):
         assert 'Could not connect to the database' not in self.response.body
         assert 'Successful connection' in self.response.body
         
-        form = self.response.forms[0]
+        form = self.response.form()
         self.post(form.computed_action, body=form.params.list)
         self.assert_successish()
         
@@ -71,21 +68,20 @@ class InstallTestCase(WolisTestCase):
             admin_params['board_email1'] = admin_params['board_email']
             admin_params['board_email2'] = admin_params['board_email']
         
-        form = self.response.forms[0]
+        form = self.response.form()
         params = owebunit.extend_params(form.params.list, admin_params)
         self.post(form.computed_action, body=params)
         self.assert_successish()
         
         assert 'Tests passed' in self.response.body
         
-        form = self.response.forms[0]
+        form = self.response.form()
         self.post(form.computed_action, body=form.params.list)
         self.assert_successish()
         
         assert 'The configuration file has been written' in self.response.body
         
-        assert len(self.response.forms) == 1
-        form = self.response.forms[0]
+        form = self.response.form()
         
         self.post(form.computed_action, body=form.params.list)
         self.assert_successish()
@@ -93,13 +89,13 @@ class InstallTestCase(WolisTestCase):
         assert 'The settings on this page are only necessary' in self.response.body
         
         # it's a giant form that we don't care for, just submit it
-        form = self.response.forms[0]
+        form = self.response.form()
         self.post(form.computed_action, body=form.params.list)
         self.assert_successish()
         
         assert 'Proceed to the next screen to finish installing' in self.response.body
         
-        form = self.response.forms[0]
+        form = self.response.form()
         self.post(form.computed_action, body=form.params.list)
         self.assert_successish()
         
@@ -107,7 +103,7 @@ class InstallTestCase(WolisTestCase):
         
         # have to submit this form also
         
-        form = self.response.forms[0]
+        form = self.response.form()
         self.post(form.computed_action, body=form.params.list)
         self.assert_successish()
         

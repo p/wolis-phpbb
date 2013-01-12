@@ -9,10 +9,7 @@ class RegisterTestCase(WolisTestCase):
         
         assert 'Registration' in self.response.body
         
-        # first form is search box
-        assert len(self.response.forms) == 2
-        form = self.response.forms[1]
-        
+        form = self.response.form(id='agreement')
         elements = form.elements.mutable
         elements.submit('agreed')
         self.post(form.computed_action, body=elements.params.list)
@@ -20,10 +17,7 @@ class RegisterTestCase(WolisTestCase):
         
         assert 'Username:' in self.response.body
         
-        # first form is search box
-        assert len(self.response.forms) == 2
-        form = self.response.forms[1]
-        
+        form = self.response.form(id='register')
         # for repeated runs
         suffix = self.random_suffix()
         params = {
@@ -61,8 +55,7 @@ class RegisterTestCase(WolisTestCase):
         
         assert 'Username:' in self.response.body
         
-        assert len(self.response.forms) == 2
-        form = self.response.forms[1]
+        form = self.response.form(id='register')
         assert form.params.dict['tz_date'].startswith('GMT+11:00')
         
         #doc = self.response.lxml_etree

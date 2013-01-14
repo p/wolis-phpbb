@@ -118,6 +118,7 @@ Dependency installation via composer is not implemented yet.
 
 - Python 2.6 or 2.7
 - [utu](https://github.com/p/utu)
+- [cidict](https://github.com/p/cidict) (owebunit dependency)
 - [ocookie](https://github.com/p/ocookie) (owebunit dependency)
 - [owebunit](https://github.com/p/owebunit)
 - [lxml](http://lxml.de/)

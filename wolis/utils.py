@@ -132,7 +132,7 @@ def restrict_phpbb_version(spec):
         def decorated(self, *args, **kwargs):
             actual_version = current.phpbb_version or PhpbbVersion(self.conf)
             if not actual_version.matches(spec):
-                print('Skipping test due to phpBB version constraint (%s)' % spec)
+                print('Skipping %s due to phpBB version constraint (%s)' % (fn.__name__, spec))
             else:
                 return fn(self, *args, **kwargs)
         

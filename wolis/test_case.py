@@ -104,7 +104,7 @@ class WolisTestCase(utu.adjust_test_base(owebunit.WebTestCase), helpers.Helpers)
     def random_suffix(self):
         return '-%d' % random.randint(1000, 9999)
     
-    def assert_successish(self, session=None):
+    def assert_successish(self, session=None, check_errorbox=True):
         if session is None:
             session = self
         
@@ -121,7 +121,8 @@ class WolisTestCase(utu.adjust_test_base(owebunit.WebTestCase), helpers.Helpers)
             self.fail(msg)
         session.assert_status(200)
         self.assert_no_php_spam(session)
-        self.assert_no_phpbb_error(session)
+        if check_errorbox:
+            self.assert_no_phpbb_error(session)
     
     def assert_no_php_spam(self, session=None):
         if session is None:

@@ -76,6 +76,8 @@ class Runner(object):
             'login',
             'acp_login',
             'acp_knobs',
+            'admin_log',
+            'empty_logs',
             'view_index',
             'casper.view_index',
             'casper.registration_agreement',

@@ -1,6 +1,6 @@
 # Location of the phpBB tree being tested. Point this to your Git checkout.
 # Wolis only needs read access.
-src: /home/pie/apps/phpbb
+src: /home/pie/apps/phpbb/repo
 
 # The root directory that Wolis writes to. It should be owned by the user
 # that Wolis runs as.

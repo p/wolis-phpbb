@@ -48,7 +48,7 @@ class RegisterTestCase(WolisTestCase):
         assert 'You may now login with your username' in self.response.body
     
     @utils.restrict_phpbb_version('>=3.1.0')
-    def test_initial_timezone_ascreus(self):
+    def test_initial_timezone_ascraeus(self):
         self.get('/ucp.php?mode=register&agreed=yes')
         #self.post('/ucp.php?mode=register', body=dict(agreed='yes'))
         self.assert_successish()

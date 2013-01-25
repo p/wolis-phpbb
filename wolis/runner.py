@@ -115,7 +115,7 @@ class Runner(object):
                 utils.run(self.conf.php_cmd_prefix + ['rm', '-rf', vendor_path])
             
             utils.rsync(os.path.join(self.conf.baseline_repo_path, 'phpBB/'), self.conf.test_root_phpbb, True)
-            self.post_copy_tree()
+            self.post_copy_tree(self.conf.baseline_repo_path)
             self.drop_database()
             self.create_database()
             self.checkpoint(checkpoint_name)
@@ -135,19 +135,19 @@ class Runner(object):
             utils.run(self.conf.php_cmd_prefix + ['rm', '-rf', vendor_path])
         
         if self.conf.src[0] == '/':
-            utils.rsync(os.path.join(self.conf.src, 'phpBB/'),
-                self.conf.test_root_phpbb,
-                delete=delete, exclude=exclude)
+            src_path = self.conf.src
         else:
             self.update_src_repo()
             branch = self.branch or self.conf.src_branch
             utils.git_in_dir(self.conf.src_repo_path,
                 'checkout', 'src/%s' % branch)
-            utils.rsync(os.path.join(self.conf.src_repo_path, 'phpBB/'),
-                self.conf.test_root_phpbb,
-                delete=delete, exclude=exclude)
+            src_path = self.conf.src_repo_path
         
-        self.post_copy_tree()
+        utils.rsync(os.path.join(src_path, 'phpBB/'),
+            self.conf.test_root_phpbb,
+            delete=delete, exclude=exclude)
+        
+        self.post_copy_tree(src_path)
     
     def delete_old_responses(self):
         dir = self.conf.responses_dir
@@ -157,7 +157,7 @@ class Runner(object):
             
             os.unlink(os.path.join(dir, file))
     
-    def post_copy_tree(self):
+    def post_copy_tree(self, src_path):
         subprocess.call(['chmod', '-R', 'o+w', self.conf.test_root_phpbb])
         
         if not os.path.exists(self.conf.responses_dir):
@@ -169,7 +169,7 @@ class Runner(object):
         if self.conf.use_composer and os.path.exists(os.path.join(self.conf.test_root_phpbb, 'composer.json')):
             # test_root_phpbb is only phpBB path of the repo and has no
             # composer.phar in it
-            composer_path = os.path.join(self.conf.src_path, 'composer.phar')
+            composer_path = os.path.join(src_path, 'composer.phar')
             utils.run_in_dir(self.conf.test_root_phpbb,
                 self.conf.php_cmd_prefix + ['php', composer_path, 'install', '--dev'])
     

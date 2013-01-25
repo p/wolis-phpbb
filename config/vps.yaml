@@ -1,0 +1,27 @@
+test_root: /var/www/wolis
+src: git://github.com/phpbb/phpbb3.git
+src_branch: develop
+test_root_phpbb: /var/www/wolis/phpbb
+responses_dir: /var/www/wolis/responses
+test_url: http://wolis.vps.hxr.me/phpbb
+php_cmd_prefix: ['sudo', '-u', 'www-data']
+use_composer: true
+
+db:
+  driver: mysqli
+  table_prefix: phpbb_
+
+mysql:
+  host: localhost
+  user: root
+  dbname: wolis
+
+mysqli:
+  host: localhost
+  user: root
+  dbname: wolis
+
+postgres:
+  host: localhost
+  user: wolis
+  dbname: wolis

@@ -109,6 +109,11 @@ class Runner(object):
         if not self.resume or not self.passed_checkpoint(checkpoint_name):
             self.update_baseline_repo()
             utils.git_in_dir(self.conf.baseline_repo_path, 'checkout', '-q', 'release-3.0.11')
+            
+            if self.conf.use_composer:
+                vendor_path = os.path.join(self.conf.test_root_phpbb, 'vendor')
+                utils.run(self.conf.php_cmd_prefix + ['rm', '-rf', vendor_path])
+            
             utils.rsync(os.path.join(self.conf.baseline_repo_path, 'phpBB/'), self.conf.test_root_phpbb, True)
             self.post_copy_tree()
             self.drop_database()

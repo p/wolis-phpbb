@@ -22,3 +22,11 @@ class Config(object):
                     mapped_value.__dict__[subkey] = value[subkey]
                 value = mapped_value
             setattr(self, key, value)
+    
+    @property
+    def baseline_repo_path(self):
+        return os.path.join(self.test_root, 'repo')
+    
+    @property
+    def state_file_path(self):
+        return os.path.join(self.test_root, '.state')

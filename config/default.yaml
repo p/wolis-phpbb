@@ -10,15 +10,6 @@ test_root: /var/www/func
 # elsewhere, but the easiest thing to do probably is to keep them under
 # test_root.
 
-# State file is used for tracking which tests succeeded for resume
-# functionality.
-state_file_path: /var/www/func/.state
-
-# phpBB repository will be cloned here. This repository will then be used
-# to obtain pristine trees at known points, for example the most recent
-# released 3.0.x version for database updater tests.
-baseline_repo_path: /var/www/func/repo
-
 # phpBB subdirectory of phpBB repository will be rsync'ed here.
 # This is what your web server should have as its document root,
 # however you can also use test_root as document root if you prefer.

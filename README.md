@@ -112,8 +112,6 @@ better test coverage than phpBB's own functional tests.
 
 Installation is laborious but the code should work in a generic environment.
 
-Dependency installation via composer is not implemented yet.
-
 ## Requirements
 
 - Python 2.6 or 2.7
@@ -133,8 +131,6 @@ Dependency installation via composer is not implemented yet.
 - A web server configured to serve PHP
 - Write access to a directory under web server's document root
 - All PHP extensions needed or optionally usable by phpBB present and enabled
-- Currently phpBB dependencies must be set up via
-[include-path-autoload](https://github.com/p/phpbb3-include-path-autoload)
 - Your favorite database engine(s) plus client libraries
 
 Wolis should in principle be deployable to a typical Linux VPS.

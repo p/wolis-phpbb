@@ -130,6 +130,21 @@ def naive_strip_html(text):
     # http://stackoverflow.com/questions/753052/strip-html-from-strings-in-python
     return re.sub('<[^<]+?>', '', text)
 
+# http://stackoverflow.com/questions/1111056/get-tz-information-of-the-system-in-python
+def local_time_offset(t=None):
+    """Return offset of local zone from GMT, either at present or at time t."""
+    
+    import time as _time
+    
+    # python2.3 localtime() can't take None
+    if t is None:
+        t = _time.time()
+
+    if _time.localtime(t).tm_isdst and _time.daylight:
+        return -_time.altzone
+    else:
+        return -_time.timezone
+
 class PhpbbVersion(object):
     def __init__(self, conf):
         if os.path.exists(os.path.join(conf.test_root_phpbb, 'includes/extension/manager.php')):

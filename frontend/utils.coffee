@@ -9,6 +9,11 @@ casper.test.assertTextNotExists = casper.test.assertTextDoesntExist
 exports.xpath = xpath = (expr)->
   {type: 'xpath', path: expr}
 
+exports.a_text_xpath = (text)->
+  if text.indexOf('"') >= 0
+    throw new Exception('Double quotes in argument are not allowed')
+  '//a[text()="' + text + '"]'
+
 exports.savehtml = savehtml = (html)->
   now = new Date
   timestamp = (now.getTime() / 1000).toString()

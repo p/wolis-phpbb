@@ -46,3 +46,7 @@ class Config(object):
             return self.src
         else:
             return self.src_repo_path
+    
+    @property
+    def gen_path(self):
+        return os.path.join(self.test_root, 'gen')

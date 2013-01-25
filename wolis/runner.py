@@ -59,6 +59,8 @@ class Runner(object):
         self.delete_old_responses()
         # set to world write as casper writes there
         os.chmod(self.conf.responses_dir, 0o777)
+        # and gen for coffeescript when compiling
+        os.chmod(self.conf.gen_path, 0o777)
         
         if not self.resume:
             self.drop_database()
@@ -228,7 +230,12 @@ class Runner(object):
                             print('Skipping test due to phpBB version constraint (%s)' % version)
                             return
         
-        utils.casper(self.conf, test_path, pre=self.casper_config_path)
+        cmd_prefix = self.conf.node_cmd_prefix or []
+        utils.run(cmd_prefix + ['coffee', '-c', '-o', self.conf.gen_path, test_path])
+        utils.run(cmd_prefix + ['coffee', '-c', '-o', self.conf.gen_path, os.path.join(os.path.dirname(test_path), 'utils.coffee')])
+        compiled_js_path = os.path.join(self.conf.gen_path, os.path.basename(test_path).replace('.coffee', '.js'))
+        
+        utils.casper(self.conf, compiled_js_path, pre=self.casper_config_path)
     
     def clear_state(self):
         if os.path.exists(self.conf.state_file_path):
@@ -268,7 +275,7 @@ class Runner(object):
             global.wolis.config = %s;
             casper.test.done();
         ''' % json
-        output_dir = os.path.join(self.conf.test_root, 'gen')
+        output_dir = self.conf.gen_path
         if not os.path.exists(output_dir):
             os.mkdir(output_dir)
         output_path = os.path.join(output_dir, config_file_name.replace('.yaml', '.js'))

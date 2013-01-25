@@ -27,7 +27,7 @@ utils.thensaveresponse ->
   @test.assertHttpStatus 200
   
   @test.assertTextExists 'Your first forum'
-  @click utils.xpath('//a[text()="Your first forum"]')
+  @click utils.xpath(utils.a_text_xpath('Your first forum'))
 
 utils.thensaveresponse ->
   # on viewforum
@@ -36,7 +36,7 @@ utils.thensaveresponse ->
   @test.assertHttpStatus 200
   @test.assertTextExists 'Welcome to phpBB3'
   
-  @click utils.xpath('//a[text()="Welcome to phpBB3"]')
+  @click utils.xpath(utils.a_text_xpath('Welcome to phpBB3'))
 
 utils.thensaveresponse ->
   # on viewtopic
@@ -46,7 +46,7 @@ utils.thensaveresponse ->
   @test.assertTextNotExists 'Remove from bookmarks'
   @test.assertTextExists 'Bookmark topic'
   
-  @click utils.xpath('//a[text()="Bookmark topic"]')
+  @click utils.xpath(utils.a_text_xpath('Bookmark topic'))
   
   @waitForResource /viewtopic\.php.*bookmark=1/
 
@@ -56,7 +56,7 @@ casper.then ->
 
 # unbookmark
 casper.then ->
-  @click utils.xpath('//a[text()="Remove from bookmarks"]')
+  @click utils.xpath(utils.a_text_xpath('Remove from bookmarks'))
   
   @waitForResource /viewtopic\.php.*bookmark=1/
 

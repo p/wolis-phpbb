@@ -147,6 +147,9 @@ class Runner(object):
             os.mkdir(self.conf.responses_dir)
         
         utils.current.phpbb_version = utils.PhpbbVersion(self.conf)
+        
+        if self.conf.use_composer:
+            utils.run(self.conf.php_cmd_prefix + ['php', '../composer.phar', 'install', '--dev'])
     
     def run_test(self, prefix, name):
         checkpoint_name = '%s.%s' % (prefix, name)

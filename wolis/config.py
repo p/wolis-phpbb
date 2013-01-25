@@ -8,6 +8,7 @@ class Config(object):
     def __init__(self, config_file_path=None):
         self.node_cmd_prefix = None
         self.php_cmd_prefix = None
+        self.use_composer = False
         
         if config_file_path is None:
             config_file_path = os.path.join(os.path.dirname(__file__), '../config/default.yaml')

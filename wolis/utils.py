@@ -25,6 +25,17 @@ def run(cmd, **kwargs):
     except (OSError, subprocess.CalledProcessError) as exc:
         raise RunError, str(exc) + "\nCommand: %s" % repr(cmd)
 
+def run_in_dir(dir, cmd, **kwargs):
+    import os
+    
+    # for the benefit of fork-less platforms
+    cwd = os.getcwd()
+    os.chdir(dir)
+    try:
+        return run(cmd, **kwargs)
+    finally:
+        os.chdir(cwd)
+
 def rsync(src, dest, delete=False, exclude=None):
     import subprocess
     

@@ -2,6 +2,9 @@ import pipes
 import subprocess
 
 class Db(object):
+    def __init__(self, conf):
+        self.conf = conf
+    
     def drop_database(self, name):
         raise NotImplementedError
     
@@ -21,12 +24,23 @@ MysqliDb = MysqlDb
 
 class PostgresDb(Db):
     def drop_database(self, name):
-        quoted_name = pipes.quote(name)
-        # --if-exists is missing on postgres 8.4
-        # XXX hack for now
-        #subprocess.check_call('dropdb -U pgsql --if-exists %s' % quoted_name, shell=True)
-        subprocess.call('dropdb -U pgsql %s' % quoted_name, shell=True)
+        import psycopg2
+        import contextlib
+        
+        conn = psycopg2.connect(database='postgres', user=self.conf.get('user'), password=self.conf.get('password'))
+        # http://stackoverflow.com/questions/1017463/postgresql-how-to-run-vacuum-from-code-outside-transaction-block
+        conn.set_isolation_level(0)
+        with contextlib.closing(conn.cursor()) as c:
+            c.execute('drop database if exists %s' % name)
+        conn.close()
     
     def create_database(self, name):
-        quoted_name = pipes.quote(name)
-        subprocess.check_call('createdb -U pgsql -O wolis %s' % quoted_name, shell=True)
+        import psycopg2
+        import contextlib
+        
+        conn = psycopg2.connect(database='postgres', user=self.conf.get('user'), password=self.conf.get('password'))
+        # http://stackoverflow.com/questions/1017463/postgresql-how-to-run-vacuum-from-code-outside-transaction-block
+        conn.set_isolation_level(0)
+        with contextlib.closing(conn.cursor()) as c:
+            c.execute('create database %s' % name)
+        conn.close()

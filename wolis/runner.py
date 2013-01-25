@@ -24,7 +24,7 @@ class Runner(object):
         driver = self.requested_dbms
         class_name = driver[0].upper() + driver[1:] + 'Db'
         cls = getattr(db, class_name)
-        self.db = cls()
+        self.db = cls(getattr(self.conf, self.dbms))
     
     @property
     def requested_dbms(self):

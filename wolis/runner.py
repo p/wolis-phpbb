@@ -165,7 +165,8 @@ class Runner(object):
         
         utils.current.phpbb_version = utils.PhpbbVersion(self.conf)
         
-        if self.conf.use_composer:
+        # 3.0.11 has no composer.json
+        if self.conf.use_composer and os.path.exists(os.path.join(self.conf.src_path, 'phpBB/composer.json')):
             # test_root_phpbb is only phpBB path of the repo and has no
             # composer.phar in it
             composer_path = os.path.join(self.conf.src_path, 'composer.phar')

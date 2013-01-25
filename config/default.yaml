@@ -3,6 +3,8 @@
 # If it is a path, point this to your Git checkout. Wolis only needs
 # read access.
 # If it is a URL, it will be cloned, and branch to test must be specified.
+# The branch can be given via src_branch option here or --branch
+# command line argument.
 src: /home/pie/apps/phpbb/repo
 
 # src: git://github.com/phpbb/phpbb3.git

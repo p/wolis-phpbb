@@ -118,6 +118,10 @@ class Runner(object):
             os.unlink(self.conf.state_file_path)
     
     def copy_tree_under_test(self, delete=False, exclude=None):
+        if self.conf.use_composer:
+            vendor_path = os.path.join(self.conf.test_root_phpbb, 'vendor')
+            utils.run(self.conf.php_cmd_prefix + ['rm', '-rf', vendor_path])
+        
         if self.conf.src[0] == '/':
             utils.rsync(os.path.join(self.conf.src, 'phpBB/'),
                 self.conf.test_root_phpbb,

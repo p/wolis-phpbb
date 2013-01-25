@@ -1,6 +1,12 @@
-# Location of the phpBB tree being tested. Point this to your Git checkout.
-# Wolis only needs read access.
+# Location of the phpBB tree being tested.
+# This can be either a local path or a Git-accepted URL.
+# If it is a path, point this to your Git checkout. Wolis only needs
+# read access.
+# If it is a URL, it will be cloned, and branch to test must be specified.
 src: /home/pie/apps/phpbb/repo
+
+# src: git://github.com/phpbb/phpbb3.git
+# src_branch: develop
 
 # The root directory that Wolis writes to. It should be owned by the user
 # that Wolis runs as.

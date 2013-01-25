@@ -29,4 +29,8 @@ class Config(object):
     
     @property
     def state_file_path(self):
-        return os.path.join(self.test_root, '.state')
+        return os.path.join(self.test_root, 'state')
+    
+    @property
+    def src_repo_path(self):
+        return os.path.join(self.test_root, 'src')

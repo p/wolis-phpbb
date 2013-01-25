@@ -118,8 +118,17 @@ class Runner(object):
             os.unlink(self.conf.state_file_path)
     
     def copy_tree_under_test(self, delete=False, exclude=None):
-        utils.rsync(os.path.join(self.conf.src, 'phpBB/'), self.conf.test_root_phpbb,
-            delete=delete, exclude=exclude)
+        if self.conf.src[0] == '/':
+            utils.rsync(os.path.join(self.conf.src, 'phpBB/'),
+                self.conf.test_root_phpbb,
+                delete=delete, exclude=exclude)
+        else:
+            self.update_src_repo()
+            utils.git_in_dir(self.conf.src_repo_path,
+                'checkout', 'src/%s' % self.conf.src_branch)
+            utils.rsync(os.path.join(self.conf.src_repo_path, 'phpBB/'),
+                self.conf.test_root_phpbb,
+                delete=delete, exclude=exclude)
         
         self.post_copy_tree()
     
@@ -221,6 +230,10 @@ class Runner(object):
     def update_baseline_repo(self):
         utils.clone_repo('git://github.com/phpbb/phpbb3.git',
             self.conf.baseline_repo_path, 'upstream')
+    
+    def update_src_repo(self):
+        utils.clone_repo(self.conf.src,
+            self.conf.src_repo_path, 'src')
     
     def drop_database(self):
         self.db.drop_database('wolis')

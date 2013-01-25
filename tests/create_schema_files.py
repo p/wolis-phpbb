@@ -7,7 +7,7 @@ from wolis.test_case import WolisTestCase
 class CreateSchemaFilesTestCase(WolisTestCase):
     def test_create_schema_files(self):
         script_path = utils.our_script_path('create-schema-files')
-        src = self.conf.src
+        src = self.conf.src_path
         work_dir = os.path.join(self.conf.test_root, 'repotest')
         if not os.path.exists(work_dir):
             os.mkdir(work_dir)

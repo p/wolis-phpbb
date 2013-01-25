@@ -34,3 +34,14 @@ class Config(object):
     @property
     def src_repo_path(self):
         return os.path.join(self.test_root, 'src')
+    
+    @property
+    def src_path(self):
+        '''If src is a path, this is src.
+        If src is a url, this is src_repo_path.
+        '''
+        
+        if self.src[0] == '/':
+            return self.src
+        else:
+            return self.src_repo_path

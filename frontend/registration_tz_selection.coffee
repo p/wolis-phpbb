@@ -20,7 +20,7 @@ casper.start base + '/ucp.php?mode=register&agreed=1', ->
   # Should match system time zone
   # System time zone is our time zone
   offset_hours = (new Date()).getTimezoneOffset() / -60
-  sign = if offset_hours < 0 then '-' else '+'
+  sign = if offset_hours < 0 then '-' else '\\+'
   offset = Math.abs(offset_hours)
   if offset < 10
     offset = '0' + offset

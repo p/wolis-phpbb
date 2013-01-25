@@ -149,7 +149,11 @@ class Runner(object):
         utils.current.phpbb_version = utils.PhpbbVersion(self.conf)
         
         if self.conf.use_composer:
-            utils.run(self.conf.php_cmd_prefix + ['php', '../composer.phar', 'install', '--dev'])
+            # test_root_phpbb is only phpBB path of the repo and has no
+            # composer.phar in it
+            composer_path = os.path.join(self.conf.src_path, 'composer.phar')
+            utils.run_in_dir(self.conf.test_root_phpbb,
+                self.conf.php_cmd_prefix + ['php', composer_path, 'install', '--dev'])
     
     def run_test(self, prefix, name):
         checkpoint_name = '%s.%s' % (prefix, name)

@@ -22,7 +22,7 @@ mysqli:
   dbname: wolis
 
 postgres:
-  host: 127.0.01
+  host: 127.0.0.1
   user: wolis
   dbname: wolis
   password: ReidOfmyhi

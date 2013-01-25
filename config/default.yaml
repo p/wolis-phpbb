@@ -27,6 +27,7 @@ responses_dir: /var/www/func/responses
 
 # Where phpBB can be found in a web browser. This must be pointed to
 # test_root_phpbb (not test_root).
+# Note: currently this URL must not include a path.
 test_url: http://func
 
 # Prefix to prepend to node.js commands. Here I run node.js as a different user

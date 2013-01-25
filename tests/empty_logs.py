@@ -50,7 +50,7 @@ class EmptyLogsTest(WolisTestCase):
             form = self.response.form()
             elements = form.elements.mutable
             elements.submit('delall')
-            self.post(form.computed_action, elements.params.list)
+            self.post(form.computed_action, body=elements.params.list)
             self.assert_successish(check_errorbox=False)
             
             assert 'No log entries for this period.' in self.response.body

@@ -25,3 +25,4 @@ postgres:
   host: localhost
   user: wolis
   dbname: wolis
+  password: ReidOfmyhi

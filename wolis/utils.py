@@ -70,6 +70,27 @@ def git_in_dir(dir, *args):
     cmd.extend(args)
     subprocess.check_call(cmd)
 
+def clone_repo(src, dest, remote_name):
+    import subprocess
+    
+    if not os.path.exists(dest):
+        try:
+            subprocess.check_call(['git', 'init', dest])
+            git_in_dir(dest, 'remote', 'add', remote_name, src, '-f')
+        except:
+            silent_rm_rf(dest)
+            raise
+    else:
+        git_in_dir(dest, 'fetch', remote_name)
+
+def silent_rm_rf(path):
+    if os.path.exists(path):
+        import shutil
+        try:
+            shutil.rmtree(path)
+        except:
+            pass
+
 def yaml_to_json(input_text=None, input_file=None, output_file=None):
     import yaml
     import json

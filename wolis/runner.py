@@ -219,22 +219,8 @@ class Runner(object):
         return False
     
     def update_baseline_repo(self):
-        if not os.path.exists(self.conf.baseline_repo_path):
-            try:
-                subprocess.check_call(['git', 'init', self.conf.baseline_repo_path])
-                utils.git_in_dir(self.conf.baseline_repo_path, 'remote', 'add', 'upstream', 'git://github.com/phpbb/phpbb3.git', '-f')
-            except:
-                self.delete_baseline_repo_silently()
-                raise
-        
-        #utils.git_in_dir(baseline_repo_path, 'fetch', 'upstream')
-    
-    def delete_baseline_repo_silently(self):
-        if os.path.exists(baseline_repo_path):
-            try:
-                shutil.rmtree(baseline_repo_path)
-            except:
-                pass
+        utils.clone_repo('git://github.com/phpbb/phpbb3.git',
+            self.conf.baseline_repo_path, 'upstream')
     
     def drop_database(self):
         self.db.drop_database('wolis')

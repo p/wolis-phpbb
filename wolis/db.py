@@ -38,7 +38,7 @@ class PostgresDb(Db):
         import psycopg2
         import contextlib
         
-        conn = psycopg2.connect(database='postgres', user=self.conf.get('user'), password=self.conf.get('password'))
+        conn = psycopg2.connect(database='postgres', host=self.conf.get('host'), user=self.conf.get('user'), password=self.conf.get('password'))
         # http://stackoverflow.com/questions/1017463/postgresql-how-to-run-vacuum-from-code-outside-transaction-block
         conn.set_isolation_level(0)
         with contextlib.closing(conn.cursor()) as c:

@@ -172,12 +172,20 @@ class Runner(object):
     def run_python_test(self, name):
         parent = __import__('tests.' + name)
         module = getattr(parent, name)
-        tests = unittest.loader.defaultTestLoader.loadTestsFromModule(module)
         try:
-            runner = unittest.runner.TextTestRunner(verbosity=1)
+            # python 2.7
+            test_loader = unittest.loader.defaultTestLoader
+            test_runner = unittest.runner.TextTestRunner
+        except AttributeError:
+            # python 2.6
+            test_loader = unittest.defaultTestLoader
+            test_runner = unittest.TextTestRunner
+        tests = test_loader.loadTestsFromModule(module)
+        try:
+            runner = test_runner(verbosity=1)
         except TypeError:
             # per unittest.main code
-            runner = unittest.runner.TextTestRunner()
+            runner = test_runner()
         result = runner.run(tests)
         if not result.wasSuccessful():
             exit(4)

@@ -43,16 +43,16 @@ utils.thensaveresponse ->
   @test.assert(/viewtopic/.test(@getCurrentUrl()))
   
   @test.assertHttpStatus 200
-  @test.assertTextNotExists 'Remove from bookmarks'
-  @test.assertTextExists 'Bookmark topic'
+  @test.assertNotExists utils.a_text_xs('Remove from bookmarks')
+  @test.assertExists utils.a_text_xs('Bookmark topic')
   
   @click utils.xpath(utils.a_text_xpath('Bookmark topic'))
   
   @waitForResource /viewtopic\.php.*bookmark=1/
 
 casper.then ->
-  @test.assertTextExists 'Remove from bookmarks'
-  @test.assertTextDoesntExist 'Bookmark topic'
+  @test.assertExists utils.a_text_xs('Remove from bookmarks')
+  @test.assertNotExists utils.a_text_xs('Bookmark topic')
 
 # unbookmark
 casper.then ->

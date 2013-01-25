@@ -11,8 +11,11 @@ exports.xpath = xpath = (expr)->
 
 exports.a_text_xpath = (text)->
   if text.indexOf('"') >= 0
-    throw new Exception('Double quotes in argument are not allowed')
+    throw 'Double quotes in argument are not allowed: ' + text
   '//a[text()="' + text + '"]'
+
+exports.a_text_xs = ->
+  exports.xpath(exports.a_text_xpath(arguments...))
 
 exports.savehtml = savehtml = (html)->
   now = new Date

@@ -61,8 +61,8 @@ casper.then ->
   @waitForResource /viewtopic\.php.*bookmark=1/
 
 casper.then ->
-  @test.assertTextNotExists 'Remove from bookmarks'
-  @test.assertTextExists 'Bookmark topic'
+  @test.assertNotExists utils.a_text_xs('Remove from bookmarks')
+  @test.assertExists utils.a_text_xs('Bookmark topic')
 
 casper.run ->
   @test.done()

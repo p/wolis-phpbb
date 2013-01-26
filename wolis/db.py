@@ -1,5 +1,6 @@
 import pipes
 import subprocess
+import contextlib
 
 class Db(object):
     def __init__(self, conf):
@@ -24,25 +25,23 @@ MysqliDb = MysqlDb
 
 class PostgresDb(Db):
     def drop_database(self, name):
-        import contextlib
-        
-        with contextlib.closing(self._connect('postgres')) as conn:
-            # http://stackoverflow.com/questions/1017463/postgresql-how-to-run-vacuum-from-code-outside-transaction-block
-            conn.set_isolation_level(0)
-            with contextlib.closing(conn.cursor()) as c:
-                c.execute('drop database if exists %s' % name)
+        with self._non_tx_cursor('postgres') as c:
+            c.execute('drop database if exists %s' % name)
     
     def create_database(self, name):
-        import contextlib
-        
-        with contextlib.closing(self._connect('postgres')) as conn:
-            # http://stackoverflow.com/questions/1017463/postgresql-how-to-run-vacuum-from-code-outside-transaction-block
-            conn.set_isolation_level(0)
-            with contextlib.closing(conn.cursor()) as c:
-                c.execute('create database %s' % name)
+        with self._non_tx_cursor('postgres') as c:
+            c.execute('create database %s' % name)
     
     def _connect(self, dbname):
         import psycopg2
         
         conn = psycopg2.connect(database=dbname, host=self.conf.get('host'), user=self.conf.get('user'), password=self.conf.get('password'))
         return conn
+    
+    @contextlib.contextmanager
+    def _non_tx_cursor(self, dbname):
+        with contextlib.closing(self._connect('postgres')) as conn:
+            # http://stackoverflow.com/questions/1017463/postgresql-how-to-run-vacuum-from-code-outside-transaction-block
+            conn.set_isolation_level(0)
+            with contextlib.closing(conn.cursor()) as c:
+                yield c

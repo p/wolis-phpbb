@@ -94,6 +94,7 @@ class Runner(object):
             'casper.topic_bookmarking',
             'register',
             'report_post',
+            'post',
             'install_subsilver',
             # Cannot uninstall default style
             #'set_subsilver_default',

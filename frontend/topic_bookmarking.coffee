@@ -58,11 +58,17 @@ casper.then ->
 casper.then ->
   @click utils.xpath(utils.a_text_xpath('Remove from bookmarks'))
   
-  @waitForResource /viewtopic\.php.*bookmark=1/
+  # This is iffy because the same url was loaded previously.
+  # On freebsd this works, on linux it does not.
+  # Wait for the selector instead
+  #@waitForResource /viewtopic\.php.*bookmark=1/
+  
+  @waitForSelector utils.a_text_xs('Bookmark topic')
 
 casper.then ->
   @test.assertNotExists utils.a_text_xs('Remove from bookmarks')
-  @test.assertExists utils.a_text_xs('Bookmark topic')
+  # We now wait for this, therefore no point in checking it
+  #@test.assertExists utils.a_text_xs('Bookmark topic')
 
 casper.run ->
   @test.done()

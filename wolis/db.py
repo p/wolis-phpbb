@@ -24,23 +24,25 @@ MysqliDb = MysqlDb
 
 class PostgresDb(Db):
     def drop_database(self, name):
-        import psycopg2
         import contextlib
         
-        conn = psycopg2.connect(database='postgres', host=self.conf.get('host'), user=self.conf.get('user'), password=self.conf.get('password'))
-        # http://stackoverflow.com/questions/1017463/postgresql-how-to-run-vacuum-from-code-outside-transaction-block
-        conn.set_isolation_level(0)
-        with contextlib.closing(conn.cursor()) as c:
-            c.execute('drop database if exists %s' % name)
-        conn.close()
+        with contextlib.closing(self._connect('postgres')) as conn:
+            # http://stackoverflow.com/questions/1017463/postgresql-how-to-run-vacuum-from-code-outside-transaction-block
+            conn.set_isolation_level(0)
+            with contextlib.closing(conn.cursor()) as c:
+                c.execute('drop database if exists %s' % name)
     
     def create_database(self, name):
-        import psycopg2
         import contextlib
         
-        conn = psycopg2.connect(database='postgres', host=self.conf.get('host'), user=self.conf.get('user'), password=self.conf.get('password'))
-        # http://stackoverflow.com/questions/1017463/postgresql-how-to-run-vacuum-from-code-outside-transaction-block
-        conn.set_isolation_level(0)
-        with contextlib.closing(conn.cursor()) as c:
-            c.execute('create database %s' % name)
-        conn.close()
+        with contextlib.closing(self._connect('postgres')) as conn:
+            # http://stackoverflow.com/questions/1017463/postgresql-how-to-run-vacuum-from-code-outside-transaction-block
+            conn.set_isolation_level(0)
+            with contextlib.closing(conn.cursor()) as c:
+                c.execute('create database %s' % name)
+    
+    def _connect(self, dbname):
+        import psycopg2
+        
+        conn = psycopg2.connect(database=dbname, host=self.conf.get('host'), user=self.conf.get('user'), password=self.conf.get('password'))
+        return conn

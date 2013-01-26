@@ -92,7 +92,7 @@ def clone_repo(src, dest, remote_name):
             silent_rm_rf(dest)
             raise
     else:
-        git_in_dir(dest, 'fetch', remote_name)
+        git_in_dir(dest, 'fetch', '-pt', remote_name)
 
 def silent_rm_rf(path):
     if os.path.exists(path):

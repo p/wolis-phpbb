@@ -1,6 +1,4 @@
 import re
-import pipes
-import subprocess
 import contextlib
 
 class Db(object):
@@ -15,12 +13,31 @@ class Db(object):
 
 class MysqlDb(Db):
     def drop_database(self, name):
-        quoted_name = pipes.quote(name)
-        subprocess.check_call('echo drop database if exists %s |mysql -u root' % quoted_name, shell=True)
+        assert re.match(r'\w+$', name)
+        with self._cursor() as c:
+            c.execute('drop database if exists %s' % name)
     
     def create_database(self, name):
-        quoted_name = pipes.quote(name)
-        subprocess.check_call('echo create database %s |mysql -u root' % quoted_name, shell=True)
+        assert re.match(r'\w+$', name)
+        with self._cursor() as c:
+            c.execute('create database %s' % name)
+    
+    def _connect(self):
+        import MySQLdb
+        
+        kwargs = dict(host=self.conf.get('host'), user=self.conf.get('user'), passwd=self.conf.get('password'))
+        # mysql... does not accept None in values
+        for key in kwargs.keys():
+            if kwargs[key] is None:
+                del kwargs[key]
+        conn = MySQLdb.connect(**kwargs)
+        return conn
+    
+    @contextlib.contextmanager
+    def _cursor(self):
+        with contextlib.closing(self._connect()) as conn:
+            with contextlib.closing(conn.cursor()) as c:
+                yield c
 
 MysqliDb = MysqlDb
 

@@ -131,6 +131,14 @@ def naive_strip_html(text):
     # http://stackoverflow.com/questions/753052/strip-html-from-strings-in-python
     return re.sub('<[^<]+?>', '', text)
 
+def text_content(xml_node):
+    import lxml.etree
+    from . import html2text as _html2text
+    
+    xml = lxml.etree.tostring(xml_node)
+    text = _html2text.html2text(xml)
+    return text
+
 # http://stackoverflow.com/questions/1111056/get-tz-information-of-the-system-in-python
 def local_time_offset(t=None):
     """Return offset of local zone from GMT, either at present or at time t."""

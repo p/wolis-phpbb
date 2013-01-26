@@ -1,5 +1,6 @@
 import os
 import webracer
+import webracer.utils
 from wolis import utils
 from wolis.test_case import WolisTestCase
 
@@ -35,7 +36,7 @@ class InstallTestCase(WolisTestCase):
             'dbms': dbms,
             'table_prefix': self.conf.db.table_prefix,
         }
-        attr_map = dict(host='host', port='dbport', dbname='dbname',
+        attr_map = dict(host='dbhost', port='dbport', dbname='dbname',
             user='dbuser', password='dbpasswd')
         attrs = getattr(self.conf, dbms)
         for fk in attr_map:
@@ -48,8 +49,10 @@ class InstallTestCase(WolisTestCase):
         self.post(form.computed_action, body=params)
         self.assert_successish()
         
-        assert 'Could not connect to the database' not in self.response.body
-        assert 'Successful connection' in self.response.body
+        if 'Could not connect to the database' in self.response.body:
+            self._fail_db_connection()
+        if 'Successful connection' not in self.response.body:
+            self._fail_db_connection()
         
         form = self.response.form()
         self.post(form.computed_action, body=form.params.list)
@@ -128,6 +131,15 @@ class InstallTestCase(WolisTestCase):
             os.unlink(config_path)
         with open(config_path, 'w') as f:
             f.write(config)
+    
+    def _fail_db_connection(self):
+        doc = self.response.lxml_etree
+        msg = webracer.utils.xpath_first(doc, '//strong[@style="color:red"]')
+        if msg is not None:
+            text = utils.text_content(msg)
+        else:
+            text = '(no message found)'
+        self.fail("Database connection failed:\n%s" % text)
 
 if __name__ == '__main__':
     import unittest

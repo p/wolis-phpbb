@@ -114,9 +114,7 @@ class WolisTestCase(utu.adjust_test_base(webracer.WebTestCase), helpers.Helpers)
                 doc = session.response.lxml_etree
                 if xpath_first(doc, '//title[text()="General Error"]') is not None:
                     message = xpath_first_check(doc, '//h1[text()="General Error"]/..')
-                    xml = lxml.etree.tostring(message)
-                    from . import html2text
-                    text = html2text.html2text(xml)
+                    text = utils.html2text(message)
                     msg += "\n" + text
             self.fail(msg)
         session.assert_status(200)

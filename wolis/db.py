@@ -50,7 +50,7 @@ class PostgresDb(Db):
     def create_database(self, name):
         assert re.match(r'\w+$', name)
         with self._non_tx_cursor('postgres') as c:
-            c.execute('create database %s' % name)
+            c.execute("create database %s encoding 'utf-8'" % name)
     
     def _connect(self, dbname):
         import psycopg2

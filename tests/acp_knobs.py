@@ -1,4 +1,3 @@
-import owebunit
 import re
 from wolis.test_case import WolisTestCase
 

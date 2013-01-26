@@ -1,5 +1,5 @@
-import owebunit
-import owebunit.utils
+import webracer
+import webracer.utils
 import utu
 import lxml.etree
 import os
@@ -11,10 +11,10 @@ from . import config
 from . import utils
 from . import helpers
 
-xpath_first = owebunit.utils.xpath_first
-xpath_first_check = owebunit.utils.xpath_first_check
+xpath_first = webracer.utils.xpath_first
+xpath_first_check = webracer.utils.xpath_first_check
 
-class WolisTestCase(utu.adjust_test_base(owebunit.WebTestCase), helpers.Helpers):
+class WolisTestCase(utu.adjust_test_base(webracer.WebTestCase), helpers.Helpers):
     def __init__(self, *args, **kwargs):
         super(WolisTestCase, self).__init__(*args, **kwargs)
         
@@ -165,7 +165,7 @@ class WolisTestCase(utu.adjust_test_base(owebunit.WebTestCase), helpers.Helpers)
             return
         
         doc = self.response.lxml_etree
-        errorbox = owebunit.utils.xpath_first(doc, '//div[@class="errorbox"]')
+        errorbox = webracer.utils.xpath_first(doc, '//div[@class="errorbox"]')
         if errorbox is not None:
             severity = xpath_first_check(errorbox, './h3').text.strip()
             if severity != 'Warning':

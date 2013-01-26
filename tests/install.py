@@ -1,5 +1,5 @@
 import os
-import owebunit
+import webracer
 from wolis import utils
 from wolis.test_case import WolisTestCase
 
@@ -44,7 +44,7 @@ class InstallTestCase(WolisTestCase):
                 db_params[lk] = attrs.get(fk)
         
         form = self.response.form()
-        params = owebunit.extend_params(form.params.list, db_params)
+        params = webracer.extend_params(form.params.list, db_params)
         self.post(form.computed_action, body=params)
         self.assert_successish()
         
@@ -69,7 +69,7 @@ class InstallTestCase(WolisTestCase):
             admin_params['board_email2'] = admin_params['board_email']
         
         form = self.response.form()
-        params = owebunit.extend_params(form.params.list, admin_params)
+        params = webracer.extend_params(form.params.list, admin_params)
         self.post(form.computed_action, body=params)
         self.assert_successish()
         

@@ -1,9 +1,9 @@
-import owebunit
+import webracer
 import urlparse
 from . import utils
 
-xpath_first = owebunit.utils.xpath_first
-xpath_first_check = owebunit.utils.xpath_first_check
+xpath_first = webracer.utils.xpath_first
+xpath_first_check = webracer.utils.xpath_first_check
 
 class Helpers(object):
     def login(self, username, password):
@@ -36,7 +36,7 @@ class Helpers(object):
             password_name: password,
         }
         
-        params = owebunit.extend_params(form.params.list, params)
+        params = webracer.extend_params(form.params.list, params)
         self.post(form.computed_action, body=params)
         self.assert_successish()
         
@@ -69,7 +69,7 @@ class Helpers(object):
         params = {
             name: value,
         }
-        params = owebunit.extend_params(form.params.list, params)
+        params = webracer.extend_params(form.params.list, params)
         self.post(form.computed_action, body=params)
         self.assert_successish()
         

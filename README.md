@@ -42,7 +42,7 @@ When writing phpBB functional tests, time spent fighting the
 environment exceeds time spent actually writing test cases. No more.
 
 Wolis is mostly written in Python, a language much better suited to the task.
-Furthermore it uses a test framework ([owebunit](https://github.com/p/owebunit))
+Furthermore it uses a test framework ([WebRacer](https://github.com/p/webracer))
 specifically designed for
 testing full application stacks. All in all developing test cases in
 Wolis easily takes an order of magnitude less time and effort than the
@@ -116,9 +116,9 @@ Installation is laborious but the code should work in a generic environment.
 
 - Python 2.6 or 2.7
 - [utu](https://github.com/p/utu)
-- [cidict](https://github.com/p/cidict) (owebunit dependency)
-- [ocookie](https://github.com/p/ocookie) (owebunit dependency)
-- [owebunit](https://github.com/p/owebunit)
+- [cidict](https://github.com/p/cidict) (WebRacer dependency)
+- [ocookie](https://github.com/p/ocookie) (WebRacer dependency)
+- [webracer](https://github.com/p/webracer)
 - [lxml](http://lxml.de/)
 - [yaml](http://pyyaml.org/)
 - [Python Imaging Library](http://www.pythonware.com/products/pil/)

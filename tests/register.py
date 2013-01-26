@@ -1,4 +1,4 @@
-import owebunit
+import webracer
 from wolis import utils
 from wolis.test_case import WolisTestCase
 
@@ -38,7 +38,7 @@ class RegisterTestCase(WolisTestCase):
         
         elements = form.elements.mutable
         elements.submit('submit')
-        params = owebunit.extend_params(elements.params.dict, params)
+        params = webracer.extend_params(elements.params.dict, params)
         self.post(form.computed_action, body=params)
         self.assert_successish()
         
@@ -59,7 +59,7 @@ class RegisterTestCase(WolisTestCase):
         assert form.params.dict['tz_date'].startswith('GMT+11:00')
         
         #doc = self.response.lxml_etree
-        #timezone_select = owebunit.utils.xpath_first_check(doc, 'select[@id="timezone"]')
+        #timezone_select = webracer.utils.xpath_first_check(doc, 'select[@id="timezone"]')
 
 if __name__ == '__main__':
     import unittest

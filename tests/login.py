@@ -1,4 +1,3 @@
-import owebunit
 from wolis.test_case import WolisTestCase
 
 class LoginTestCase(WolisTestCase):

@@ -1,8 +1,8 @@
-import owebunit
-import owebunit.utils
+import webracer
+import webracer.utils
 from wolis.test_case import WolisTestCase
 
-@owebunit.no_session
+@webracer.no_session
 class LoginWithoutCookiesTestCase(WolisTestCase):
     def test_login(self):
         self.get('/')
@@ -23,7 +23,7 @@ class LoginWithoutCookiesTestCase(WolisTestCase):
         
         assert 'Return to the index page' in self.response.body
         doc = self.response.lxml_etree
-        continue_link = owebunit.utils.xpath_first_check(doc, '//div[@id="message"]//p/a').attrib['href']
+        continue_link = webracer.utils.xpath_first_check(doc, '//div[@id="message"]//p/a').attrib['href']
         #print continue_link
         
         self.get(continue_link)

@@ -1,4 +1,3 @@
-import owebunit
 import urlparse
 from wolis import utils
 from wolis.test_case import WolisTestCase

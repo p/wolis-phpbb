@@ -1,5 +1,4 @@
-import owebunit
-import owebunit.utils
+import webracer.utils
 import urlparse
 from wolis import utils
 from wolis.test_case import WolisTestCase
@@ -26,8 +25,8 @@ class UninstallSubsilverTestCase(WolisTestCase):
         assert 'subsilver2' in self.response.body
         
         doc = self.response.lxml_etree
-        subsilver = owebunit.utils.xpath_first_check(doc, '//*[text()="subsilver2"]/ancestor::tr')
-        uninstall = owebunit.utils.xpath_first_check(subsilver, './/a[descendant-or-self::*/text()="Uninstall"]')
+        subsilver = webracer.utils.xpath_first_check(doc, '//*[text()="subsilver2"]/ancestor::tr')
+        uninstall = webracer.utils.xpath_first_check(subsilver, './/a[descendant-or-self::*/text()="Uninstall"]')
         
         url = urlparse.urljoin(styles_url, uninstall.attrib['href'])
         self.get(url)

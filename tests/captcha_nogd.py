@@ -1,13 +1,12 @@
-import owebunit
-import owebunit.utils
+import webracer.utils
 import urlparse
 import re
 import Image
 import cStringIO as StringIO
 from wolis.test_case import WolisTestCase
 
-xpath_first = owebunit.utils.xpath_first
-xpath_first_check = owebunit.utils.xpath_first_check
+xpath_first = webracer.utils.xpath_first
+xpath_first_check = webracer.utils.xpath_first_check
 
 class CaptchaNogdTestCase(WolisTestCase):
     def test_100_settings(self):

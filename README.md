@@ -132,6 +132,8 @@ Installation is laborious but the code should work in a generic environment.
 - Write access to a directory under web server's document root
 - All PHP extensions needed or optionally usable by phpBB present and enabled
 - Your favorite database engine(s) plus client libraries
+  - [MySQL-Python](http://mysql-python.sourceforge.net/) for MySQL
+  - [psycopg2](http://initd.org/psycopg/) for PostgreSQL
 
 Wolis should in principle be deployable to a typical Linux VPS.
 

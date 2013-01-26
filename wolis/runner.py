@@ -266,7 +266,7 @@ class Runner(object):
         return False
     
     def update_baseline_repo(self):
-        utils.clone_repo('git://github.com/phpbb/phpbb3.git',
+        utils.clone_repo(self.conf.baseline_src,
             self.conf.baseline_repo_path, 'upstream')
     
     def update_src_repo(self):

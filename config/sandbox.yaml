@@ -1,5 +1,6 @@
 test_root: /tmp/sandboxfunc
 src: /home/pie/apps/phpbb/repo
+baseline_src: /home/pie/apps/phpbb/repo
 test_root_phpbb: /tmp/sandboxfunc/phpbb
 responses_dir: /tmp/sandboxfunc/responses
 test_url: http://sbfunc

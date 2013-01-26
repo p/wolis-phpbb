@@ -10,6 +10,15 @@ src: /home/pie/apps/phpbb/repo
 # src: git://github.com/phpbb/phpbb3.git
 # src_branch: develop
 
+# Location of baseline phpBB repository.
+# On systems connected to Internet, this can be the URL of phpBB's
+# repository. For systems that need to work offline, this can point to
+# the local phpbb repository clone, but it needs to be up to date
+# with upstream tags.
+baseline_src: /home/pie/apps/phpbb/repo
+
+# baseline_src: git://github.com/phpbb/phpbb3.git
+
 # The root directory that Wolis writes to. It should be owned by the user
 # that Wolis runs as.
 test_root: /var/www/func

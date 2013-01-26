@@ -1,6 +1,8 @@
 lxml
 pil
 pyyaml
+mysql-python
+psycopg2
 git+git://github.com/p/cidict.git@master#egg=cidict
 git+git://github.com/p/ocookie.git@master#egg=ocookie
 git+git://github.com/p/webracer.git@master#egg=webracer

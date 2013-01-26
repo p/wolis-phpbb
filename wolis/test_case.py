@@ -77,6 +77,15 @@ class WolisTestCase(utu.adjust_test_base(webracer.WebTestCase), helpers.Helpers)
         xpath = '//div[@id="tabs"]//a[descendant-or-self::*/text()=%s]' % quoted_text
         return self.link_href_by_xpath(xpath)
     
+    # contrary to the name this uses re.search, not re.match
+    def link_href_by_href_match(self, regexp_str):
+        for link in self.response.lxml_etree.iter('a'):
+            if 'href' not in link.attrib:
+                continue
+            if re.search(regexp_str, link.attrib['href']):
+                return link.attrib['href']
+        self.fail('No link found matching %s' % regexp_str)
+    
     def clear_cache(self):
         import shutil
         

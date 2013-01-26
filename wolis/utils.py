@@ -1,11 +1,15 @@
 import os.path
 import re
+import sys
 
 class RunError(StandardError):
     pass
 
 def run(cmd, **kwargs):
     import subprocess
+    
+    sys.stdout.flush()
+    sys.stderr.flush()
     
     if 'stdout_io' in kwargs:
         # XXX unfinished

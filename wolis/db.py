@@ -1,3 +1,4 @@
+import re
 import pipes
 import subprocess
 import contextlib
@@ -25,10 +26,12 @@ MysqliDb = MysqlDb
 
 class PostgresDb(Db):
     def drop_database(self, name):
+        assert re.match(r'\w+$', name)
         with self._non_tx_cursor('postgres') as c:
             c.execute('drop database if exists %s' % name)
     
     def create_database(self, name):
+        assert re.match(r'\w+$', name)
         with self._non_tx_cursor('postgres') as c:
             c.execute('create database %s' % name)
     

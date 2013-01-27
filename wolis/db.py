@@ -19,7 +19,7 @@ class MysqlDb(Db):
     
     def create_database(self, name):
         assert re.match(r'\w+$', name)
-        with self._cursor() as c:
+        with self.cursor() as c:
             c.execute('create database %s' % name)
     
     def _connect(self):
@@ -34,7 +34,7 @@ class MysqlDb(Db):
         return conn
     
     @contextlib.contextmanager
-    def _cursor(self):
+    def cursor(self):
         with contextlib.closing(self._connect()) as conn:
             with contextlib.closing(conn.cursor()) as c:
                 yield c
@@ -59,6 +59,14 @@ class PostgresDb(Db):
         
         conn = psycopg2.connect(database=dbname, host=self.conf.get('host'), user=self.conf.get('user'), password=self.conf.get('password'))
         return conn
+    
+    @contextlib.contextmanager
+    def cursor(self, dbname=None):
+        if dbname is None:
+            dbname = self.conf['dbname']
+        with contextlib.closing(self._connect(dbname)) as conn:
+            with contextlib.closing(conn.cursor()) as c:
+                yield c
     
     @contextlib.contextmanager
     def _non_tx_cursor(self, dbname):

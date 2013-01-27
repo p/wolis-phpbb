@@ -90,6 +90,7 @@ class Runner(object):
             'casper.login_helper',
             'casper.topic_bookmarking',
             'casper.acp_login',
+            'casper.acp_login_helper',
             'register',
             'report_post',
             'post',

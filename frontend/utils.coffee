@@ -6,7 +6,7 @@ d = ->
 # Some easier to type aliases
 casper.test.assertTextNotExists = casper.test.assertTextDoesntExist
 
-exports.xpath = xpath = (expr)->
+exports.xpath = (expr)->
   {type: 'xpath', path: expr}
 
 exports.a_text_xpath = (text)->
@@ -26,7 +26,7 @@ exports.savehtml = savehtml = (html)->
   f.write html
   f.close()
 
-exports.login = login = (username, password)->
+exports.login = (username, password)->
   base = global.wolis.config.test_url
   
   casper.open base
@@ -59,6 +59,44 @@ exports.login = login = (username, password)->
     
     @test.assertTextExists 'You have been successfully logged in.'
     @test.assertTextExists 'User Control Panel'
+
+exports.acp_login_only = (username, password)->
+  base = global.wolis.config.test_url
+  
+  casper.open base
+  
+  casper.then ->
+    @test.assertHttpStatus 200
+    
+    @test.assertTextExists 'Your first forum'
+    @test.assertTextExists 'User Control Panel'
+    @test.assertTextExists 'Administration Control Panel'
+    
+    @click exports.xpath(exports.a_text_xpath('Administration Control Panel'))
+
+  exports.thensaveresponse ->
+    @test.assertHttpStatus 200
+    
+    @test.assertTextExists 'To administer the board you must re-authenticate yourself.'
+    password_name = @evaluate ->
+      document.querySelector('input[type=password]').getAttribute('name')
+    
+    @evaluate exports.fixsubmit, 'form#login'
+    fields = {username: username}
+    fields[password_name] = password
+    @fill 'form#login', fields, true
+
+  exports.thensaveresponse ->
+    @test.assertHttpStatus 200
+    
+    @test.assertTextExists 'Proceed to the ACP'
+    @click exports.xpath(exports.a_text_xpath('Proceed to the ACP'))
+
+exports.acp_login = (username, password)->
+  exports.login username, password
+  
+  casper.then ->
+    exports.acp_login_only username, password
 
 exports.fixsubmit = fixsubmit = (selector)->
   form = document.querySelector selector

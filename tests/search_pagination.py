@@ -36,7 +36,7 @@ class SearchPaginationTest(WolisTestCase):
         text = lxml.etree.tostring(active, method='text').strip()
         assert text == '1'
     
-    def test_legitimate_pages(self):
+    def test_legitimate_offset(self):
         url = '/search.php?keywords=searching&start=10'
         self.get(url)
         self.assert_successish()
@@ -52,6 +52,23 @@ class SearchPaginationTest(WolisTestCase):
         active = xpath_first_check(self.response.lxml_etree, '//li[@class="active"]')
         text = lxml.etree.tostring(active, method='text').strip()
         assert text == '2'
+    
+    def test_negative_offset(self):
+        url = '/search.php?keywords=searching&start=-10'
+        self.get(url)
+        self.assert_successish()
+        
+        assert 'Search found' in self.response.body
+        # remove highlighting
+        response_text = utils.naive_strip_html(self.response.body)
+        assert 'Reply in topic' in response_text
+        
+        assert 'Click to jump to page' in self.response.body
+        
+        # check active page
+        active = xpath_first_check(self.response.lxml_etree, '//li[@class="active"]')
+        text = lxml.etree.tostring(active, method='text').strip()
+        assert text == '1'
 
 if __name__ == '__main__':
     import unittest

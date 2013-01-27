@@ -6,7 +6,6 @@ import subprocess
 import sys
 import unittest
 from . import utils
-from . import db
 from . import config
 from . import test_case
 
@@ -21,10 +20,8 @@ class Runner(object):
         self.conf = None
     
     def instantiate_db(self):
-        driver = self.requested_dbms
-        class_name = driver[0].upper() + driver[1:] + 'Db'
-        cls = getattr(db, class_name)
-        self.db = cls(getattr(self.conf, self.requested_dbms))
+        self.db = utils.instantiate_db(self.conf, self.requested_dbms)
+        utils.current.db = self.db
     
     @property
     def requested_dbms(self):

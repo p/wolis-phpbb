@@ -184,6 +184,7 @@ class PhpbbVersion(object):
 class Current(object):
     phpbb_version = None
     config = None
+    db = None
 
 current = Current()
 
@@ -199,3 +200,12 @@ def restrict_phpbb_version(spec):
         return decorated
     
     return decorator
+
+def instantiate_db(conf, requested_dbms=None):
+    from . import db
+    
+    driver = requested_dbms or conf.db.driver
+    class_name = driver[0].upper() + driver[1:] + 'Db'
+    cls = getattr(db, class_name)
+    db = cls(getattr(conf, driver))
+    return db

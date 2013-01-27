@@ -27,7 +27,7 @@ casper.start base, ->
   }, true
   #@click utils.xpath('//input[@value="Login"]')
 
-casper.then (resp)->
+utils.thensaveresponse ->
   #d @getCurrentUrl()
   #utils.savehtml @getHTML()
   

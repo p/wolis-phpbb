@@ -44,7 +44,7 @@ exports.login = login = (username, password)->
       password: password
     }, true
   
-  casper.then ->
+  exports.thensaveresponse ->
     @test.assertUrlMatch /ucp\.php.*mode=login/
     @test.assertHttpStatus 200
     

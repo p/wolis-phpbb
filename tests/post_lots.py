@@ -49,6 +49,8 @@ class PostLotsTest(WolisTestCase):
         # this posts at a rate of 1 post/second,
         # meaning this test takes order of half a minute to run
         for i in range(30):
+            print('Making post %d' % (i+1))
+            
             self.get(reply_url)
             self.assert_successish()
             

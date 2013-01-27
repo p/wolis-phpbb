@@ -51,11 +51,15 @@ class ActkeyComparisonTest(WolisTestCase):
             c.execute('select user_id from phpbb_users where username=%s',
                 ('morpheus',))
             uid = c.fetchone()[0]
+            
+            c.execute('commit')
         
         self.get('/ucp.php?mode=activate&u=%s&k=0' % uid)
         self.assert_successish()
         
         assert 'You have already activated your account.' not in self.response.body
+        # weakness makes activation possible
+        assert 'Your new password has been activated.' not in self.response.body
         assert 'The activation key you supplied does not match any in the database.' in self.response.body
 
 if __name__ == '__main__':

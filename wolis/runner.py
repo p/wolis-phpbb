@@ -101,6 +101,7 @@ class Runner(object):
             'uninstall_subsilver',
             'enable_captcha',
             'captcha_nogd',
+            'actkey_comparison',
             'update',
         ]
         for test in tests:

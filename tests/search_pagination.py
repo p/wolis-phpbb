@@ -66,6 +66,22 @@ class SearchPaginationTest(WolisTestCase):
         # check active page
         current_page = self.find_current_page()
         assert current_page == 1
+    
+    def test_excessive_positive_offset(self):
+        url = '/search.php?keywords=fancy&start=1000'
+        self.get(url)
+        self.assert_successish()
+        
+        assert 'Search found' in self.response.body
+        # remove highlighting
+        response_text = utils.naive_strip_html(self.response.body)
+        assert 'Fancy post' in response_text
+        
+        assert 'Click to jump to page' in self.response.body
+        
+        # check active page
+        current_page = self.find_current_page()
+        assert current_page == '3'
 
 if __name__ == '__main__':
     import unittest

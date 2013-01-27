@@ -96,6 +96,7 @@ class Runner(object):
             'report_post',
             'post',
             'post_lots',
+            'search',
             'install_subsilver',
             # Cannot uninstall default style
             #'set_subsilver_default',

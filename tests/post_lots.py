@@ -1,4 +1,3 @@
-import urlparse
 from wolis.test_case import WolisTestCase
 
 class PostLotsTest(WolisTestCase):
@@ -12,7 +11,7 @@ class PostLotsTest(WolisTestCase):
         assert 'Index page' in self.response.body
         
         href = self.link_href_by_text('Your first forum')
-        url = urlparse.urljoin(url, href)
+        url = self.response.urljoin(href)
         self.get(url)
         self.assert_successish()
         

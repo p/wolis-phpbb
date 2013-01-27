@@ -1,5 +1,4 @@
 import webracer.utils
-import urlparse
 from wolis import utils
 from wolis.test_case import WolisTestCase
 
@@ -17,7 +16,7 @@ class UninstallSubsilverTestCase(WolisTestCase):
         
         href = self.link_href_by_acp_tab_title('Customise')
         
-        styles_url = url = urlparse.urljoin(url, href)
+        styles_url = url = self.response.urljoin(href)
         self.get(url)
         self.assert_successish()
         
@@ -28,7 +27,7 @@ class UninstallSubsilverTestCase(WolisTestCase):
         subsilver = webracer.utils.xpath_first_check(doc, '//*[text()="subsilver2"]/ancestor::tr')
         uninstall = webracer.utils.xpath_first_check(subsilver, './/a[descendant-or-self::*/text()="Uninstall"]')
         
-        url = urlparse.urljoin(styles_url, uninstall.attrib['href'])
+        url = self.response.urljoin(uninstall.attrib['href'])
         self.get(url)
         self.assert_successish()
         

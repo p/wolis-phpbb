@@ -1,4 +1,3 @@
-import urlparse
 from wolis.test_case import WolisTestCase
 
 class ReportPostTestCase(WolisTestCase):
@@ -12,18 +11,18 @@ class ReportPostTestCase(WolisTestCase):
         assert 'Index page' in self.response.body
         
         href = self.link_href_by_text('Your first forum')
-        url = urlparse.urljoin(url, href)
+        url = self.response.urljoin(href)
         self.get(url)
         self.assert_successish()
         
         # topic
         href = self.link_href_by_text('Welcome to phpBB3')
-        url = urlparse.urljoin(url, href)
+        url = self.response.urljoin(href)
         self.get(url)
         self.assert_successish()
         
         href = self.link_href_by_title('Report this post')
-        url = urlparse.urljoin(url, href)
+        url = self.response.urljoin(href)
         self.get(url)
         self.assert_successish()
         

@@ -1,6 +1,5 @@
 import webracer
 import webracer.utils
-import urlparse
 from wolis.test_case import WolisTestCase
 
 class AcpLoginTestCase(WolisTestCase):
@@ -12,7 +11,7 @@ class AcpLoginTestCase(WolisTestCase):
         
         doc = self.response.lxml_etree
         acp_link = webracer.utils.xpath_first_check(doc, '//div[@class="copyright"]//a[text() = "Administration Control Panel"]').attrib['href']
-        acp_link = urlparse.urljoin('/', acp_link)
+        acp_link = self.response.urljoin(acp_link)
         
         self.get(acp_link)
         self.assert_successish()
@@ -37,7 +36,7 @@ class AcpLoginTestCase(WolisTestCase):
         doc = self.response.lxml_etree
         acp_link = webracer.utils.xpath_first_check(doc, '//div[@class="copyright"]//a[text() = "Administration Control Panel"]').attrib['href']
         # note: uses previous page's form's computed action
-        acp_link = urlparse.urljoin(form.computed_action, acp_link)
+        acp_link = self.response.urljoin(acp_link)
         
         self.get(acp_link)
         self.assert_successish()

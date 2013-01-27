@@ -1,4 +1,3 @@
-import urlparse
 from wolis import utils
 from wolis.test_case import WolisTestCase
 
@@ -16,7 +15,7 @@ class InstallSubsilverTestCase(WolisTestCase):
         
         href = self.link_href_by_acp_tab_title('Customise')
         
-        styles_url = url = urlparse.urljoin(url, href)
+        styles_url = url = self.response.urljoin(href)
         self.get(url)
         self.assert_successish()
         
@@ -25,7 +24,7 @@ class InstallSubsilverTestCase(WolisTestCase):
         
         href = self.link_href_by_text('Install Styles')
         
-        url = urlparse.urljoin(url, href)
+        url = self.response.urljoin(href)
         self.get(url)
         self.assert_successish()
         
@@ -33,7 +32,7 @@ class InstallSubsilverTestCase(WolisTestCase):
         
         href = self.link_href_by_text('Install style')
         
-        url = urlparse.urljoin(url, href)
+        url = self.response.urljoin(href)
         self.get(url)
         self.assert_successish()
         

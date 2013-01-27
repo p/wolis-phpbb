@@ -1,5 +1,4 @@
 import webracer.utils
-import urlparse
 from wolis.test_case import WolisTestCase
 
 class SetSubsilverDefaultTestCase(WolisTestCase):
@@ -20,7 +19,7 @@ class SetSubsilverDefaultTestCase(WolisTestCase):
         
         href = self.link_href_by_acp_tab_title('Customise')
         
-        styles_url = url = urlparse.urljoin(url, href)
+        styles_url = url = self.response.urljoin(href)
         self.get(url)
         self.assert_successish()
         
@@ -31,7 +30,7 @@ class SetSubsilverDefaultTestCase(WolisTestCase):
         subsilver = webracer.utils.xpath_first_check(doc, '//*[text()="subsilver2"]/ancestor::tr')
         details = webracer.utils.xpath_first_check(subsilver, './/a[descendant-or-self::*/text()="Details"]')
         
-        url = urlparse.urljoin(styles_url, details.attrib['href'])
+        url = self.response.urljoin(details.attrib['href'])
         self.get(url)
         self.assert_successish()
         

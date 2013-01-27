@@ -1,5 +1,4 @@
 import webracer.utils
-import urlparse
 import re
 import Image
 import cStringIO as StringIO
@@ -20,7 +19,7 @@ class CaptchaNogdTestCase(WolisTestCase):
         assert 'Board statistics' in self.response.body
         
         href = self.link_href_by_text('Spambot countermeasures')
-        url = urlparse.urljoin(start_url, href)
+        url = self.response.urljoin(href)
         self.get(url)
         self.assert_successish
         

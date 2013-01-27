@@ -65,7 +65,7 @@ php_cmd_prefix: ['sudo', '-u', 'php']
 db:
   # Database driver to use. This must be one of the drivers recognized
   # by phpBB. Currently mysql, mysqli and postgres are supported.
-  driver: mysqli
+  driver: postgres
   
   # Table prefix - required.
   table_prefix: phpbb_

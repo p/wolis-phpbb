@@ -69,6 +69,46 @@ class PostLotsTest(WolisTestCase):
             self.assert_successish()
             
             assert 'This message has been posted successfully.' in self.response.body
+    
+    def test_create_many_topics(self):
+        self.login('morpheus', 'morpheus')
+        
+        url = '/index.php'
+        self.get(url)
+        self.assert_successish()
+        
+        assert 'Index page' in self.response.body
+        
+        href = self.link_href_by_text('Your first forum')
+        url = self.response.urljoin(href)
+        self.get(url)
+        self.assert_successish()
+        
+        href = self.link_href_by_href_match(r'mode=post')
+        newtopic_url = self.response.urljoin(href)
+        
+        for i in range(30):
+            print('Making topic %d' % (i+1))
+            
+            self.get(newtopic_url)
+            self.assert_successish()
+            
+            assert 'Post a new topic' in self.response.body
+            form = self.response.form(id='postform')
+            elements = form.elements.mutable
+            elements.set_value('subject', 'Topic one of many')
+            elements.set_value('message', 'Fancy post')
+            # no-js behavior is to submit the first button (save draft).
+            # with js the submit button is selected as default.
+            elements.submit('post')
+            # code requires 2 second delta since last click, but it is
+            # all client-controlled
+            elements.set_value('lastclick', '0')
+            self.check_form_key_delay()
+            self.post(form.computed_action, body=elements.params.list)
+            self.assert_successish()
+            
+            assert 'This message has been posted successfully.' in self.response.body
 
 if __name__ == '__main__':
     import unittest

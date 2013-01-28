@@ -98,8 +98,21 @@ class Runner(object):
             'post_lots',
             'search',
             'search_pagination',
-            'casper.postgres_search_index',
-            'search_backend_postgres',
+        ]
+        for test in tests:
+            self.run_test('pass1', test)
+        
+        if self.requested_dbms == 'postgres':
+            tests = [
+                'casper.postgres_search_index',
+                'search_backend_postgres',
+                'search',
+                'search_pagination',
+            ]
+            for test in tests:
+                self.run_test('pass2', test)
+        
+        tests = [
             'install_subsilver',
             # Cannot uninstall default style
             #'set_subsilver_default',
@@ -110,9 +123,9 @@ class Runner(object):
             'update',
         ]
         for test in tests:
-            self.run_test('pass1', test)
+            self.run_test('pass3', test)
         
-        checkpoint_name = 'pass2prep'
+        checkpoint_name = 'pass4prep'
         if not self.resume or not self.passed_checkpoint(checkpoint_name):
             self.update_baseline_repo()
             utils.git_in_dir(self.conf.baseline_repo_path, 'checkout', '-q', 'release-3.0.11')
@@ -127,11 +140,11 @@ class Runner(object):
             self.create_database()
             self.checkpoint(checkpoint_name)
         
-        self.run_test('pass2', 'install')
+        self.run_test('pass4', 'install')
         
         self.copy_tree_under_test(True, exclude='/config.php')
         
-        self.run_test('pass2', 'update')
+        self.run_test('pass4', 'update')
         
         if os.path.exists(self.conf.state_file_path):
             os.unlink(self.conf.state_file_path)

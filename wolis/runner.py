@@ -21,6 +21,7 @@ class Runner(object):
     
     def instantiate_db(self):
         self.db = utils.instantiate_db(self.conf, self.requested_dbms)
+        utils.current.dbms = self.requested_dbms
         utils.current.db = self.db
     
     @property

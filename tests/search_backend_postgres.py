@@ -1,6 +1,8 @@
 from wolis.test_case import WolisTestCase
+from wolis import utils
 
 class SearchBackendPostgresTest(WolisTestCase):
+    @utils.restrict_database('postgres')
     def test_set_search_backend(self):
         self.login('morpheus', 'morpheus')
         self.acp_login('morpheus', 'morpheus')

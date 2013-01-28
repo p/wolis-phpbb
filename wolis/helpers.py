@@ -63,14 +63,12 @@ class Helpers(object):
         assert check_page_text in self.response.body
         
         form = self.response.form()
+        elements = form.elements.mutable
+        elements.set_value(name, value)
         
         self.check_form_key_delay()
         
-        params = {
-            name: value,
-        }
-        params = webracer.extend_params(form.params.list, params)
-        self.post(form.computed_action, body=params)
+        self.post(form.computed_action, body=elements.params.list)
         self.assert_successish()
         
         assert 'Configuration updated successfully' in self.response.body

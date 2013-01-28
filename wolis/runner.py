@@ -269,6 +269,8 @@ class Runner(object):
                         print('Skipping test %s due to database requirement (%s)' % (name, ', '.join(parser.db)))
                         return
         
+        # coffeescript bug
+        test_path = os.path.realpath(test_path)
         cmd_prefix = self.conf.node_cmd_prefix or []
         utils.run(cmd_prefix + ['coffee', '-c', '-o', self.conf.gen_path, test_path])
         utils.run(cmd_prefix + ['coffee', '-c', '-o', self.conf.gen_path, os.path.join(os.path.dirname(test_path), 'utils.coffee')])

@@ -23,12 +23,12 @@ class Runner(object):
         self.conf = None
     
     def instantiate_db(self):
-        self.db = utils.instantiate_db(self.conf, self.requested_dbms)
-        utils.current.dbms = self.requested_dbms
+        self.db = utils.instantiate_db(self.conf, self.actual_dbms)
+        utils.current.dbms = self.actual_dbms
         utils.current.db = self.db
     
     @property
-    def requested_dbms(self):
+    def actual_dbms(self):
         return self.dbms or self.conf.db.driver
     
     def parse_options(self):
@@ -74,7 +74,7 @@ class Runner(object):
         
         print('%s detected' % utils.current.phpbb_version)
         
-        os.environ['DBMS'] = self.requested_dbms
+        os.environ['DBMS'] = self.actual_dbms
         
         tests = [
             'lint_js',
@@ -106,7 +106,7 @@ class Runner(object):
             self.run_test('pass1', test)
         
         if utils.current.phpbb_version >= (3, 1, 0):
-            if self.requested_dbms == 'postgres':
+            if self.actual_dbms == 'postgres':
                 tests = [
                     'casper.postgres_search_index',
                     'search_backend_postgres',
@@ -266,7 +266,7 @@ class Runner(object):
                             print('Skipping test %s due to phpBB version constraint (%s)' % (name, version))
                             return
                 if parser.db:
-                    if self.requested_dbms not in parser.db:
+                    if self.actual_dbms not in parser.db:
                         print('Skipping test %s due to database requirement (%s)' % (name, ', '.join(parser.db)))
                         return
         

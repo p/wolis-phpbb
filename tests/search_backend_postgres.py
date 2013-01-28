@@ -3,6 +3,7 @@ from wolis import utils
 
 class SearchBackendPostgresTest(WolisTestCase):
     @utils.restrict_database('postgres')
+    @utils.restrict_phpbb_version('>=3.1.0')
     def test_set_search_backend(self):
         self.login('morpheus', 'morpheus')
         self.acp_login('morpheus', 'morpheus')

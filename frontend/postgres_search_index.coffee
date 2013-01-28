@@ -4,6 +4,9 @@
 # after:
 # casper.login
 #
+# phpbb_version:
+# >=3.1.0
+#
 # db:
 # postgres
 

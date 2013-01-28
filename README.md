@@ -183,4 +183,4 @@ Note that `-r` requires all other options to still be passed.
 
 ## License
 
-MIT.
+Released under the 2 clause BSD license.

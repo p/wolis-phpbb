@@ -98,6 +98,8 @@ class Runner(object):
             'post_lots',
             'search',
             'search_pagination',
+            'casper.postgres_search_index',
+            'search_backend_postgres',
             'install_subsilver',
             # Cannot uninstall default style
             #'set_subsilver_default',
@@ -244,8 +246,12 @@ class Runner(object):
                 if parser.phpbb_version:
                     for version in parser.phpbb_version:
                         if not utils.current.phpbb_version.matches(version):
-                            print('Skipping test due to phpBB version constraint (%s)' % version)
+                            print('Skipping test %s due to phpBB version constraint (%s)' % (name, version))
                             return
+                if parser.db:
+                    if self.requested_dbms not in parser.db:
+                        print('Skipping test %s due to database requirement (%s)' % (name, ', '.join(parser.db)))
+                        return
         
         cmd_prefix = self.conf.node_cmd_prefix or []
         utils.run(cmd_prefix + ['coffee', '-c', '-o', self.conf.gen_path, test_path])

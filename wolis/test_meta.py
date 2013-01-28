@@ -4,6 +4,7 @@ class Parser(object):
         self.depends = []
         self.after = []
         self.phpbb_version = []
+        self.db = []
     
     def feed(self, line):
         self.state = self.state.advance(line)
@@ -20,6 +21,8 @@ class InitialState(State):
             return AfterState(self.parser)
         elif line == 'phpbb_version:':
             return PhpbbVersionState(self.parser)
+        elif line == 'db:':
+            return DbState(self.parser)
         else:
             raise ValueError("Bogus input: %s" % line)
 
@@ -45,4 +48,12 @@ class PhpbbVersionState(State):
             return InitialState(self.parser)
         else:
             self.parser.phpbb_version.append(line)
+            return self
+
+class DbState(State):
+    def advance(self, line):
+        if len(line) == 0:
+            return InitialState(self.parser)
+        else:
+            self.parser.db.append(line)
             return self

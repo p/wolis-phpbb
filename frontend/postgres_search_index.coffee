@@ -3,6 +3,9 @@
 #
 # after:
 # casper.login
+#
+# db:
+# postgres
 
 utils = require './utils'
 

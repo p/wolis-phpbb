@@ -206,8 +206,8 @@ def restrict_phpbb_version(spec):
 def restrict_database(spec):
     def decorator(fn):
         def decorated(self, *args, **kwargs):
-            actual_db = current.dbms or self.conf.db
-            if actual_db not in spec:
+            actual_dbms = current.dbms or self.conf.db
+            if actual_dbms not in spec:
                 print('Skipping %s due to database requirement (%s)' % (fn.__name__, spec))
             else:
                 return fn(self, *args, **kwargs)

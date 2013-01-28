@@ -270,6 +270,8 @@ class Runner(object):
         utils.run(cmd_prefix + ['coffee', '-c', '-o', self.conf.gen_path, test_path])
         utils.run(cmd_prefix + ['coffee', '-c', '-o', self.conf.gen_path, os.path.join(os.path.dirname(test_path), 'utils.coffee')])
         compiled_js_path = os.path.join(self.conf.gen_path, os.path.basename(test_path).replace('.coffee', '.js'))
+        if not os.path.exists(compiled_js_path):
+            raise CoffeeFailError('Coffee file was not compiled: %s -> %s' % (test_path, compiled_js_path))
         
         utils.casper(self.conf, compiled_js_path, pre=self.casper_config_path)
     

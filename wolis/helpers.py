@@ -44,7 +44,7 @@ class Helpers(object):
         
         self.find_sid()
     
-    def change_acp_knob(self, link_text, check_page_text, name, value):
+    def change_acp_knob(self, link_text, check_page_text, name, value, confirm=False):
         '''Note: requires an estableshed acp session.
         '''
         
@@ -71,4 +71,12 @@ class Helpers(object):
         self.post(form.computed_action, body=elements.params.list)
         self.assert_successish()
         
+        if confirm:
+            assert 'Confirm' in self.response.body
+            assert 'Are you sure' in self.response.body
+            
+            form = self.response.form(id='confirm')
+            self.post(form.computed_action, body=form.params.list)
+            self.assert_successish()
+            
         assert 'Configuration updated successfully' in self.response.body

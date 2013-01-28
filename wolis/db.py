@@ -14,7 +14,7 @@ class Db(object):
 class MysqlDb(Db):
     def drop_database(self, name):
         assert re.match(r'\w+$', name)
-        with self._cursor() as c:
+        with self.cursor() as c:
             c.execute('drop database if exists %s' % name)
     
     def create_database(self, name):

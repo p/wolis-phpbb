@@ -105,15 +105,16 @@ class Runner(object):
         for test in tests:
             self.run_test('pass1', test)
         
-        if self.requested_dbms == 'postgres':
-            tests = [
-                'casper.postgres_search_index',
-                'search_backend_postgres',
-                'search',
-                'search_pagination',
-            ]
-            for test in tests:
-                self.run_test('pass2', test)
+        if utils.current.phpbb_version >= (3, 1, 0):
+            if self.requested_dbms == 'postgres':
+                tests = [
+                    'casper.postgres_search_index',
+                    'search_backend_postgres',
+                    'search',
+                    'search_pagination',
+                ]
+                for test in tests:
+                    self.run_test('pass2', test)
         
         tests = [
             'install_subsilver',

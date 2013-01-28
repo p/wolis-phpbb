@@ -32,9 +32,8 @@ class SearchPaginationTest(WolisTestCase):
         assert 'Click to jump to page' in self.response.body
         
         # check active page
-        active = xpath_first_check(self.response.lxml_etree, '//li[@class="active"]')
-        text = lxml.etree.tostring(active, method='text').strip()
-        assert text == '1'
+        current_page = self.find_current_page()
+        assert current_page == 1
     
     def test_legitimate_offset(self):
         url = '/search.php?keywords=searching&start=10'
@@ -49,9 +48,8 @@ class SearchPaginationTest(WolisTestCase):
         assert 'Click to jump to page' in self.response.body
         
         # check active page
-        active = xpath_first_check(self.response.lxml_etree, '//li[@class="active"]')
-        text = lxml.etree.tostring(active, method='text').strip()
-        assert text == '2'
+        current_page = self.find_current_page()
+        assert current_page == 2
     
     def test_negative_offset(self):
         url = '/search.php?keywords=searching&start=-10'
@@ -66,9 +64,8 @@ class SearchPaginationTest(WolisTestCase):
         assert 'Click to jump to page' in self.response.body
         
         # check active page
-        active = xpath_first_check(self.response.lxml_etree, '//li[@class="active"]')
-        text = lxml.etree.tostring(active, method='text').strip()
-        assert text == '1'
+        current_page = self.find_current_page()
+        assert current_page == 1
 
 if __name__ == '__main__':
     import unittest

@@ -179,3 +179,15 @@ class WolisTestCase(utu.adjust_test_base(webracer.WebTestCase), helpers.Helpers)
                 message_element = xpath_first_check(errorbox, './p')
                 msg = 'Error message found in document: %s' % message_element.text
                 self.fail(msg)
+    
+    def find_current_page(self):
+        if self.phpbb_version < (3, 1, 0):
+            # the first strong is the active page
+            # http://stackoverflow.com/questions/1390568/xpath-how-to-match-attributes-that-contain-a-certain-string
+            active = xpath_first_check(self.response.lxml_etree, '//li[contains(@class, "pagination")]//strong')
+            page = int(active.text)
+        else:
+            active = xpath_first_check(self.response.lxml_etree, '//li[@class="active"]')
+            text = lxml.etree.tostring(active, method='text').strip()
+            page = int(text)
+        return page

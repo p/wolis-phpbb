@@ -14,18 +14,23 @@ class Db(object):
 class MysqlDb(Db):
     def drop_database(self, name):
         assert re.match(r'\w+$', name)
-        with self.cursor() as c:
+        with self.cursor('') as c:
             c.execute('drop database if exists %s' % name)
     
     def create_database(self, name):
         assert re.match(r'\w+$', name)
-        with self.cursor() as c:
+        with self.cursor('') as c:
             c.execute('create database %s' % name)
     
-    def _connect(self):
+    def _connect(self, dbname):
         import MySQLdb
         
-        kwargs = dict(host=self.conf.get('host'), user=self.conf.get('user'), passwd=self.conf.get('password'))
+        kwargs = dict(
+            host=self.conf.get('host'),
+            user=self.conf.get('user'),
+            passwd=self.conf.get('password'),
+            db=dbname,
+        )
         # mysql... does not accept None in values
         for key in kwargs.keys():
             if kwargs[key] is None:
@@ -34,8 +39,10 @@ class MysqlDb(Db):
         return conn
     
     @contextlib.contextmanager
-    def cursor(self):
-        with contextlib.closing(self._connect()) as conn:
+    def cursor(self, dbname=None):
+        if dbname is None:
+            dbname = self.conf['dbname']
+        with contextlib.closing(self._connect(dbname)) as conn:
             with contextlib.closing(conn.cursor()) as c:
                 yield c
 

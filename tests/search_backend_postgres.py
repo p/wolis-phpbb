@@ -8,8 +8,9 @@ class SearchBackendPostgresTest(WolisTestCase):
         self.change_acp_knob(
             link_text='Search settings',
             check_page_text='Here you can define what search backend will be used',
-            name='search_type',
+            name='config[search_type]',
             value='phpbb_search_fulltext_postgres',
+            confirm=True,
         )
 
 if __name__ == '__main__':

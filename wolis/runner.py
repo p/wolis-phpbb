@@ -9,6 +9,9 @@ from . import utils
 from . import config
 from . import test_case
 
+class CoffeeFailError(StandardError):
+    pass
+
 class Runner(object):
     def __init__(self):
         # command line options

@@ -14,6 +14,16 @@ exports.a_text_xpath = (text)->
     throw 'Double quotes in argument are not allowed: ' + text
   '//a[text()="' + text + '"]'
 
+exports.acp_tab_xpath = (text)->
+  # XXX does not quote text
+  #'//div[@id="tabs"]//a[descendant-or-self::*/text()="' + text + '"]'
+  '//div[@id="tabs"]//span[text()="' + text + '"]/..'
+
+exports.acp_sidebar_xpath = (text)->
+  # XXX does not quote text
+  #'//div[@id="tabs"]//a[descendant-or-self::*/text()="' + text + '"]'
+  '//div[@id="menu"]//span[text()="' + text + '"]/..'
+
 exports.a_text_xs = ->
   exports.xpath(exports.a_text_xpath(arguments...))
 

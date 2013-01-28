@@ -106,11 +106,15 @@ is being tested and adjusts tests accordingly.
 
 ## Status
 
-The framework part of Wolis is still under active development. With that,
-the tests themselves are reasonably stable and I expect Wolis to already offer
-better test coverage than phpBB's own functional tests.
+There are still framework features that need to be implemented (in particular,
+better resuming functionality) but what is already there is very extensive
+and works very well.
 
-Installation is laborious but the code should work in a generic environment.
+Wolis has a lot more tests than phpBB's own functional test suite. Most of
+phpBB functional tests are replicated in Wolis. In terms of code coverage
+Wolis is greatly ahead of phpBB functional tests.
+
+Wolis can be viewed in action [here](http://integrity.vps.hxr.me/).
 
 ## Requirements
 
@@ -135,7 +139,7 @@ Installation is laborious but the code should work in a generic environment.
   - [MySQL-Python](http://mysql-python.sourceforge.net/) for MySQL
   - [psycopg2](http://initd.org/psycopg/) for PostgreSQL
 
-Wolis should in principle be deployable to a typical Linux VPS.
+Wolis is deployable to a typical Linux VPS.
 
 ## Installation
 

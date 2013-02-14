@@ -31,13 +31,13 @@ class InstallTestCase(WolisTestCase):
         
         assert 'Database type' in self.response.body
         
-        actual_dbms = utils.current.dbms or self.conf.dbms
-        if actual_dbms == 'postgres':
+        #dbms = utils.current.dbms or self.conf.db.driver
+        dbms = os.environ.get('DBMS') or self.conf.db.driver
+        if dbms == 'postgres':
             assert 'PostgreSQL' in self.response.body
         else:
             assert 'MySQL with MySQLi Extension' in self.response.body
         
-        dbms = os.environ.get('DBMS') or self.conf.db.driver
         db_params = {
             'dbms': dbms,
             'table_prefix': self.conf.db.table_prefix,

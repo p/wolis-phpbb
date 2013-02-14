@@ -29,7 +29,13 @@ class InstallTestCase(WolisTestCase):
         self.post(form.computed_action, body=form.params.list)
         self.assert_successish()
         
-        assert 'MySQL with MySQLi Extension' in self.response.body
+        assert 'Database type' in self.response.body
+        
+        actual_dbms = utils.current.dbms or self.conf.dbms
+        if actual_dbms == 'postgres':
+            assert 'PostgreSQL' in self.response.body
+        else:
+            assert 'MySQL with MySQLi Extension' in self.response.body
         
         dbms = os.environ.get('DBMS') or self.conf.db.driver
         db_params = {

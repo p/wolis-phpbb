@@ -17,6 +17,10 @@ class LintJsTestCase(WolisTestCase):
             os.chmod(jshint_config_f.name, 0o644)
             if not prefix.endswith('/'):
                 prefix += '/'
+            # check that jshint itself works
+            with tempfile.NamedTemporaryFile() as test_f:
+                os.chmod(test_f.name, 0o644)
+                utils.run(cmd_prefix + ['jshint', '--config', jshint_config_f.name, test_f.name])
             for root, dirs, files in os.walk(self.conf.test_root_phpbb):
                 if '.git' in dirs:
                     dirs.remove('.git')

@@ -60,7 +60,7 @@ def our_script_path(file):
     directory.
     '''
     
-    return os.path.join(os.path.dirname(__file__), '../script', file)
+    return os.path.realpath(os.path.join(os.path.dirname(__file__), '../script', file))
 
 # XXX do something about the config parameter
 def casper(conf, *paths, **kwargs):

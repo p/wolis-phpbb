@@ -9,14 +9,14 @@ class SearchTest(WolisTestCase):
         
         form = self.response.form(id='search')
         elements = form.elements.mutable
-        elements.set_value('keywords', 'frist')
+        elements.set_value('keywords', 'welcome')
         self.post(form.computed_action, body=elements.params.list)
         self.assert_successish()
         
         assert 'Search found 1 match' in self.response.body
         # remove highlighting
         response_text = utils.naive_strip_html(self.response.body)
-        assert 'Frist post' in response_text
+        assert 'Welcome to phpBB' in response_text
 
 if __name__ == '__main__':
     import unittest

@@ -28,7 +28,10 @@ def make_topic(i, statuses, session, test_case, newtopic_url):
     statuses[i] = True
 
 class PostLotsTest(WolisTestCase):
-    def test_create_many_posts(self):
+    # We actually do not need many posts in one topic as we can use
+    # multiple topics for both searching for posts and searching for topics,
+    # and post creation cannot be parallelized
+    def skip_test_create_many_posts(self):
         self.login('morpheus', 'morpheus')
         
         url = '/index.php'

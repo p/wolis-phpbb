@@ -1,4 +1,5 @@
 import threading
+import Queue
 #import time as _time
 #import random
 from wolis.test_case import WolisTestCase
@@ -127,12 +128,23 @@ class PostLotsTest(WolisTestCase):
         
         threads = []
         statuses = []
-        for i in range(30):
+        q = Queue.Queue()
+        count = 30
+        for i in range(count):
+            q.put(i)
+            statuses.append(False)
+        def target(session):
+            while True:
+                try:
+                    i = q.get(False)
+                    make_topic(i, statuses, session, self, newtopic_url)
+                except Queue.Empty:
+                    break
+        for j in range(5):
             session = self._session.copy()
-            thread = threading.Thread(target=make_topic, args=(i, statuses, session, self, newtopic_url))
+            thread = threading.Thread(target=target, args=(session,))
             thread.start()
             threads.append(thread)
-            statuses.append(False)
         
         for i in range(len(threads)):
             thread = threads[i]

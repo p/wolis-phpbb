@@ -149,6 +149,8 @@ class PostLotsTest(WolisTestCase):
         for i in range(len(threads)):
             thread = threads[i]
             thread.join()
+        
+        for i in range(count):
             assert statuses[i], 'Thread %d did not succeed' % i
 
 if __name__ == '__main__':

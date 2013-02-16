@@ -120,6 +120,7 @@ class Runner(object):
                 self.run_tests('pass2', tests)
             elif utils.db_matches(self.actual_dbms, 'mysql*'):
                 tests = [
+                    'prep.switch_posts_to_myisam',
                     'casper.mysql_search_index',
                     'python.search_backend_mysql',
                     'python.search',
@@ -359,3 +360,8 @@ class Runner(object):
         with open(output_path, 'wb') as f:
             f.write(json)
         return output_path
+    
+    # mysql only
+    def switch_posts_to_myisam(self):
+        with self.db.cursor() as c:
+            c.execute('alter table phpbb_posts engine=myisam')

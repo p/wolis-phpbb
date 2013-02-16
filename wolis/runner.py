@@ -77,17 +77,17 @@ class Runner(object):
         os.environ['DBMS'] = self.actual_dbms
         
         tests = [
-            'lint_js',
-            'create_schema_files',
-            'install',
-            'login_without_cookies',
-            'login',
-            'acp_login',
-            'acp_knobs',
-            'template_compile_race',
-            'admin_log',
-            'empty_logs',
-            'view_index',
+            'python.lint_js',
+            'python.create_schema_files',
+            'python.install',
+            'python.login_without_cookies',
+            'python.login',
+            'python.acp_login',
+            'python.acp_knobs',
+            'python.template_compile_race',
+            'python.admin_log',
+            'python.empty_logs',
+            'python.view_index',
             'casper.view_index',
             'casper.registration_agreement',
             'casper.registration_tz_selection',
@@ -96,12 +96,12 @@ class Runner(object):
             'casper.topic_bookmarking',
             'casper.acp_login',
             'casper.acp_login_helper',
-            'register',
-            'report_post',
-            'post',
-            'post_lots',
-            'search',
-            'search_pagination',
+            'python.register',
+            'python.report_post',
+            'python.post',
+            'python.post_lots',
+            'python.search',
+            'python.search_pagination',
         ]
         for test in tests:
             self.run_test('pass1', test)
@@ -110,22 +110,22 @@ class Runner(object):
             if self.actual_dbms == 'postgres':
                 tests = [
                     'casper.postgres_search_index',
-                    'search_backend_postgres',
-                    'search',
-                    'search_pagination',
+                    'python.search_backend_postgres',
+                    'python.search',
+                    'python.search_pagination',
                 ]
                 for test in tests:
                     self.run_test('pass2', test)
         
         tests = [
-            'install_subsilver',
+            'python.install_subsilver',
             # Cannot uninstall default style
-            #'set_subsilver_default',
-            'uninstall_subsilver',
-            'enable_captcha',
-            'captcha_nogd',
-            'actkey_comparison',
-            'update',
+            #'python.set_subsilver_default',
+            'python.uninstall_subsilver',
+            'python.enable_captcha',
+            'python.captcha_nogd',
+            'python.actkey_comparison',
+            'python.update',
         ]
         for test in tests:
             self.run_test('pass3', test)
@@ -145,11 +145,11 @@ class Runner(object):
             self.create_database()
             self.checkpoint(checkpoint_name)
         
-        self.run_test('pass4', 'install')
+        self.run_test('pass4', 'python.install')
         
         self.copy_tree_under_test(True, exclude='/config.php')
         
-        self.run_test('pass4', 'update')
+        self.run_test('pass4', 'python.update')
         
         if os.path.exists(self.conf.state_file_path):
             os.unlink(self.conf.state_file_path)
@@ -208,14 +208,14 @@ class Runner(object):
         
         print('Testing %s.%s' % (prefix, name))
         
-        if '.' in name:
-            method, name = name.split('.')
-            if method == 'casper':
-                self.run_casper_test(name)
-            else:
-                raise ValueError, 'Unsppported method: %s' % method
-        else:
+        assert '.' in name
+        method, name = name.split('.')
+        if method == 'python':
             self.run_python_test(name)
+        elif method == 'casper':
+            self.run_casper_test(name)
+        else:
+            raise ValueError, 'Unsppported method: %s' % method
         
         self.checkpoint(checkpoint_name)
     

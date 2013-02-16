@@ -50,3 +50,23 @@ class Config(object):
     @property
     def gen_path(self):
         return os.path.join(self.test_root, 'gen')
+    
+    @property
+    def sphinx_root(self):
+        return os.path.join(self.test_root, 'sphinx')
+    
+    @property
+    def sphinx_data_path(self):
+        return os.path.join(self.sphinx_root, 'data')
+    
+    @property
+    def sphinx_config_path(self):
+        return os.path.join(self.sphinx_root, 'sphinx.conf')
+    
+    @property
+    def sphinx_id_path(self):
+        return os.path.join(self.sphinx_root, 'id')
+    
+    @property
+    def sphinx_log_path(self):
+        return os.path.join(self.sphinx_data_path, 'log')

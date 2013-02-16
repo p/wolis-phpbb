@@ -58,6 +58,8 @@ node_cmd_prefix: ['sudo', '-iHu', 'rvm']
 # Comment out to operate on phpBB tree entirely from your own user account.
 php_cmd_prefix: ['sudo', '-u', 'php']
 
+sphinx_cmd_prefix: ['sudo', '-u', '_sphinx']
+
 # Whether to install dependencies via composer or assume they are installed
 # via external to wolis means.
 # use_composer: true

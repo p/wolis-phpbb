@@ -139,25 +139,34 @@ class PostLotsTest(WolisTestCase):
         for i in range(count):
             q.put(i)
             statuses.append(False)
+        stop = False
         def target(session):
-            while True:
+            while not stop:
                 try:
                     i = q.get(False)
                     make_topic(i, statuses, session, self, newtopic_url)
                 except Queue.Empty:
                     break
-        for j in range(thread_count):
-            session = self._session.copy()
-            session.config.retry_failed = True
-            session.config.retry_condition = utils.retry_condition_fn
-            thread = threading.Thread(target=target, args=(session,))
-            thread.start()
-            threads.append(thread)
         
-        for i in range(len(threads)):
-            thread = threads[i]
-            while not thread.join(1):
-                pass
+        try:
+            for j in range(thread_count):
+                session = self._session.copy()
+                session.config.retry_failed = True
+                session.config.retry_condition = utils.retry_condition_fn
+                thread = threading.Thread(target=target, args=(session,))
+                thread.start()
+                threads.append(thread)
+            
+            for i in range(len(threads)):
+                thread = threads[i]
+                while not thread.join(1):
+                    pass
+                threads[i] = None
+        except KeyboardInterrupt:
+            for thread in threads:
+                if thread is not None:
+                    stop = True
+            raise
         
         for i in range(count):
             assert statuses[i], 'Thread %d did not succeed' % i

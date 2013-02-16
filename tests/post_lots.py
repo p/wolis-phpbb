@@ -135,6 +135,7 @@ class PostLotsTest(WolisTestCase):
         statuses = []
         q = Queue.Queue()
         count = 30
+        thread_count = 5
         for i in range(count):
             q.put(i)
             statuses.append(False)
@@ -145,7 +146,7 @@ class PostLotsTest(WolisTestCase):
                     make_topic(i, statuses, session, self, newtopic_url)
                 except Queue.Empty:
                     break
-        for j in range(5):
+        for j in range(thread_count):
             session = self._session.copy()
             session.config.retry_failed = True
             session.config.retry_condition = retry_condition_fn

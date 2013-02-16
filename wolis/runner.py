@@ -154,6 +154,14 @@ class Runner(object):
         if os.path.exists(self.conf.state_file_path):
             os.unlink(self.conf.state_file_path)
     
+    def delete_old_responses(self):
+        dir = self.conf.responses_dir
+        for file in os.listdir(dir):
+            if file[0] == '.':
+                continue
+            
+            os.unlink(os.path.join(dir, file))
+    
     def copy_tree_under_test(self, delete=False, exclude=None):
         if self.conf.use_composer:
             vendor_path = os.path.join(self.conf.test_root_phpbb, 'vendor')
@@ -173,14 +181,6 @@ class Runner(object):
             delete=delete, exclude=exclude)
         
         self.post_copy_tree(src_path)
-    
-    def delete_old_responses(self):
-        dir = self.conf.responses_dir
-        for file in os.listdir(dir):
-            if file[0] == '.':
-                continue
-            
-            os.unlink(os.path.join(dir, file))
     
     def post_copy_tree(self, src_path):
         subprocess.call(['chmod', '-R', 'o+w', self.conf.test_root_phpbb])

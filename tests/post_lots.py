@@ -3,11 +3,7 @@ import Queue
 #import time as _time
 #import random
 from wolis.test_case import WolisTestCase
-
-def retry_condition_fn(response):
-    # 502 is sent when the backend php process sigsegvs
-    # 200 with empty body is sent probably immediately afterwards
-    return response.code == 502 or response.code == 200 and len(response.raw_body) == 0
+from wolis import utils
 
 def make_topic(i, statuses, session, test_case, newtopic_url):
     print('Making topic %d' % (i+1))
@@ -149,7 +145,7 @@ class PostLotsTest(WolisTestCase):
         for j in range(thread_count):
             session = self._session.copy()
             session.config.retry_failed = True
-            session.config.retry_condition = retry_condition_fn
+            session.config.retry_condition = utils.retry_condition_fn
             thread = threading.Thread(target=target, args=(session,))
             thread.start()
             threads.append(thread)

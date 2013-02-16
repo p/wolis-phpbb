@@ -224,3 +224,8 @@ def instantiate_db(conf, requested_dbms=None):
     cls = getattr(db, class_name)
     db = cls(getattr(conf, driver))
     return db
+
+def retry_condition_fn(response):
+    # 502 is sent when the backend php process sigsegvs
+    # 200 with empty body is sent probably immediately afterwards
+    return response.code == 502 or response.code == 200 and len(response.raw_body) == 0

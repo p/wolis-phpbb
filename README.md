@@ -165,6 +165,16 @@ or arrange for umask/group membership to otherwise give you write access to
 files that PHP creates.
 15. Choose your database engine and create a database for wolis.
 
+### MySQL stop words
+
+MySQL by default refuses to search for some words that are legitimate,
+such as "welcome". In order for wolis to work with mysql, mysql must be told
+to not use a stop word list. This can be accomplished via the following entry
+in `/etc/my.cnf`:
+
+	[mysqld]
+	ft_stopword_file=''
+
 ## Usage
 
 To run all tests:

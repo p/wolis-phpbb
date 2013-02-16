@@ -1,3 +1,6 @@
+# Remember to set ft_stopword_file='' for mysql.
+# See top-level readme for more details.
+
 from wolis.test_case import WolisTestCase
 from wolis import utils
 

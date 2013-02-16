@@ -1,1 +1,2 @@
 - Eliminate utils.current.foo or bar
+- Make -r remember which -d was used

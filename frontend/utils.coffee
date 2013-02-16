@@ -5,6 +5,7 @@ d = ->
 
 # Some easier to type aliases
 casper.test.assertTextNotExists = casper.test.assertTextDoesntExist
+tojson = JSON.stringify
 
 exports.xpath = (expr)->
   {type: 'xpath', path: expr}
@@ -129,8 +130,32 @@ exports.thensaveresponse = (done)->
     savehtml @getHTML()
     done.call(this, arguments)
 
+exports.evaluate = (fn, args...)->
+  rv = casper.evaluate (fn, args)->
+    try
+      rv = fn(args...)
+      [true, rv]
+    catch e
+      [false, e]
+  , fn, args
+  casper.test.assert rv != null, 'evaluate return value is not null'
+  [ok, rv] = rv
+  unless ok
+    # This does not seem to work
+    #throw rv
+    
+    d 'Exception evaluating javascript in phantomjs:'
+    d rv.message
+    d rv.stack
+    throw "Failed evaluating javascript in phantomjs: #{rv.message}"
+  rv
+
 exports.assertwaitfortext = exports.assertWaitForText = (text)->
   casper.waitForText text, ->
     true
   , ->
-    @test.fail 'Text not found: ' + text
+    #@test.fail 'Text not found: ' + text
+    # https://github.com/n1k0/casperjs/issues/369
+    d 'Text not found: ' + text
+    d 'Exiting due to casper bug'
+    @exit -24

@@ -4,6 +4,12 @@ d = ->
   console.log arguments...
 
 exports.create_search_index = (name)->
+  create_or_delete name, 'Create index', 'Successfully indexed all posts in the board database.'
+
+exports.delete_search_index = (name)->
+  create_or_delete name, 'Delete index', 'Successfully deleted the search index for this backend.'
+
+create_or_delete = (name, buttontext, success_msg)->
   base = global.wolis.config.test_url
 
   casper.open base
@@ -30,24 +36,12 @@ exports.create_search_index = (name)->
 
     @test.assertTextExists 'Here you can manage the search backend’s indexes.'
     
-    found = @evaluate ->
-      coll = document.getElementsByTagName('caption')
-      found = false
-      Array.prototype.forEach.call coll, (elt)->
-        return if found
-        if elt.textContent.indexOf(name) >= 0
-          # found
-          while elt.tagName.toLowerCase() != 'form'
-            elt = elt.parentNode
-          elt = elt.querySelector 'input[type=submit]'
-          if elt.getAttribute('value') == 'Create index'
-            elt.click()
-            found = true
-          else
-            # will break but fail assertion below
-            found = elt.getAttribute('value') || 2
-      found
+    expr = '//caption[contains(text(),"' + name + '")]'
+    @test.assertExists utils.xpath(expr)
+    submit_expr = expr + '/ancestor::form//input[@type="submit"]'
+    @test.assertExists utils.xpath(submit_expr)
+    submit_text_expr = expr + '/ancestor::form//input[@type="submit"][@value="' + buttontext + '"]'
+    @test.assertExists utils.xpath(submit_text_expr)
+    @click utils.xpath(submit_expr)
     
-    @test.assert found
-    
-    utils.assertWaitForText 'Successfully indexed all posts in the board database.'
+    utils.assertWaitForText success_msg

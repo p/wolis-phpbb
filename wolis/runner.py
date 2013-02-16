@@ -100,6 +100,8 @@ class Runner(object):
             'python.post_lots',
             'python.search',
             'python.search_pagination',
+            'casper.delete_native_search_index',
+            'python.search_verify_no_backends',
         ]
         self.run_tests('pass1', tests)
         
@@ -114,6 +116,7 @@ class Runner(object):
                 self.run_tests('pass2', tests)
         
         tests = [
+            'casper.create_native_search_index',
             'python.install_subsilver',
             # Cannot uninstall default style
             #'python.set_subsilver_default',

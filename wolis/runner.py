@@ -125,22 +125,10 @@ class Runner(object):
         ]
         self.run_tests('pass3', tests)
         
-        checkpoint_name = 'pass4prep'
-        if not self.resume or not self.passed_checkpoint(checkpoint_name):
-            self.update_baseline_repo()
-            utils.git_in_dir(self.conf.baseline_repo_path, 'checkout', '-q', 'release-3.0.11')
-            
-            if self.conf.use_composer:
-                vendor_path = os.path.join(self.conf.test_root_phpbb, 'vendor')
-                utils.run(self.conf.php_cmd_prefix + ['rm', '-rf', vendor_path])
-            
-            utils.rsync(os.path.join(self.conf.baseline_repo_path, 'phpBB/'), self.conf.test_root_phpbb, True)
-            self.post_copy_tree(self.conf.baseline_repo_path)
-            self.drop_database()
-            self.create_database()
-            self.checkpoint(checkpoint_name)
-        
         tests = [
+            'prep.copy_starting_tree_for_update',
+            'prep.drop_database',
+            'prep.create_database',
             'python.install',
             'prep.copy_tree_for_update',
             'python.update',
@@ -149,6 +137,17 @@ class Runner(object):
         
         if os.path.exists(self.conf.state_file_path):
             os.unlink(self.conf.state_file_path)
+    
+    def copy_starting_tree_for_update(self):
+        self.update_baseline_repo()
+        utils.git_in_dir(self.conf.baseline_repo_path, 'checkout', '-q', 'release-3.0.11')
+        
+        if self.conf.use_composer:
+            vendor_path = os.path.join(self.conf.test_root_phpbb, 'vendor')
+            utils.run(self.conf.php_cmd_prefix + ['rm', '-rf', vendor_path])
+        
+        utils.rsync(os.path.join(self.conf.baseline_repo_path, 'phpBB/'), self.conf.test_root_phpbb, True)
+        self.post_copy_tree(self.conf.baseline_repo_path)
     
     def copy_tree_for_update(self):
         self.copy_tree_under_test(True, exclude='/config.php')

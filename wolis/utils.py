@@ -214,7 +214,7 @@ def db_matches(actual, requested):
 
 def db_matches_list(actual, requested_list):
     if 'mysql*' in requested_list:
-        requested_list= list(requested_list)
+        requested_list = list(requested_list)
         requested_list.remove('mysql*')
         requested_list.append('mysql')
         requested_list.append('mysqli')
@@ -224,7 +224,7 @@ def restrict_database(spec):
     def decorator(fn):
         def decorated(self, *args, **kwargs):
             actual_dbms = current.dbms or self.conf.db
-            if not db_matches_list(actual_dbms, spec):
+            if not db_matches(actual_dbms, spec):
                 print('Skipping %s due to database requirement (%s)' % (fn.__name__, spec))
             else:
                 return fn(self, *args, **kwargs)

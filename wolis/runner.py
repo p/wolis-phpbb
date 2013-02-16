@@ -110,7 +110,7 @@ class Runner(object):
         self.run_tests('pass1', tests)
         
         if utils.current.phpbb_version >= (3, 1, 0):
-            if self.actual_dbms == 'postgres':
+            if utils.db_matches(self.actual_dbms, 'postgres'):
                 tests = [
                     'casper.postgres_search_index',
                     'python.search_backend_postgres',
@@ -280,7 +280,7 @@ class Runner(object):
                             print('Skipping test %s due to phpBB version constraint (%s)' % (name, version))
                             return
                 if parser.db:
-                    if self.actual_dbms not in parser.db:
+                    if not utils.db_matches_list(self.actual_dbms, parser.db):
                         print('Skipping test %s due to database requirement (%s)' % (name, ', '.join(parser.db)))
                         return
         

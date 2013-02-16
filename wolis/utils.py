@@ -206,11 +206,25 @@ def restrict_phpbb_version(spec):
     
     return decorator
 
+def db_matches(actual, requested):
+    if requested == 'mysql*':
+        return db_matches_list(actual, ['mysql', 'mysqli'])
+    else:
+        return actual == requested
+
+def db_matches_list(actual, requested_list):
+    if 'mysql*' in requested_list:
+        requested_list= list(requested_list)
+        requested_list.remove('mysql*')
+        requested_list.append('mysql')
+        requested_list.append('mysqli')
+    return actual in requested_list
+
 def restrict_database(spec):
     def decorator(fn):
         def decorated(self, *args, **kwargs):
             actual_dbms = current.dbms or self.conf.db
-            if actual_dbms not in spec:
+            if not db_matches_list(actual_dbms, spec):
                 print('Skipping %s due to database requirement (%s)' % (fn.__name__, spec))
             else:
                 return fn(self, *args, **kwargs)

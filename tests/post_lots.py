@@ -163,9 +163,7 @@ class PostLotsTest(WolisTestCase):
                     pass
                 threads[i] = None
         except KeyboardInterrupt:
-            for thread in threads:
-                if thread is not None:
-                    stop = True
+            stop = True
             raise
         
         for i in range(count):

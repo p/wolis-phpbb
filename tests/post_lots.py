@@ -14,7 +14,11 @@ def make_topic(i, statuses, session, test_case, newtopic_url):
     assert 'Post a new topic' in session.response.body
     form = session.response.form(id='postform')
     elements = form.elements.mutable
-    elements.set_value('subject', 'Topic one of many')
+    try:
+        elements.set_value('subject', 'Topic one of many')
+    except:
+        print session.response.body, len(session.response.body)
+        raise
     elements.set_value('message', 'Fancy post')
     # no-js behavior is to submit the first button (save draft).
     # with js the submit button is selected as default.

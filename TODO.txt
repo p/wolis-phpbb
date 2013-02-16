@@ -1,2 +1,3 @@
 - Eliminate utils.current.foo or bar
 - Make -r remember which -d was used
+- Passing any tests on command line should imply -r

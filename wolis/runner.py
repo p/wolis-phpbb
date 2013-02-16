@@ -59,6 +59,10 @@ class Runner(object):
     
     def run(self):
         self.parse_options()
+        
+        if not self.resume:
+            self.clear_state()
+        
         self.instantiate_db()
         self.casper_config_path = self.create_casper_config_file()
         self.copy_tree_under_test(not self.resume)
@@ -138,8 +142,7 @@ class Runner(object):
         ]
         self.run_tests('pass4', tests)
         
-        if os.path.exists(self.conf.state_file_path):
-            os.unlink(self.conf.state_file_path)
+        self.clear_state()
     
     def copy_starting_tree_for_update(self):
         self.update_baseline_repo()

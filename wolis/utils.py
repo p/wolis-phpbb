@@ -5,11 +5,14 @@ import sys
 class RunError(StandardError):
     pass
 
+def flush_streams():
+    sys.stdout.flush()
+    sys.stderr.flush()
+
 def run(cmd, **kwargs):
     import subprocess
     
-    sys.stdout.flush()
-    sys.stderr.flush()
+    flush_streams()
     
     if 'stdout_io' in kwargs:
         # XXX unfinished

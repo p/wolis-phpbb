@@ -241,7 +241,9 @@ class Runner(object):
         except TypeError:
             # per unittest.main code
             runner = test_runner()
+        utils.flush_streams()
         result = runner.run(tests)
+        utils.flush_streams()
         if not result.wasSuccessful():
             exit(4)
     

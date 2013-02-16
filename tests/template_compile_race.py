@@ -21,7 +21,9 @@ def test_fn(s, case, url):
             stop = True
 
 class TemplateCompileRaceTest(WolisTestCase):
-    def skip_test_race(self):
+    # fails on 3.1
+    @utils.restrict_phpbb_version('<3.1.0')
+    def test_race(self):
         self.login('morpheus', 'morpheus')
         
         url = '/index.php'

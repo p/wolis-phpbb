@@ -84,6 +84,7 @@ class Runner(object):
             'login',
             'acp_login',
             'acp_knobs',
+            'template_compile_race',
             'admin_log',
             'empty_logs',
             'view_index',

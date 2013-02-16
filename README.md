@@ -6,6 +6,8 @@ Wolis is a test suite plus a test runner for phpBB
 with a focus on quick test development and low frustration.
 You can think of it as phpBB functional tests on steroids.
 
+## Highlights
+
 ### Standalone
 
 A key principle of Wolis is it is completely standalone. Unlike phpBB
@@ -58,12 +60,15 @@ Currently phpBB's own test suite has no comparable functionality.
 ### Complete test coverage
 
 With JavaScript testing already implemented, there is nothing impossible for
-Wolis as long as it runs on the host machine. In particular tests for all
-implemented search backends are planned.
+Wolis as long as it runs on the host machine. In particular, spawning server-side
+processes is possible, permitting sphinx search backend to be tested.
+
+Wolis permits every bit of phpBB functionality that is exposed to users
+to be tested.
 
 ### No fixtures
 
-Wolis does not deal with fixtures. Tests are run in a known sequence
+Wolis does not use fixtures. Tests are run in a known sequence
 and data needed by a particular test is created by a previously executed test.
 
 phpBB functional tests are rather confused in this regard: they install
@@ -76,9 +81,15 @@ A comprehensive resume implementation is pending.
 
 ### Use of third-party tools
 
-Wolis does not shy away from using other tools to achieve its goals. Besides
-using CasperJS for JavaScript testing, Wolis already uses
-[jshint](http://www.jshint.com/) for JavaScript code checks.
+Wolis tries to use existing tools and libraries where practical.
+JavaScript testing is performed via CasperJS.
+[jshint](http://www.jshint.com/) is employed for JavaScript code checks.
+WebRacer, despite being at the core of most of Wolis's tests, is an
+independent project. Capybara is being investigated as an alternative way
+of testing JavaScript functionality.
+
+The goal of Wolis is to glue these disparate components into a single
+coherent system while doing the least possible amount of work.
 
 ### Black box testing
 
@@ -104,6 +115,14 @@ Wolis supports testing both phpBB 3.0 Olympus and phpBB 3.1 Ascraeus from
 the same Wolis source tree. Wolis detects automatically which phpBB version
 is being tested and adjusts tests accordingly.
 
+### Multi-threading
+
+Tests written in Python can execute code in multiple threads. This is most
+handy when performing bulk data inserts. As Wolis primarily drives
+other code, workloads that are parallelizable show significant gains when
+parallelized. See tests/post_lots.py for an example; this test achieves a
+factor of 3 speedup on a two-core system.
+
 ## Status
 
 There are still framework features that need to be implemented (in particular,
@@ -118,6 +137,7 @@ Wolis can be viewed in action [here](http://integrity.vps.hxr.me/).
 
 ## Requirements
 
+- Git
 - Python 2.6 or 2.7
 - [utu](https://github.com/p/utu)
 - [cidict](https://github.com/p/cidict) (WebRacer dependency)
@@ -129,9 +149,9 @@ Wolis can be viewed in action [here](http://integrity.vps.hxr.me/).
 - [PhantomJS](http://phantomjs.org/)
 - [CasperJS](http://casperjs.org/)
 - [Node.js](http://nodejs.org/)
+- [coffee-script](http://coffeescript.org/) npm package
 - [uglify-js](https://github.com/mishoo/UglifyJS) npm package
 - [jshint](http://www.jshint.com/) npm package
-- Git
 - A web server configured to serve PHP
 - Write access to a directory under web server's document root
 - All PHP extensions needed or optionally usable by phpBB present and enabled
@@ -156,7 +176,7 @@ a package for them, follow instructions
 manager, or follow instructions [here](http://nodejs.org/download/).
 9. Install npm. If it did not come with your node.js package, obtain it
 from [here](https://github.com/isaacs/npm).
-10. Install npm packages: `npm install -g jshint uglify-js`.
+10. Install npm packages: `npm install -g coffee-script uglify-js jshint`.
 11. Edit `config/default.yaml`.
 12. Configure your web server to serve PHP scripts in `test_root_phpbb`.
 13. Configure your web server to serve directory listings in `responses_dir`.

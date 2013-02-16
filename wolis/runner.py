@@ -277,7 +277,7 @@ class Runner(object):
         test_path = os.path.realpath(test_path)
         cmd_prefix = self.conf.node_cmd_prefix or []
         utils.run(cmd_prefix + ['coffee', '-c', '-o', self.conf.gen_path, test_path])
-        extra_files = ['utils.coffee', 'watchdog.coffee']
+        extra_files = ['utils.coffee', 'search_index.coffee', 'watchdog.coffee']
         for file in extra_files:
             utils.run(cmd_prefix + ['coffee', '-c', '-o', self.conf.gen_path, os.path.join(os.path.dirname(test_path), file)])
         compiled_js_path = os.path.join(self.conf.gen_path, os.path.basename(test_path).replace('.coffee', '.js'))

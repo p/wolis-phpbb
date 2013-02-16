@@ -75,7 +75,7 @@ exports.acp_login_only = (username, password)->
   
   casper.open base
   
-  casper.then ->
+  exports.thensaveresponse ->
     @test.assertHttpStatus 200
     
     @test.assertTextExists 'Your first forum'
@@ -128,3 +128,9 @@ exports.thensaveresponse = (done)->
   casper.then ->
     savehtml @getHTML()
     done.call(this, arguments)
+
+exports.assertwaitfortext = exports.assertWaitForText = (text)->
+  casper.waitForText text, ->
+    true
+  , ->
+    @test.fail 'Text not found: ' + text

@@ -103,8 +103,7 @@ class Runner(object):
             'python.search',
             'python.search_pagination',
         ]
-        for test in tests:
-            self.run_test('pass1', test)
+        self.run_tests('pass1', tests)
         
         if utils.current.phpbb_version >= (3, 1, 0):
             if self.actual_dbms == 'postgres':
@@ -114,8 +113,7 @@ class Runner(object):
                     'python.search',
                     'python.search_pagination',
                 ]
-                for test in tests:
-                    self.run_test('pass2', test)
+                self.run_tests('pass2', tests)
         
         tests = [
             'python.install_subsilver',
@@ -127,8 +125,7 @@ class Runner(object):
             'python.actkey_comparison',
             'python.update',
         ]
-        for test in tests:
-            self.run_test('pass3', test)
+        self.run_tests('pass3', tests)
         
         checkpoint_name = 'pass4prep'
         if not self.resume or not self.passed_checkpoint(checkpoint_name):
@@ -197,6 +194,10 @@ class Runner(object):
             composer_path = os.path.join(src_path, 'composer.phar')
             utils.run_in_dir(self.conf.test_root_phpbb,
                 self.conf.php_cmd_prefix + ['php', composer_path, 'install', '--dev'])
+    
+    def run_tests(self, prefix, names):
+        for name in names:
+            self.run_test(prefix, name)
     
     def run_test(self, prefix, name):
         checkpoint_name = '%s.%s' % (prefix, name)

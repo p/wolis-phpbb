@@ -106,6 +106,7 @@ class Runner(object):
             'python.search_pagination',
             'casper.delete_native_search_index',
             'python.search_verify_no_backends',
+            'python.search_verify_no_results',
         ]
         self.run_tests('pass1', tests)
         

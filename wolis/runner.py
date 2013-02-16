@@ -68,15 +68,13 @@ class Runner(object):
         # and gen for coffeescript when compiling
         os.chmod(self.conf.gen_path, 0o777)
         
-        if not self.resume:
-            self.drop_database()
-            self.create_database()
-        
         print('%s detected' % utils.current.phpbb_version)
         
         os.environ['DBMS'] = self.actual_dbms
         
         tests = [
+            'prep.drop_database',
+            'prep.create_database',
             'python.lint_js',
             'python.create_schema_files',
             'python.install',
@@ -211,7 +209,10 @@ class Runner(object):
         
         assert '.' in name
         method, name = name.split('.')
-        if method == 'python':
+        if method == 'prep':
+            method = getattr(self, name)
+            method()
+        elif method == 'python':
             self.run_python_test(name)
         elif method == 'casper':
             self.run_casper_test(name)

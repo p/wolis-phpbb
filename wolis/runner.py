@@ -140,14 +140,18 @@ class Runner(object):
             self.create_database()
             self.checkpoint(checkpoint_name)
         
-        self.run_test('pass4', 'python.install')
-        
-        self.copy_tree_under_test(True, exclude='/config.php')
-        
-        self.run_test('pass4', 'python.update')
+        tests = [
+            'python.install',
+            'prep.copy_tree_for_update',
+            'python.update',
+        ]
+        self.run_tests('pass4', tests)
         
         if os.path.exists(self.conf.state_file_path):
             os.unlink(self.conf.state_file_path)
+    
+    def copy_tree_for_update(self):
+        self.copy_tree_under_test(True, exclude='/config.php')
     
     def delete_old_responses(self):
         dir = self.conf.responses_dir

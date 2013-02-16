@@ -118,6 +118,14 @@ class Runner(object):
                     'python.search_pagination',
                 ]
                 self.run_tests('pass2', tests)
+            elif utils.db_matches(self.actual_dbms, 'mysql*'):
+                tests = [
+                    'casper.mysql_search_index',
+                    'python.search_backend_mysql',
+                    'python.search',
+                    'python.search_pagination',
+                ]
+                self.run_tests('pass2', tests)
         
         tests = [
             'casper.create_native_search_index',

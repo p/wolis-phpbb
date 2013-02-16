@@ -159,7 +159,7 @@ class PostLotsTest(WolisTestCase):
             
             for i in range(len(threads)):
                 thread = threads[i]
-                while not thread.join(1):
+                while thread.is_alive() and not thread.join(1):
                     pass
                 threads[i] = None
         except KeyboardInterrupt:

@@ -145,6 +145,19 @@ class Runner(object):
                     'python.search_pagination',
                 ]
                 self.run_tests('pass2', tests)
+            
+            if utils.db_matches_list(self.actual_dbms, ['postgres', 'mysql*']):
+                tests = [
+                    'python.sphinx_config',
+                    'python.search_backend_sphinx',
+                    'python.sphinx_verify_search_fails',
+                    'casper.sphinx_search_index',
+                    'python.sphinx_search_index_cmd',
+                    'prep.start_sphinx_searchd',
+                    'python.search',
+                    'python.search_pagination',
+                ]
+                self.run_tests('pass3', tests)
         
         tests = [
             'casper.create_native_search_index',
@@ -157,7 +170,7 @@ class Runner(object):
             'python.actkey_comparison',
             'python.update',
         ]
-        self.run_tests('pass3', tests)
+        self.run_tests('pass4', tests)
         
         tests = [
             'prep.copy_starting_tree_for_update',
@@ -167,7 +180,7 @@ class Runner(object):
             'prep.copy_tree_for_update',
             'python.update',
         ]
-        self.run_tests('pass4', tests)
+        self.run_tests('pass5', tests)
         
         if not self.requested_tests:
             self.clear_state()
@@ -389,3 +402,8 @@ class Runner(object):
     def switch_posts_to_myisam(self):
         with self.db.cursor() as c:
             c.execute('alter table phpbb_posts engine=myisam')
+    
+    def start_sphinx_searchd(self):
+        cmd = self.conf.sphinx_cmd_prefix or []
+        cmd += ['searchd', '--nodetach', '-c', self.conf.sphinx_config_path]
+        utils.run(cmd)

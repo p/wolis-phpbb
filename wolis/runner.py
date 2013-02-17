@@ -301,6 +301,9 @@ class Runner(object):
         extra_files = ['utils.coffee', 'search_index.coffee', 'watchdog.coffee']
         for file in extra_files:
             utils.run(cmd_prefix + ['coffee', '-c', '-o', self.conf.gen_path, os.path.join(os.path.dirname(test_path), file)])
+        extra_files = ['version.coffee']
+        for file in extra_files:
+            utils.run(cmd_prefix + ['coffee', '-c', '-o', self.conf.gen_path, os.path.join(os.path.dirname(test_path), 'lib', file)])
         compiled_js_path = os.path.join(self.conf.gen_path, os.path.basename(test_path).replace('.coffee', '.js'))
         if not os.path.exists(compiled_js_path):
             raise CoffeeFailError('Coffee file was not compiled: %s -> %s' % (test_path, compiled_js_path))
@@ -312,6 +315,8 @@ class Runner(object):
         with open(compiled_js_path) as f:
             text += f.read()
         with open(compiled_js_path, 'w') as f:
+            # Important: this depends on the checked out tree
+            f.write(utils.current.phpbb_version.js())
             f.write(text)
         
         utils.casper(self.conf, compiled_js_path, pre=self.casper_config_path)

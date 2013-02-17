@@ -24,7 +24,11 @@ casper.then ->
   utils.acp_login 'morpheus', 'morpheus',
 
 casper.then ->
-  search_index.create_search_index 'MySQL Fulltext'
+  if utils.phpbb_version_check('<3.1.0')
+    label = 'Fulltext mysql'
+  else
+    label = 'MySQL Fulltext'
+  search_index.create_search_index label
 
 casper.run ->
   @test.done()

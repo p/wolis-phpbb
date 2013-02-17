@@ -1,4 +1,5 @@
 fs = require 'fs'
+version = require './version'
 
 d = ->
   console.log arguments...
@@ -159,3 +160,6 @@ exports.assertwaitfortext = exports.assertWaitForText = (text)->
     d 'Text not found: ' + text
     d 'Exiting due to casper bug'
     @exit -24
+
+exports.phpbb_version_check = (spec)->
+  version.version_check(spec, global.wolis.phpbb_version)

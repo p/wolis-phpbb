@@ -184,6 +184,10 @@ class PhpbbVersion(object):
             return self < target_version
         else:
             raise NotImplementedError("Unsupported version specification: %s" % spec)
+    
+    def js(self):
+        js = 'global.wolis.phpbb_version = [%d, %d, %d];' % self.version
+        return js
 
 class Current(object):
     phpbb_version = None

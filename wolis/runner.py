@@ -355,8 +355,7 @@ class Runner(object):
             casper.test.done();
         ''' % json
         output_dir = self.conf.gen_path
-        if not os.path.exists(output_dir):
-            os.mkdir(output_dir)
+        utils.mkdir_p(output_dir)
         output_path = os.path.join(output_dir, config_file_name.replace('.yaml', '.js'))
         with open(output_path, 'wb') as f:
             f.write(json)

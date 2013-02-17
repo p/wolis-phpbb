@@ -96,7 +96,7 @@ class Runner(object):
         try:
             self.run_phase2()
         finally:
-            print utils.current.validation_errors
+            self.report_validation_errors()
     
     def run_phase2(self):
         tests = [
@@ -455,6 +455,9 @@ class Runner(object):
         with open(output_path, 'wb') as f:
             f.write(json)
         return output_path
+    
+    def report_validation_errors(self):
+        print len(utils.current.validation_errors)
     
     # mysql only
     def switch_posts_to_myisam(self):

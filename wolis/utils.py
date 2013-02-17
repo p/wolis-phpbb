@@ -1,6 +1,7 @@
 import os.path
 import re
 import sys
+import functools
 
 class RunError(StandardError):
     pass
@@ -199,6 +200,7 @@ current = Current()
 
 def restrict_phpbb_version(spec):
     def decorator(fn):
+        @functools.wraps(fn)
         def decorated(self, *args, **kwargs):
             actual_version = current.phpbb_version or PhpbbVersion(self.conf)
             if not actual_version.matches(spec):
@@ -226,6 +228,7 @@ def db_matches_list(actual, requested_list):
 
 def restrict_database(spec):
     def decorator(fn):
+        @functools.wraps(fn)
         def decorated(self, *args, **kwargs):
             actual_dbms = current.dbms or self.conf.db
             if not db_matches(actual_dbms, spec):

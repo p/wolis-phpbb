@@ -232,12 +232,13 @@ def db_matches_list(actual, requested_list):
         requested_list.append('mysqli')
     return actual in requested_list
 
-def restrict_database(spec):
+def restrict_database(*specs):
     def decorator(fn):
         @functools.wraps(fn)
         def decorated(self, *args, **kwargs):
             actual_dbms = current.dbms or self.conf.db
-            if not db_matches(actual_dbms, spec):
+            if not db_matches_list(actual_dbms, specs):
+                spec = '|'.join(specs)
                 print('Skipping %s due to database requirement (%s)' % (fn.__name__, spec))
             else:
                 return fn(self, *args, **kwargs)

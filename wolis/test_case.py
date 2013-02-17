@@ -14,6 +14,9 @@ from . import helpers
 xpath_first = webracer.utils.xpath_first
 xpath_first_check = webracer.utils.xpath_first_check
 
+class ValidationError(StandardError):
+    pass
+
 class WolisTestCase(utu.adjust_test_base(webracer.WebTestCase), helpers.Helpers):
     def __init__(self, *args, **kwargs):
         super(WolisTestCase, self).__init__(*args, **kwargs)
@@ -126,8 +129,11 @@ class WolisTestCase(utu.adjust_test_base(webracer.WebTestCase), helpers.Helpers)
                     text = utils.text_content(message)
                     msg += "\n" + text
             self.fail(msg)
+        
         session.assert_status(200)
         self.assert_no_php_spam(session)
+        self.validate_markup(session)
+        
         if check_errorbox:
             self.assert_no_phpbb_error(session)
     
@@ -179,6 +185,65 @@ class WolisTestCase(utu.adjust_test_base(webracer.WebTestCase), helpers.Helpers)
                 message_element = xpath_first_check(errorbox, './p')
                 msg = 'Error message found in document: %s' % message_element.text
                 self.fail(msg)
+    
+    def validate_markup(self, session=None):
+        '''Validates response body, if response is XML or HTML content.
+        '''
+        
+        if session is None:
+            session = self
+        
+        if len(session.response.raw_body) == 0:
+            return
+        
+        content_type = session.response.header_dict['content-type'].lower()
+        # drop charset
+        content_type = re.sub(r';.*', '', content_type)
+        if re.search(r'\bxml\b', content_type):
+            self.validate_xml(session.response.body)
+        elif re.search(r'\bhtml\b', content_type):
+            self.validate_html(session.response.body)
+    
+    def validate_xml(self, text):
+        import lxml.etree
+        doc = lxml.etree.XML(text)
+    
+    def validate_html_lxml(self, text):
+        import lxml.etree
+        parser = lxml.etree.HTMLParser(recover=False)
+        doc = lxml.etree.HTML(text, parser)
+    
+    def validate_html_html5lib(self, text):
+        # http://12-oz-programmer.blogspot.com/2012/09/django-html5lib-validating-middleware.html
+        
+        import html5lib.html5parser
+        import html5lib.treebuilders
+        
+        treebuilder = html5lib.treebuilders.getTreeBuilder('simpleTree')
+        parser = html5lib.html5parser.HTMLParser(tree=treebuilder, strict=True)
+        # this should be fine for validation
+        text = text.replace("\t", '        ')
+        try:
+            doc = parser.parse(text)
+        except:
+            pass
+        if parser.errors:
+            # format output
+            out = []
+            lines = text.splitlines()
+            for (row, col), e, d in parser.errors:
+                out.append('%s, %s' % (e, d))
+                for x in range(max(0, row - 3), min(len(lines), row + 1)):
+                    out.append(lines[x])
+                #offender = lines[row]
+                #before = offender[:col]
+                #tabs = before.count("\t")
+                # html5lib seems to count each tab as two spaces
+                out.append(' ' * col + '^')
+            out = '\n'.join(out)        #print text
+            raise ValidationError(out)
+    
+    validate_html = validate_html_lxml
     
     def find_current_page(self):
         if self.phpbb_version < (3, 1, 0):

@@ -1,7 +1,7 @@
 from wolis.test_case import WolisTestCase
 from wolis import utils
 
-class SearchBackendMysqlTest(WolisTestCase):
+class SearchBackendSphinxTest(WolisTestCase):
     @utils.restrict_database('mysql*', 'postgres')
     @utils.restrict_phpbb_version('>=3.1.0')
     def test_set_search_backend(self):

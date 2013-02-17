@@ -201,6 +201,8 @@ class Current(object):
     config = None
     dbms = None
     db = None
+    
+    validation_errors = []
 
 current = Current()
 

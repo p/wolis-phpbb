@@ -93,6 +93,12 @@ class Runner(object):
         
         os.environ['DBMS'] = self.actual_dbms
         
+        try:
+            self.run_phase2()
+        except:
+            print utils.current.validation_errors
+    
+    def run_phase2(self):
         tests = [
             'prep.drop_database',
             'prep.create_database',

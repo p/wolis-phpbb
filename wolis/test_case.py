@@ -200,20 +200,24 @@ class WolisTestCase(utu.adjust_test_base(webracer.WebTestCase), helpers.Helpers)
         # drop charset
         content_type = re.sub(r';.*', '', content_type)
         if re.search(r'\bxml\b', content_type):
-            self.validate_xml(session.response.body)
+            self.validate_xml(session.response, session.response.body)
         elif re.search(r'\bhtml\b', content_type):
-            self.validate_html(session.response.body)
+            self.validate_html(session.response, session.response.body)
     
-    def validate_xml(self, text):
+    def validate_xml(self, response, text):
         import lxml.etree
         doc = lxml.etree.XML(text)
     
-    def validate_html_lxml(self, text):
+    def validate_html_lxml(self, response, text):
         import lxml.etree
         parser = lxml.etree.HTMLParser(recover=False)
-        doc = lxml.etree.HTML(text, parser)
+        try:
+            doc = lxml.etree.HTML(text, parser)
+        except lxml.etree.XMLSyntaxError as e:
+            print e
+            utils.current.validation_errors.append((response.request_url, text, str(e)))
     
-    def validate_html_html5lib(self, text):
+    def validate_html_html5lib(self, response, text):
         # http://12-oz-programmer.blogspot.com/2012/09/django-html5lib-validating-middleware.html
         
         import html5lib.html5parser
@@ -241,9 +245,14 @@ class WolisTestCase(utu.adjust_test_base(webracer.WebTestCase), helpers.Helpers)
                 # html5lib seems to count each tab as two spaces
                 out.append(' ' * col + '^')
             out = '\n'.join(out)        #print text
-            raise ValidationError(out)
+            #raise ValidationError(out)
+            utils.current.validation_errors.append(self.response.request_uri, text, out)
     
-    validate_html = validate_html_lxml
+    def validate_html(self, response, text):
+        self.validate_html_lxml(response, text)
+        self.validate_html_html5lib(response, text)
+    
+    #validate_html = validate_html_lxml
     
     def find_current_page(self):
         if self.phpbb_version < (3, 1, 0):

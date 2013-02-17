@@ -214,7 +214,6 @@ class WolisTestCase(utu.adjust_test_base(webracer.WebTestCase), helpers.Helpers)
         try:
             doc = lxml.etree.HTML(text, parser)
         except lxml.etree.XMLSyntaxError as e:
-            print e
             utils.current.validation_errors.append((response.request_url, text, str(e)))
     
     def validate_html_html5lib(self, response, text):
@@ -246,7 +245,7 @@ class WolisTestCase(utu.adjust_test_base(webracer.WebTestCase), helpers.Helpers)
                 out.append(' ' * col + '^')
             out = '\n'.join(out)        #print text
             #raise ValidationError(out)
-            utils.current.validation_errors.append(self.response.request_uri, text, out)
+            utils.current.validation_errors.append((self.response.request_url, text, out))
     
     def validate_html(self, response, text):
         self.validate_html_lxml(response, text)

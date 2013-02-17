@@ -95,7 +95,7 @@ class Runner(object):
         
         try:
             self.run_phase2()
-        except:
+        finally:
             print utils.current.validation_errors
     
     def run_phase2(self):

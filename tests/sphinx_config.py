@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import re, os
+import re, os, os.path
 import webracer.utils
 from wolis import utils
 from wolis.test_case import WolisTestCase
@@ -73,8 +73,10 @@ class SphinxConfigTest(WolisTestCase):
             utils.run(cmd + ['rm', '-rf', self.conf.sphinx_data_path, self.conf.sphinx_log_path], no_check=True)
         else:
             import shutil
-            shutil.rmtree(self.conf.sphinx_data_path)
-            shutil.rmtree(self.conf.sphinx_log_path)
+            if os.path.exists(self.conf.sphinx_data_path):
+                shutil.rmtree(self.conf.sphinx_data_path)
+            if os.path.exists(self.conf.sphinx_log_path):
+                shutil.rmtree(self.conf.sphinx_log_path)
         
         utils.mkdir_p(self.conf.sphinx_data_path)
         utils.mkdir_p(self.conf.sphinx_log_path)

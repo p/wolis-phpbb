@@ -158,6 +158,7 @@ Wolis can be viewed in action [here](http://integrity.vps.hxr.me/).
 - Your favorite database engine(s) plus client libraries
   - [MySQL-Python](http://mysql-python.sourceforge.net/) for MySQL
   - [psycopg2](http://initd.org/psycopg/) for PostgreSQL
+- [Sphinx search](http://sphinxsearch.com/)
 
 Wolis is deployable to a typical Linux VPS.
 
@@ -165,25 +166,27 @@ Wolis is deployable to a typical Linux VPS.
 
 1. Install git if you do not already have it.
 2. Install Python using your operating system's package manager.
-3. Install virtualenv and pip. If your operating system does not provide
+3. Install [Sphinx](http://sphinxsearch.com/). No configuration is necessary,
+but make sure its programs are in PATH.
+4. Install virtualenv and pip. If your operating system does not provide
 a package for them, follow instructions
 [here](http://www.pip-installer.org/en/latest/installing.html).
-4. Activate the new environment.
-5. Install Python packages: `pip install -r requirements.txt`.
-6. [Install PhantomJS.](http://phantomjs.org/download.html)
-7. [Install CasperJS.](http://casperjs.org/installation.html)
-8. Install node.js. It might be provided by your operating system's package
+5. Activate the new environment.
+6. Install Python packages: `pip install -r requirements.txt`.
+7. [Install PhantomJS.](http://phantomjs.org/download.html)
+8. [Install CasperJS.](http://casperjs.org/installation.html)
+9. Install node.js. It might be provided by your operating system's package
 manager, or follow instructions [here](http://nodejs.org/download/).
-9. Install npm. If it did not come with your node.js package, obtain it
+10. Install npm. If it did not come with your node.js package, obtain it
 from [here](https://github.com/isaacs/npm).
-10. Install npm packages: `npm install -g coffee-script uglify-js jshint`.
-11. Edit `config/default.yaml`.
-12. Configure your web server to serve PHP scripts in `test_root_phpbb`.
-13. Configure your web server to serve directory listings in `responses_dir`.
-14. Setup sudo access from your user account to the one running PHP scripts,
+11. Install npm packages: `npm install -g coffee-script uglify-js jshint`.
+12. Edit `config/default.yaml`.
+13. Configure your web server to serve PHP scripts in `test_root_phpbb`.
+14. Configure your web server to serve directory listings in `responses_dir`.
+15. Setup sudo access from your user account to the one running PHP scripts,
 or arrange for umask/group membership to otherwise give you write access to
 files that PHP creates.
-15. Choose your database engine and create a database for wolis.
+16. Choose your database engine and create a database for wolis.
 
 ### MySQL stop words
 

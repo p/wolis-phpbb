@@ -1,6 +1,7 @@
 import socket
 import os
 import subprocess
+import time as _time
 from . import utils
 
 def copy_cmd(cmd):

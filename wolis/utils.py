@@ -101,6 +101,7 @@ def clone_repo(src, dest, remote_name):
             silent_rm_rf(dest)
             raise
     else:
+        git_in_dir(dest, 'remote', '--set-url', remote_name, src)
         git_in_dir(dest, 'fetch', remote_name)
         git_in_dir(dest, 'fetch', '-t', remote_name)
 

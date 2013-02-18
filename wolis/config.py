@@ -9,6 +9,7 @@ class Config(object):
         self.sphinx_searchd_port = 9339
         self.node_cmd_prefix = None
         self.php_cmd_prefix = None
+        self.sphinx_cmd_prefix = None
         self.use_composer = False
         
         if config_file_path is None:

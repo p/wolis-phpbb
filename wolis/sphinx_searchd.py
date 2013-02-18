@@ -34,7 +34,7 @@ class SearchdManager(object):
     
     def stop(self):
         if self.pid():
-            self.kill_sphinx()
+            self.kill_sphinx(15)
     
     def ensure_running(self):
         if not self.is_running():
@@ -46,8 +46,12 @@ class SearchdManager(object):
         if self.is_running():
             self.stop()
             self.wait_to_stop()
+        try:
+            utils.run((self.conf.sphinx_cmd_prefix or []) + ['pkill', 'searchd'])
+        except:
+            pass
+        if self.pid():
             assert not self.pid_alive()
-        utils.run((self.conf.sphinx_cmd_prefix or []) + ['pkill', 'searchd'])
     
     def pid(self):
         try:

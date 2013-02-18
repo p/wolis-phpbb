@@ -1,3 +1,16 @@
+# Resuming behavior:
+#
+# Default (full run): checkpoints are created but not checked.
+# All tests are run.
+# At the end of the run, state is cleared.
+#
+# Resume: checkpoints are checked and created.
+# Tests that previously succeeded are skipped.
+# At the end of the run, state is cleared.
+#
+# Individual tests: checkpoints are not created and not checked.
+# At the end of the run, state is not cleared.
+
 import re
 import optparse
 import os
@@ -60,12 +73,12 @@ class Runner(object):
     def run(self):
         self.parse_options()
         
-        if not self.resume:
+        if not self.resume and not self.requested_tests:
             self.clear_state()
         
         self.instantiate_db()
         self.casper_config_path = self.create_casper_config_file()
-        self.copy_tree_under_test(not self.resume)
+        self.copy_tree_under_test(not self.resume and not self.requested_tests)
         self.delete_old_responses()
         # set to world write as casper writes there
         os.chmod(self.conf.responses_dir, 0o777)
@@ -152,7 +165,8 @@ class Runner(object):
         ]
         self.run_tests('pass4', tests)
         
-        self.clear_state()
+        if not self.requested_tests:
+            self.clear_state()
     
     def copy_starting_tree_for_update(self):
         self.update_baseline_repo()
@@ -218,7 +232,7 @@ class Runner(object):
     
     def run_test(self, prefix, name):
         checkpoint_name = '%s.%s' % (prefix, name)
-        if self.resume and self.passed_checkpoint(checkpoint_name):
+        if self.resume and not self.requested_tests and self.passed_checkpoint(checkpoint_name):
             return
         if self.requested_tests is not None:
             if checkpoint_name not in self.requested_tests:
@@ -238,7 +252,8 @@ class Runner(object):
         else:
             raise ValueError, 'Unsppported method: %s' % method
         
-        self.checkpoint(checkpoint_name)
+        if not self.requested_tests:
+            self.checkpoint(checkpoint_name)
     
     def run_python_test(self, name):
         parent = __import__('tests.' + name)

@@ -50,6 +50,8 @@ class Runner(object):
             action='store_true', dest='resume')
         parser.add_option('-c', '--config', help='Path to configuration file',
             action='store', dest='config')
+        parser.add_option('-s', '--source', help='Override source',
+            action='store', dest='source')
         parser.add_option('-b', '--branch', help='Override branch for url sources',
             action='store', dest='branch')
         parser.add_option('-d', '--db', help='Use specified database driver',
@@ -61,6 +63,8 @@ class Runner(object):
         else:
             self.config_file_path = os.path.join(os.path.dirname(__file__), '../config/default.yaml')
         self.conf = config.Config(self.config_file_path)
+        if options.source:
+            self.conf.src = options.source
         if options.branch:
             self.branch = options.branch
         if options.resume:

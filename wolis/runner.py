@@ -148,6 +148,7 @@ class Runner(object):
             
             if utils.db_matches_list(self.actual_dbms, ['postgres', 'mysql*']):
                 tests = [
+                    'prep.stop_sphinx_searchd',
                     'python.sphinx_config',
                     'python.search_backend_sphinx',
                     'python.sphinx_verify_search_fails',
@@ -406,3 +407,7 @@ class Runner(object):
     def start_sphinx_searchd(self):
         import sphinx_searchd
         sphinx_searchd.SearchdManager(self.conf).ensure_running()
+    
+    def stop_sphinx_searchd(self):
+        import sphinx_searchd
+        sphinx_searchd.SearchdManager(self.conf).ensure_stopped()

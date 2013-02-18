@@ -81,7 +81,7 @@ class SearchPaginationTest(WolisTestCase):
         
         # check active page
         current_page = self.find_current_page()
-        assert current_page == '3'
+        assert current_page == 3
 
 if __name__ == '__main__':
     import unittest

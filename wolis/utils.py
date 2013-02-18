@@ -15,14 +15,19 @@ def run(cmd, **kwargs):
     
     flush_streams()
     
-    if 'stdout_io' in kwargs:
-        # XXX unfinished
-        stdout_io = kwargs['stdout_io']
-        del kwargs['stdout_io']
+    if 'return_stdout' in kwargs:
+        del kwargs['return_stdout']
         kwargs['stdout'] = subprocess.PIPE
         no_check = kwargs.get('no_check')
-        p = Popen(cmd, **kwargs)
+        if no_check:
+            del kwargs['no_check']
+        p = subprocess.Popen(cmd, **kwargs)
         out, err = p.communicate()
+        if not no_check:
+            if p.returncode != 0:
+                raise subprocess.CalledProcessError('Process finished with code %d' % p.returncode)
+        return out
+    
     if 'no_check' in kwargs:
         fn = subprocess.call
         del kwargs['no_check']

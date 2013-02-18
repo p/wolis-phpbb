@@ -404,6 +404,5 @@ class Runner(object):
             c.execute('alter table phpbb_posts engine=myisam')
     
     def start_sphinx_searchd(self):
-        cmd = self.conf.sphinx_cmd_prefix or []
-        cmd += ['searchd', '--nodetach', '-c', self.conf.sphinx_config_path]
-        utils.run(cmd)
+        import sphinx_searchd
+        sphinx_searchd.SearchdManager(self.conf).ensure_running()

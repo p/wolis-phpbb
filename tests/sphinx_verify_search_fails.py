@@ -32,7 +32,7 @@ class SphinxVerifySearchFailsTest(WolisTestCase):
         self.post(form.computed_action, body=elements.params.list)
         self.assert_successish()
         
-        assert 'Search failed: connection to localhost:9339 failed' in self.response.body
+        assert 'Search failed: connection to localhost:%s failed' % self.conf.sphinx_searchd_port in self.response.body
 
 if __name__ == '__main__':
     import unittest

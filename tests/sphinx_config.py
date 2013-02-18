@@ -29,7 +29,7 @@ class SphinxConfigTest(WolisTestCase):
         elements = form.elements.mutable
         elements.set_value('config[fulltext_sphinx_data_path]', self.conf.sphinx_data_path + '/')
         # change port to something non-default
-        elements.set_value('config[fulltext_sphinx_port]', '9339')
+        elements.set_value('config[fulltext_sphinx_port]', str(self.conf.sphinx_searchd_port))
         self.post(form.computed_action, elements.params.list)
         self.assert_successish()
         
@@ -48,6 +48,15 @@ class SphinxConfigTest(WolisTestCase):
         config_text = element.text
         #form = self.response.form()
         #config_text = form.params.dict['config[fulltext_sphinx_config_file]']
+        
+        original_pid = r'pid_file = %s' % os.path.join(self.conf.sphinx_data_path, 'searchd.pid')
+        assert original_pid in config_text
+        replaced_pid = r'pid_file = %s' % self.conf.sphinx_pidfile_path
+        config_text = config_text.replace(original_pid, replaced_pid)
+        
+        original_log = os.path.join(self.conf.sphinx_data_path, 'log')
+        assert original_log in config_text
+        config_text = config_text.replace(original_log, self.conf.sphinx_log_path)
         
         utils.mkdir_p(self.conf.sphinx_root)
         with open(self.conf.sphinx_config_path, 'w') as f:
@@ -73,6 +82,8 @@ class SphinxConfigTest(WolisTestCase):
         if self.conf.sphinx_cmd_prefix:
             os.chmod(self.conf.sphinx_data_path, 0o777)
             os.chmod(self.conf.sphinx_log_path, 0o777)
+            # for pid file
+            os.chmod(self.conf.sphinx_root, 0o777)
 
 if __name__ == '__main__':
     import unittest

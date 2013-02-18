@@ -6,6 +6,7 @@ class SubConfig(object):
 
 class Config(object):
     def __init__(self, config_file_path=None):
+        self.sphinx_searchd_port = 9339
         self.node_cmd_prefix = None
         self.php_cmd_prefix = None
         self.use_composer = False
@@ -69,4 +70,8 @@ class Config(object):
     
     @property
     def sphinx_log_path(self):
-        return os.path.join(self.sphinx_data_path, 'log')
+        return os.path.join(self.sphinx_root, 'log')
+    
+    @property
+    def sphinx_pidfile_path(self):
+        return os.path.join(self.sphinx_root, 'searchd.pid')

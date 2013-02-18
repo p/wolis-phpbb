@@ -58,6 +58,20 @@ class SphinxConfigTest(WolisTestCase):
         assert original_log in config_text
         config_text = config_text.replace(original_log, self.conf.sphinx_log_path)
         
+        cmd = self.conf.sphinx_cmd_prefix or []
+        help_text = utils.run(cmd + ['searchd', '-h'], return_stdout=True)
+        match = re.match('Sphinx (\d+(?:\.\d+)*)', help_text)
+        assert match, "Sphinx version not found in help text:\n" + help
+        sphinx_version = match.group(1)
+        print("Detected sphinx version: %s" % sphinx_version)
+        sphinx_version = map(int, sphinx_version.split('.'))
+        
+        if sphinx_version[0] < 3:
+            # 0.9.9 shipping with debian squeeze
+            directives = ['compat_sphinxql_magics', 'binlog_path']
+            for directive in directives:
+                config_text = re.compile(r'^(\s*)(%s)\b' % directive, re.M).sub(r'\1#\2', config_text)
+        
         utils.mkdir_p(self.conf.sphinx_root)
         with open(self.conf.sphinx_config_path, 'w') as f:
             f.write(config_text)

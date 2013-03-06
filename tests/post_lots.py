@@ -150,7 +150,7 @@ class PostLotsTest(WolisTestCase):
         
         try:
             for j in range(thread_count):
-                session = self._session.copy()
+                session = self._agent.copy()
                 session.config.retry_failed = True
                 session.config.retry_condition = utils.retry_condition_fn
                 thread = threading.Thread(target=target, args=(session,))

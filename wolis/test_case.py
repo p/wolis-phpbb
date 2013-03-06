@@ -30,7 +30,7 @@ class WolisTestCase(utu.adjust_test_base(webracer.WebTestCase), helpers.Helpers)
         return utils.current.phpbb_version or utils.PhpbbVersion(self.conf)
     
     def find_sid(self):
-        cookie_names = self._session._cookie_jar.keys()
+        cookie_names = self._agent._cookie_jar.keys()
         sid_name = None
         for name in cookie_names:
             if name.endswith('_sid'):
@@ -38,7 +38,7 @@ class WolisTestCase(utu.adjust_test_base(webracer.WebTestCase), helpers.Helpers)
                     sid_name = name
                 else:
                     raise ValueError, 'Duplicate sid cookies detected: %s and %s' % (sid_name, name)
-        self._sid = self._session._cookie_jar[sid_name].value
+        self._sid = self._agent._cookie_jar[sid_name].value
     
     def apply_sid(self, url):
         if self._sid is None:

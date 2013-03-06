@@ -119,7 +119,7 @@ class WolisTestCase(utu.adjust_test_base(webracer.WebTestCase), helpers.Helpers)
         
         if session.response.code == 503:
             msg = 'Expected response to be successful, but was 503'
-            if session.response.header_dict['content-type'].lower().startswith('text/html'):
+            if session.response.headers['content-type'].lower().startswith('text/html'):
                 doc = session.response.lxml_etree
                 if xpath_first(doc, '//title[text()="General Error"]') is not None:
                     message = xpath_first_check(doc, '//h1[text()="General Error"]/..')
@@ -168,7 +168,7 @@ class WolisTestCase(utu.adjust_test_base(webracer.WebTestCase), helpers.Helpers)
         if session is None:
             session = self
         
-        if not session.response.header_dict['content-type'].lower().startswith('text/html'):
+        if not session.response.headers['content-type'].lower().startswith('text/html'):
             return
         
         doc = self.response.lxml_etree

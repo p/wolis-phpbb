@@ -41,7 +41,7 @@ class AcpKnobsTestCase(WolisTestCase):
             value=value,
         )
         
-        with self.session() as s:
+        with self.agent() as s:
             s.get('/')
             self.assert_successish(s)
             

@@ -2,7 +2,7 @@
 # python.install
 # prosilver?
 
-utils = require './utils'
+utils = require './wolisutils'
 
 d = ->
   console.log arguments...

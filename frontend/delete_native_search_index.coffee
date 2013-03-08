@@ -4,7 +4,7 @@
 # after:
 # casper.login
 
-utils = require './utils'
+utils = require './wolisutils'
 search_index = require './search_index'
 
 d = ->

@@ -8,7 +8,7 @@
 # phpbb_version:
 # >=3.1.0
 
-utils = require './utils'
+utils = require './wolisutils'
 
 d = ->
   console.log arguments...

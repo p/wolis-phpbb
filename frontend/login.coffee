@@ -4,7 +4,7 @@
 # after:
 # python.login
 
-utils = require './utils'
+utils = require './wolisutils'
 
 d = ->
   console.log arguments...

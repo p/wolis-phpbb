@@ -67,6 +67,7 @@ class SearchPaginationTest(WolisTestCase):
         current_page = self.find_current_page()
         assert current_page == 1
     
+    @utils.restrict_phpbb_version('>=3.1.0')
     def test_excessive_positive_offset(self):
         url = '/search.php?keywords=fancy&start=1000'
         self.get(url)

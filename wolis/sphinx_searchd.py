@@ -71,7 +71,7 @@ class SearchdManager(object):
         try:
             self.kill_sphinx(0)
             alive = True
-        except (OSError, subprocess.CalledProcessError):
+        except (OSError, subprocess.CalledProcessError, utils.RunError):
             # missing process or no permissions
             alive = False
         return alive

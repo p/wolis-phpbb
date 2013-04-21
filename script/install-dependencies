@@ -1,0 +1,66 @@
+#!/bin/sh
+
+set -e
+
+fail() {
+	echo "$@" 1>&2
+	exit 10
+}
+
+if ! test -e /etc/debian_version; then
+	fail "Only debian wheezy (7.x) is supported, sorry"
+fi
+
+if ! grep -q ^7 /etc/debian_version; then
+	version=`cat /etc/debian_version`
+	fail "Only debian wheezy (7.x) is supported, sorry (you have $version)"
+fi
+
+sudo apt-get -y install \
+	git-core \
+	python \
+	python-virtualenv python-pip \
+	sphinxsearch \
+	g++ make
+
+machine=`uname -m`
+case "$machine" in
+i686)
+	archive=https://phantomjs.googlecode.com/files/phantomjs-1.9.0-linux-i686.tar.bz2
+	;;
+*)
+	fail "Unknown machine $machine"
+	;;
+esac
+
+tmpdir=`mktemp -d`
+
+(cd "$tmpdir" &&
+	wget "$archive" &&
+	basename=`basename "$archive"` &&
+	tar xfj "$basename" &&
+	dir=`echo "$basename" |sed -e s/'\.tar.*//'` &&
+	sudo install -m 755 -o root "$dir"/bin/phantomjs /usr/local/bin
+)
+
+rm -rf /opt/casperjs &&
+(cd "$tmpdir" &&
+	git clone git://github.com/n1k0/casperjs.git &&
+	cd casperjs &&
+	git checkout tags/1.0.2 &&
+	cd / &&
+	sudo mv "$tmpdir"/casperjs /opt &&
+	sudo ln -sf /opt/casperjs/bin/casperjs /usr/local/bin/casperjs
+)
+
+(cd "$tmpdir" &&
+	wget -N http://nodejs.org/dist/node-latest.tar.gz &&
+	tar xzvf node-latest.tar.gz && cd `ls -rd node-v*` &&
+	./configure &&
+	make &&
+	sudo make install
+)
+
+sudo npm install -g coffee-script uglify-js jshint
+
+rm -rf "$tmpdir"

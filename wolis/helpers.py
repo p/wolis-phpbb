@@ -80,3 +80,6 @@ class Helpers(object):
             self.assert_successish()
             
         assert 'Configuration updated successfully' in self.response.body
+    
+    def logout(self):
+        self.get('/ucp.php?mode=logout')

@@ -19,9 +19,11 @@ fi
 sudo apt-get -y install \
 	git-core \
 	python \
-	python-virtualenv python-pip \
 	sphinxsearch \
-	g++ make
+	g++ make \
+	php5-cli php5-curl php5-mysql php5-pgsql \
+	mysql-server postgresql-9.1 \
+	python-mysqldb python-lxml python-imaging python-yaml python-psycopg2
 
 machine=`uname -m`
 case "$machine" in
@@ -62,5 +64,7 @@ rm -rf /opt/casperjs &&
 )
 
 sudo npm install -g coffee-script uglify-js jshint
+
+sudo easy_install pip virtualenv
 
 rm -rf "$tmpdir"

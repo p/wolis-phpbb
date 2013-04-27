@@ -126,6 +126,7 @@ class Runner(object):
             'python.search_verify_no_results',
             'python.create_group',
             'python.register_for_pruning',
+            'python.add_user_to_group',
             'python.prune',
         ]
         self.run_tests('pass1', tests)

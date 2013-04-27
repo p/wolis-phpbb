@@ -26,6 +26,7 @@ class PruneUserAndGroupTestCase(WolisTestCase):
         doc = self.response.lxml_etree
         elt = webracer.utils.xpath_first_check(doc, '//option[text()="%s"]' % group_name)
         elements.set_value('group_id', elt.attrib['value'])
+        elements.set_value('action', 'delete')
         self.post(form.computed_action, body=elements.params.list)
         self.assert_successish()
         

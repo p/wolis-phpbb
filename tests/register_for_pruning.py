@@ -4,8 +4,8 @@ from wolis.test_case import WolisTestCase
 
 class RegisterForPruningTestCase(WolisTestCase):
     def test_register(self):
-        for i in range(10):
-            print('Registering user %d' % (i+1))
+        for i in [1, 2]:
+            print('Registering user %d' % i)
             
             self.get('/ucp.php?mode=register')
             self.assert_successish()

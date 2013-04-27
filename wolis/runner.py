@@ -124,12 +124,39 @@ class Runner(object):
             'casper.delete_native_search_index',
             'python.search_verify_no_backends',
             'python.search_verify_no_results',
-            'python.create_group',
+            # http://tracker.phpbb.com/browse/PHPBB3-11236
+            # first pass - no groups
             'python.register_for_pruning',
-            'python.add_user_to_group',
             'python.prune',
         ]
         self.run_tests('pass1', tests)
+        tests = [
+            # http://tracker.phpbb.com/browse/PHPBB3-11236
+            # second pass - with a group
+            #'python.create_group',
+            #'python.register_for_pruning',
+            #'python.prune',
+        ]
+        self.run_tests('pass2', tests)
+        tests = [
+            # http://tracker.phpbb.com/browse/PHPBB3-11237
+            # with a group and a user in that group,
+            # selecting both group and user
+            'python.create_group',
+            'python.register_for_pruning',
+            'python.add_user_to_group',
+            'python.prune_user_and_group',
+        ]
+        self.run_tests('pass3', tests)
+        tests = [
+            # http://tracker.phpbb.com/browse/PHPBB3-11237
+            # with a group and a user in that group
+            #'python.create_group',
+            #'python.register_for_pruning',
+            #'python.add_user_to_group',
+            #'python.prune_group',
+        ]
+        self.run_tests('pass4', tests)
         
         if utils.current.phpbb_version >= (3, 1, 0):
             if utils.db_matches(self.actual_dbms, 'postgres'):
@@ -139,7 +166,7 @@ class Runner(object):
                     'python.search',
                     'python.search_pagination',
                 ]
-                self.run_tests('pass2', tests)
+                self.run_tests('pass11', tests)
             elif utils.db_matches(self.actual_dbms, 'mysql*'):
                 tests = [
                     'prep.switch_posts_to_myisam',
@@ -148,7 +175,7 @@ class Runner(object):
                     'python.search',
                     'python.search_pagination',
                 ]
-                self.run_tests('pass2', tests)
+                self.run_tests('pass11', tests)
             
             if utils.db_matches_list(self.actual_dbms, ['postgres', 'mysql*']):
                 tests = [
@@ -162,7 +189,7 @@ class Runner(object):
                     'python.search',
                     'python.search_pagination',
                 ]
-                self.run_tests('pass3', tests)
+                self.run_tests('pass12', tests)
         
         tests = [
             'casper.create_native_search_index',
@@ -175,7 +202,7 @@ class Runner(object):
             'python.actkey_comparison',
             'python.update',
         ]
-        self.run_tests('pass4', tests)
+        self.run_tests('pass13', tests)
         
         tests = [
             'prep.copy_starting_tree_for_update',
@@ -185,7 +212,7 @@ class Runner(object):
             'prep.copy_tree_for_update',
             'python.update',
         ]
-        self.run_tests('pass5', tests)
+        self.run_tests('pass6', tests)
         
         if not self.requested_tests:
             self.clear_state()

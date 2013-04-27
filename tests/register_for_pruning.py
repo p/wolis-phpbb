@@ -4,7 +4,10 @@ from wolis.test_case import WolisTestCase
 
 class RegisterForPruningTestCase(WolisTestCase):
     def test_register(self):
-        for i in [1, 2]:
+        self.do_register(1)
+    
+    def do_register(self, *numbers):
+        for i in numbers:
             print('Registering user %d' % i)
             
             self.get('/ucp.php?mode=register')

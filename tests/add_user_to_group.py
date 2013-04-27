@@ -5,7 +5,7 @@ import lxml.etree
 
 class AddUserToGroupTestCase(WolisTestCase):
     def test_add_user_to_group(self):
-        username = 'prune2'
+        username = 'prune1'
         group_name = 'testgroup1'
         
         self.login_and_nav()

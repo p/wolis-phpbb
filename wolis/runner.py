@@ -212,7 +212,7 @@ class Runner(object):
             'prep.copy_tree_for_update',
             'python.update',
         ]
-        self.run_tests('pass6', tests)
+        self.run_tests('pass14', tests)
         
         if not self.requested_tests:
             self.clear_state()

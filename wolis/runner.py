@@ -124,6 +124,7 @@ class Runner(object):
             'casper.delete_native_search_index',
             'python.search_verify_no_backends',
             'python.search_verify_no_results',
+            'python.create_group',
             'python.register_for_pruning',
             'python.prune',
         ]

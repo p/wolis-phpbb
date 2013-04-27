@@ -133,16 +133,15 @@ class Runner(object):
         tests = [
             # http://tracker.phpbb.com/browse/PHPBB3-11236
             # second pass - with a group
-            #'python.create_group',
-            #'python.register_for_pruning',
-            #'python.prune',
+            'python.create_group',
+            'python.register_for_pruning',
+            'python.prune',
         ]
         self.run_tests('pass2', tests)
         tests = [
             # http://tracker.phpbb.com/browse/PHPBB3-11237
             # with a group and a user in that group,
             # selecting both group and user
-            'python.create_group',
             'python.register_for_pruning',
             'python.add_user_to_group',
             'python.prune_user_and_group',
@@ -151,7 +150,6 @@ class Runner(object):
         tests = [
             # http://tracker.phpbb.com/browse/PHPBB3-11237
             # with a group and a user in that group
-            #'python.create_group',
             #'python.register_for_pruning',
             #'python.add_user_to_group',
             #'python.prune_group',

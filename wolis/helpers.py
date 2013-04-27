@@ -75,11 +75,14 @@ class Helpers(object):
             assert 'Confirm' in self.response.body
             assert 'Are you sure' in self.response.body
             
-            form = self.response.form(id='confirm')
-            self.post(form.computed_action, body=form.params.list)
-            self.assert_successish()
+            self.submit_confirm_form()
             
         assert 'Configuration updated successfully' in self.response.body
     
     def logout(self):
         self.get('/ucp.php?mode=logout')
+    
+    def submit_confirm_form(self):
+        form = self.response.form(id='confirm')
+        self.post(form.computed_action, body=form.params.list)
+        self.assert_successish()

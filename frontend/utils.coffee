@@ -39,6 +39,9 @@ exports.savehtml = savehtml = (html)->
   f.close()
 
 exports.login = (username, password)->
+  exports.clogin(casper, username, password)
+
+exports.clogin = (username, password)->
   base = global.wolis.config.test_url
   
   casper.open base
@@ -56,7 +59,7 @@ exports.login = (username, password)->
       password: password
     }, true
   
-  exports.thensaveresponse ->
+  exports.cthensaveresponse casper, ->
     @test.assertUrlMatch /ucp\.php.*mode=login/
     @test.assertHttpStatus 200
     
@@ -73,11 +76,14 @@ exports.login = (username, password)->
     @test.assertTextExists 'User Control Panel'
 
 exports.acp_login_only = (username, password)->
+  exports.cacp_login_only(casper, username, password)
+
+exports.cacp_login_only = (casper, username, password)->
   base = global.wolis.config.test_url
   
   casper.open base
   
-  exports.thensaveresponse ->
+  exports.cthensaveresponse casper, ->
     @test.assertHttpStatus 200
     
     @test.assertTextExists 'Your first forum'
@@ -86,7 +92,7 @@ exports.acp_login_only = (username, password)->
     
     @click exports.xpath(exports.a_text_xpath('Administration Control Panel'))
 
-  exports.thensaveresponse ->
+  exports.cthensaveresponse casper, ->
     @test.assertHttpStatus 200
     
     @test.assertTextExists 'To administer the board you must re-authenticate yourself.'
@@ -98,17 +104,20 @@ exports.acp_login_only = (username, password)->
     fields[password_name] = password
     @fill 'form#login', fields, true
 
-  exports.thensaveresponse ->
+  exports.cthensaveresponse casper, ->
     @test.assertHttpStatus 200
     
     @test.assertTextExists 'Proceed to the ACP'
     @click exports.xpath(exports.a_text_xpath('Proceed to the ACP'))
 
 exports.acp_login = (username, password)->
-  exports.login username, password
+  exports.cacp_login(casper, username, password)
+
+exports.cacp_login = (casper, username, password)->
+  exports.clogin casper, username, password
   
   casper.then ->
-    exports.acp_login_only username, password
+    exports.cacp_login_only casper, username, password
 
 exports.fixsubmit = fixsubmit = (selector)->
   form = document.querySelector selector
@@ -127,6 +136,9 @@ exports.fixsubmit = fixsubmit = (selector)->
         break
 
 exports.thensaveresponse = (done)->
+  exports.cthensaveresponse(casper, done)
+
+exports.cthensaveresponse = (casper, done)->
   casper.then ->
     savehtml @getHTML()
     done.call(this, arguments)

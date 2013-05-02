@@ -13,6 +13,8 @@ base = global.wolis.config.test_url
 
 casper.start()
 
+c2 = require('casper').create()
+
 casper.then ->
   utils.login 'morpheus', 'morpheus',
 
@@ -37,6 +39,16 @@ utils.thensaveresponse ->
   fields[password_name] = 'morpheus'
   @fill 'form#login', fields, true
 
+c2.start()
+utils.thensaveresponse ->
+  d 'aa'
+  c2.then ->
+    d 'kk'
+    @open base
+  c2.then ->
+    d 'zz'
+    @test.assertTextExists 'Welcome'
+
 utils.thensaveresponse ->
   @test.assertHttpStatus 200
   
@@ -49,4 +61,6 @@ utils.thensaveresponse ->
   @test.assertTextExists 'Thank you for choosing phpBB as your board solution.'
 
 casper.run ->
-  @test.done()
+  c2.run ->
+    @test.done()
+    casper.test.done()

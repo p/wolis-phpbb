@@ -3,6 +3,7 @@ from wolis import utils
 from wolis.test_case import WolisTestCase
 
 class PruneTestCase(WolisTestCase):
+    @utils.restrict_phpbb_version('>=3.1.0')
     def test_prune_one_user(self):
         username = 'prune1'
         

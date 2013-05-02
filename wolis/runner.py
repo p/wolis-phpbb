@@ -136,31 +136,33 @@ class Runner(object):
             'python.prune',
         ]
         self.run_tests('pass1', tests)
-        tests = [
-            # http://tracker.phpbb.com/browse/PHPBB3-11236
-            # second pass - with a group
-            'python.create_group',
-            'python.register_for_pruning',
-            'python.prune',
-        ]
-        self.run_tests('pass2', tests)
-        tests = [
-            # http://tracker.phpbb.com/browse/PHPBB3-11237
-            # with a group and a user in that group,
-            # selecting both group and user
-            'python.register_for_pruning',
-            'python.add_user_to_group',
-            'python.prune_user_and_group',
-        ]
-        self.run_tests('pass3', tests)
-        tests = [
-            # http://tracker.phpbb.com/browse/PHPBB3-11237
-            # with a group and a user in that group
-            #'python.register_for_pruning',
-            #'python.add_user_to_group',
-            #'python.prune_group',
-        ]
-        self.run_tests('pass4', tests)
+        # XXX prune tests do not work on 3.0, should fix it
+        if utils.current.phpbb_version >= (3, 1, 0):
+            tests = [
+                # http://tracker.phpbb.com/browse/PHPBB3-11236
+                # second pass - with a group
+                'python.create_group',
+                'python.register_for_pruning',
+                'python.prune',
+            ]
+            self.run_tests('pass2', tests)
+            tests = [
+                # http://tracker.phpbb.com/browse/PHPBB3-11237
+                # with a group and a user in that group,
+                # selecting both group and user
+                'python.register_for_pruning',
+                'python.add_user_to_group',
+                'python.prune_user_and_group',
+            ]
+            self.run_tests('pass3', tests)
+            tests = [
+                # http://tracker.phpbb.com/browse/PHPBB3-11237
+                # with a group and a user in that group
+                #'python.register_for_pruning',
+                #'python.add_user_to_group',
+                #'python.prune_group',
+            ]
+            self.run_tests('pass4', tests)
         
         if utils.current.phpbb_version >= (3, 1, 0):
             if utils.db_matches(self.actual_dbms, 'postgres'):

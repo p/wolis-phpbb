@@ -117,6 +117,12 @@ class Runner(object):
             'casper.acp_login_helper',
             'python.register',
             'python.report_post',
+            
+            # subscriptions baseline
+            # need to be before topic spamming
+            'python.subscribe',
+            'python.check_subscriptions',
+            
             'python.post',
             'python.post_lots',
             'python.search',
@@ -207,8 +213,21 @@ class Runner(object):
             'prep.drop_database',
             'prep.create_database',
             'python.install',
+            
+            # this is needed for registration test
+            'python.acp_knobs',
+            
+            # PHPBB3-11420
+            # XXX only run when testing 3.1+
+            'python.register',
+            'python.subscribe',
+            
             'prep.copy_tree_for_update',
             'python.update',
+            
+            # PHPBB3-11420
+            # XXX only run when testing 3.1+
+            'python.check_subscriptions',
         ]
         self.run_tests('pass14', tests)
         

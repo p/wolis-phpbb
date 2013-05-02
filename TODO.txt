@@ -2,3 +2,5 @@
 - Make -r remember which -d was used
 - Passing any tests on command line should imply -r
 - Compare js support files once per test run
+- language.file#method syntax in runner
+- Keep track of "ultimate" tree version being tested

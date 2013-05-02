@@ -19,7 +19,8 @@ class RegisterTestCase(WolisTestCase):
         
         form = self.response.form(id='register')
         # for repeated runs
-        suffix = self.random_suffix()
+        #suffix = self.random_suffix()
+        suffix = '43'
         params = {
             'username': 'test' + suffix,
             'new_password': 'test42',

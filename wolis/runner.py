@@ -115,6 +115,7 @@ class Runner(object):
             'casper.topic_bookmarking',
             'casper.acp_login',
             'casper.acp_login_helper',
+            'casper.purge_sessions',
             'python.register',
             'python.report_post',
             
